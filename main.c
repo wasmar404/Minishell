@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2024/10/24 13:35:26 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/10/24 14:14:51 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,18 +45,16 @@ int	check_if_NULL(char *input)
 	int	i;
 
 	i = 0;
-	int non_space_count = 0; // Renamed j to non_space_count for clarity
-	// Check if input is NULL
+	int non_space_count = 0; 
 	if (input == NULL)
-		return (0); // Return 0 if input is NULL
+		return (0); 
 	while (input[i] != '\0')
 	{
 		if (input[i] != ' ')
 			non_space_count++;
 		i++;
 	}
-	// Return 0 if no non-space characters were found
-	return (non_space_count > 0 ? 1 : 0);
+	return (non_space_count > 0 ? 1 : 0);// fix this
 }
 
 void	main_helper(char *input, char **envp)
@@ -108,8 +106,7 @@ int	check_pipe(t_token *head)
 		return (0);
 	return (0);
 }
-void	run_command(t_token *head, char **current_command, char **envp,
-			t_env *my_envp, int *pipefd);
+
 void	complicated_execute(t_env *my_envp, t_token *head, char *envp[])
 {
 	char	**current_command;
@@ -154,9 +151,7 @@ void	complicated_execute(t_env *my_envp, t_token *head, char *envp[])
 			run_command(head, current_command, envp, my_envp, pipefd);
 			// read(pipefd[0], buffer, 3);
 			// printf("Child received: %s\n", buffer);
-			// close(pipefd[1]);
-			// close(pipefd[0]);
-			// }
+			//  close(pipefd[1]);
 		}
 		if (head != NULL)
 		{
@@ -197,7 +192,7 @@ void	run_command(t_token *head, char **current_command, char **envp,
 	}
 	else if (forkid > 0)
 	{
-		// close(pipefd[1]);
+		//close(pipefd[1]);
 		waitpid(forkid, NULL, 0);
 	}
 	else
