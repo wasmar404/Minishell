@@ -6,12 +6,13 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:00:29 by schaaban          #+#    #+#             */
-/*   Updated: 2024/10/24 13:03:26 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/10/24 13:35:22 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 #include "libft/libft.h"
+
 int	check_double_sep(char *input, int i)
 {
 	if ((input[i] == '>' && input[i + 1] == '>') || (input[i] == '<' && input[i
@@ -25,19 +26,18 @@ int	check_single_sep(char input)
 		return (1);
 	return (0);
 }
-int ft_strlenn(char *input)
+int	ft_strlenn(char *input)
 {
-    int i;
+	int	i;
 
-    if (input == NULL) 
-        return 0;      
-
-    i = 0;
-    while (input[i] != '\0') 
-    {
-        i++;
-    }
-    return i;
+	if (input == NULL)
+		return (0);
+	i = 0;
+	while (input[i] != '\0')
+	{
+		i++;
+	}
+	return (i);
 }
 
 char	*ft_strndup(char *str, int i)
@@ -46,10 +46,9 @@ char	*ft_strndup(char *str, int i)
 	char	*array;
 
 	z = 0;
-array = malloc((i + 1) * sizeof(char));
-	if(!array)
+	array = malloc((i + 1) * sizeof(char));
+	if (!array)
 	{
-		
 		return (NULL);
 	}
 	while (z < i)
@@ -57,9 +56,8 @@ array = malloc((i + 1) * sizeof(char));
 		array[z] = str[z];
 		z++;
 	}
-	 array[z] = '\0';
-	return (array);	
-
+	array[z] = '\0';
+	return (array);
 }
 int	delimeter_check(char **tokens, int *token, char *str, int *i)
 {
@@ -82,7 +80,9 @@ int	delimeter_check(char **tokens, int *token, char *str, int *i)
 void	check_non_delimeter(char **tokens, int *token, char *str, int *i)
 {
 	int	start;
-	int len = 0;
+	int	len;
+
+	len = 0;
 	start = (*i);
 	while (str[(*i)] && str[(*i)] != ' ' && !check_double_sep(str, (*i))
 		&& !check_single_sep(str[(*i)]))
@@ -94,19 +94,22 @@ void	check_non_delimeter(char **tokens, int *token, char *str, int *i)
 			while (str[(*i)] && str[(*i)] != '"')
 				(*i)++;
 			len = (*i) - start;
-			(*i) ++;
+			(*i)++;
 		}
-			else
+		else
 		{
-			while (str[(*i)] && str[(*i)] != ' ' && str[(*i)] != '|' && str[(*i)] != '"' && str[(*i)] != '>' && str[(*i)] != '<') // Collect tokens outside quotes
+			while (str[(*i)] && str[(*i)] != ' ' && str[(*i)] != '|'
+				&& str[(*i)] != '"' && str[(*i)] != '>' && str[(*i)] != '<')
+				// Collect tokens outside quotes
 				(*i)++;
 			len = (*i) - start; // Calculate token length
 		}
-		break;
+		break ;
 	}
 	if (len > 0)
 	{
-		tokens[(*token)] = ft_strndup(str + start, len); // Copy token content (without quotes)
+		tokens[(*token)] = ft_strndup(str + start, len);
+			// Copy token content (without quotes)
 		(*token)++;
 	}
 }
@@ -157,8 +160,9 @@ void	token_count_helper(char *input, int *i, int *count, int *in_token)
 			(*count)++;
 			(*in_token) = 1;
 		}
-		while (input[*i] && !check_double_sep(input, (*i)) && !check_single_sep(input[(*i)])
-			&& input[(*i)] != ' ' && input[(*i)] != '"')
+		while (input[*i] && !check_double_sep(input, (*i))
+			&& !check_single_sep(input[(*i)]) && input[(*i)] != ' '
+			&& input[(*i)] != '"')
 			(*i)++;
 	}
 }
@@ -171,42 +175,38 @@ int	token_count(char *input)
 	// Check if input is NULL
 	if (!input)
 		return (0);
-
 	in_token = 0;
 	i = 0;
 	count = 0;
-
 	// Loop through the input string until we reach the null terminator
 	while (input[i] != '\0')
 	{
 		token_count_helper(input, &i, &count, &in_token);
 	}
-
 	return (count);
 }
-char **token_split(char *str)
+char	**token_split(char *str)
 {
-    char **tokens;
-    int token = 0;
-    int i = 0;
+	char	**tokens;
+	int		token;
+	int		i;
 
-    if (str == NULL) // Handle NULL input
-        return NULL;
-
-    tokens = malloc(sizeof(char *) * (token_count(str) + 1));
-    if (!tokens) // Check for malloc failure
-        return NULL;
-
-    while (str[i])
-    {
-        while (str[i] && str[i] == ' ')
-            i++;
-        if (!delimeter_check(tokens, &token, str, &i))
-        {
-            check_non_delimeter(tokens, &token, str, &i);
-        }
-    }
-    tokens[token] = NULL; // Null-terminate the token array
-    return tokens;
+	token = 0;
+	i = 0;
+	if (str == NULL) // Handle NULL input
+		return (NULL);
+	tokens = malloc(sizeof(char *) * (token_count(str) + 1));
+	if (!tokens) // Check for malloc failure
+		return (NULL);
+	while (str[i])
+	{
+		while (str[i] && str[i] == ' ')
+			i++;
+		if (!delimeter_check(tokens, &token, str, &i))
+		{
+			check_non_delimeter(tokens, &token, str, &i);
+		}
+	}
+	tokens[token] = NULL; // Null-terminate the token array
+	return (tokens);
 }
-
