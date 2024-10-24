@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 21:54:01 by wasmar            #+#    #+#             */
-/*   Updated: 2024/10/24 13:35:34 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/10/24 14:45:00 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	print_listt(t_env *head)
 {
 	while (head != NULL)
 	{
-		printf("%s", head->type);
+		// printf("%s", head->type);
 		printf("%s", head->all);
 		printf("\n");
 		head = head->next;

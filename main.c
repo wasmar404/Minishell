@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2024/10/24 14:14:51 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/10/24 14:46:54 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,27 +86,58 @@ int	check_pipe(t_token *head)
 {
 	if (head->next && head->prev && head->next->type == PIPE
 		&& head->prev->type == PIPE)
+    {
 		return (3);
-	else if (head->next && head->prev && head->next->type == WORD
+    }
+	 if (head->next && head->prev && head->next->type == WORD
 		&& head->prev->type == PIPE)
 	{
 		if (head->next->next && head->next->next->type == PIPE)
+        {
 			return (3);
+        }
 	}
-	else if (head->next && head->next->type == PIPE)
+	 if (head->next && head->next->type == PIPE)
+    {
 		return (1);
-	else if (head->next && head->next->type == WORD)
+    }
+	if (head->next && head->next->type == WORD)
 	{
 		if (head->next->next && head->next->next->type == PIPE)
+        {
 			return (1);
+        }
 	}
-	else if (head->prev && head->prev->type == PIPE)
+	 if (head->prev && head->prev->type == PIPE)
+     {
 		return (2);
-	else
+     }
+	
 		return (0);
-	return (0);
 }
 
+void handle_dups(int check_pipe, int *pipefd)
+{
+	if(check_pipe == 2)
+	{
+		dup2(pipefd[0],0);
+		close(pipefd[0]);
+		close(pipefd[1]);
+	}
+	else if(check_pipe == 1)
+	{
+		dup2(pipefd[1],1);
+		close(pipefd[0]);
+		close(pipefd[1]);
+	}
+	else if(check_pipe == 3)
+	{
+		dup2(pipefd[0],0);
+		dup2(pipefd[1],1);
+		close(pipefd[0]);
+		close(pipefd[1]);
+	}
+}
 void	complicated_execute(t_env *my_envp, t_token *head, char *envp[])
 {
 	char	**current_command;
@@ -165,25 +196,25 @@ void	run_command(t_token *head, char **current_command, char **envp,
 		t_env *my_envp, int *pipefd)
 {
 	int		forkid;
-	char	*path;
+	 char	*path;
 
 	forkid = fork();
-	(void)my_envp;
+	// (void)my_envp;
+    // (void)pipefd;
+    // (void)envp;
+    // (void)current_command;
 	if (forkid == 0)
 	{
 		if (strcmp(head->token, "env") == 0)
 		{
-			dup2(pipefd[1], 1);
-			close(pipefd[0]);
-			close(pipefd[1]);
-			print_listt(my_envp);
+
+             handle_dups(check_pipe(head),pipefd);
+			 print_listt(my_envp);
 			exit(EXIT_SUCCESS);
 		}
 		else
 		{
-			dup2(pipefd[0], 0);
-			close(pipefd[0]);
-			close(pipefd[1]);
+         handle_dups(check_pipe(head),pipefd);
 			path = find_path_of_cmd(head->token, envp);
 			if (execve(path, current_command, envp) == -1)
 				printf("execve failed");
