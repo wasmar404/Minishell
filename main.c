@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2024/10/25 09:39:37 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/10/25 10:51:41 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,25 +116,25 @@ int	check_pipe(t_token *head)
 		return (0);
 }
 
-void handle_dups(int check_pipe, int *pipefd)
+void handle_dups(int check_pipe, int *pipefd, int input_fd)
 {
 	if(check_pipe == 2)
 	{
-		dup2(pipefd[0],0);
-		close(pipefd[0]);
+		dup2(input_fd,0);
+		close(input_fd);
 		close(pipefd[1]);
 	}
 	else if(check_pipe == 1)
 	{
 		dup2(pipefd[1],1);
-		close(pipefd[0]);
+		close(input_fd);
 		close(pipefd[1]);
 	}
 	else if(check_pipe == 3)
 	{
-		dup2(pipefd[0],0);
+		dup2(input_fd,0);
 		dup2(pipefd[1],1);
-		close(pipefd[0]);
+		close(input_fd);
 		close(pipefd[1]);
 	}
 }
@@ -157,18 +157,26 @@ void	complicated_execute(t_env *my_envp, t_token *head, char *envp[])
 	char	**current_command;
 	int		len;
 	int		pipefd[2];
-
+	int input_fd = STDIN_FILENO;
 	len = 0;
-	// char buffer[3];
+	//   char buffer[10000];
 	(void)my_envp;
 	(void)envp;
-	if (pipe(pipefd) == -1)
-	{
-		perror("pipe failed");
-		exit(EXIT_FAILURE);
-	}
+	// if (pipe(pipefd) == -1)
+	// {
+	// 	perror("pipe failed");
+	// 	exit(EXIT_FAILURE);
+	// }
 	while (head != NULL)
 	{
+		if((head -> next && head -> next -> type == PIPE))
+		{
+			if (pipe(pipefd) == -1)
+			{
+				perror("pipe failed");
+				exit(EXIT_FAILURE);
+			}
+		}
 		if (head->type == COMMAND)
 		{
 			if (head->next && (head->next->type == WORD
@@ -191,44 +199,36 @@ void	complicated_execute(t_env *my_envp, t_token *head, char *envp[])
 				current_command[0] = malloc(len * sizeof(char));
 				strcpy(current_command[0], head->token);
 				current_command[1] = NULL;
-				// print_array(current_command);
 			}
-			run_command(head, current_command, envp, my_envp, pipefd);
-			// read(pipefd[0], buffer, 3);
-			// printf("Child received: %s\n", buffer);
-			//  close(pipefd[1]);
+			run_command(head, current_command, envp, my_envp, pipefd,input_fd);
 		}
-		if (head != NULL)
-		{
-			close(pipefd[1]); // Close the write end in the parent
-		}
+
+			close(pipefd[1]);
+			input_fd = pipefd[0];
+
 		head = head->next;
 	}
 }
 
 void	run_command(t_token *head, char **current_command, char **envp,
-		t_env *my_envp, int *pipefd)
+		t_env *my_envp, int *pipefd,int input_fd)
 {
 	int		forkid;
 	 char	*path;
-
 	forkid = fork();
-	// (void)my_envp;
-    // (void)pipefd;
-    // (void)envp;
-    // (void)current_command;
 	if (forkid == 0)
 	{
 		if (strcmp(head->token, "env") == 0)
 		{
 
-             handle_dups(check_pipe(head),pipefd);
+             handle_dups(check_pipe(head),pipefd,input_fd);
 			 print_listt(my_envp);
 			exit(EXIT_SUCCESS);
 		}
 		else
 		{
-         handle_dups(check_pipe(head),pipefd);
+         handle_dups(check_pipe(head),pipefd,input_fd);
+
 			path = find_path_of_cmd(head->token, envp);
 			if (execve(path, current_command, envp) == -1)
 				printf("execve failed");
@@ -237,7 +237,7 @@ void	run_command(t_token *head, char **current_command, char **envp,
 	}
 	else if (forkid > 0)
 	{
-		//close(pipefd[1]);
+		close(pipefd[1]);
 		waitpid(forkid, NULL, 0);
 	}
 	else
@@ -246,3 +246,5 @@ void	run_command(t_token *head, char **current_command, char **envp,
 		exit(EXIT_FAILURE);
 	}
 }
+
+
