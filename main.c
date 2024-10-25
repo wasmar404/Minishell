@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2024/10/25 08:38:08 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/10/25 09:39:37 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ int pipe_count(t_token *head)
 	pipes = 0;
 	while(head != NULL)
 	{
-		if(head -> token == '|')
+		if(head -> type == PIPE)
 		{
 			pipes ++;
 		}
