@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2024/10/24 14:14:45 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/10/25 08:38:45 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,4 +106,5 @@ token_type			check_delimeter(char *splitted_token, char **envp);
 t_token				*input_to_linked_list(char **input, char **envp);
 void	run_command(t_token *head, char **current_command, char **envp,
 			t_env *my_envp, int *pipefd);
+int pipe_count(t_token *head);
 #endif

@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2024/10/24 14:46:54 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/10/25 08:38:08 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,20 @@ void handle_dups(int check_pipe, int *pipefd)
 		close(pipefd[0]);
 		close(pipefd[1]);
 	}
+}
+int pipe_count(t_token *head)
+{
+	int pipes;
+	pipes = 0;
+	while(head != NULL)
+	{
+		if(head -> token == '|')
+		{
+			pipes ++;
+		}
+		head = head -> next;
+	}
+	return(pipes);
 }
 void	complicated_execute(t_env *my_envp, t_token *head, char *envp[])
 {
