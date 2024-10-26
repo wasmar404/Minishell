@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2024/10/25 10:51:41 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/10/26 07:51:30 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,21 +152,40 @@ int pipe_count(t_token *head)
 	}
 	return(pipes);
 }
+char **array_complicated_execute(t_token *head)
+{
+	char **current_command;
+	int len;
+	len = 0;
+				if (head->next && (head->next->type == WORD
+					|| head->next->type == DIRECTORY))
+			{
+				current_command = malloc(3 * sizeof(char *));
+				len = ft_strlenn(head->token) + 1;
+				current_command[0] = malloc(len * sizeof(char));
+				strcpy(current_command[0], head->token);
+				len = ft_strlenn(head->next->token) + 1;
+				current_command[1] = malloc(len * sizeof(char));
+				strcpy(current_command[1], head->next->token);
+				current_command[2] = NULL;
+			}
+			else
+			{
+				current_command = malloc(2 * sizeof(char *));
+				len = ft_strlenn(head->token) + 1;
+				current_command[0] = malloc(len * sizeof(char));
+				strcpy(current_command[0], head->token);
+				current_command[1] = NULL;
+			}
+			return(current_command);
+	
+}
 void	complicated_execute(t_env *my_envp, t_token *head, char *envp[])
 {
-	char	**current_command;
-	int		len;
 	int		pipefd[2];
-	int input_fd = STDIN_FILENO;
-	len = 0;
-	//   char buffer[10000];
-	(void)my_envp;
-	(void)envp;
-	// if (pipe(pipefd) == -1)
-	// {
-	// 	perror("pipe failed");
-	// 	exit(EXIT_FAILURE);
-	// }
+	int input_fd;
+
+	input_fd = STDIN_FILENO;
 	while (head != NULL)
 	{
 		if((head -> next && head -> next -> type == PIPE))
@@ -178,34 +197,9 @@ void	complicated_execute(t_env *my_envp, t_token *head, char *envp[])
 			}
 		}
 		if (head->type == COMMAND)
-		{
-			if (head->next && (head->next->type == WORD
-					|| head->next->type == DIRECTORY))
-			{
-				current_command = malloc(3 * sizeof(char *));
-				len = ft_strlenn(head->token) + 1;
-				current_command[0] = malloc(len * sizeof(char));
-				strcpy(current_command[0], head->token);
-				len = ft_strlenn(head->next->token) + 1;
-				current_command[1] = malloc(len * sizeof(char));
-				strcpy(current_command[1], head->next->token);
-				current_command[2] = NULL;
-				// print_array(current_command);
-			}
-			else
-			{
-				current_command = malloc(2 * sizeof(char *));
-				len = ft_strlenn(head->token) + 1;
-				current_command[0] = malloc(len * sizeof(char));
-				strcpy(current_command[0], head->token);
-				current_command[1] = NULL;
-			}
-			run_command(head, current_command, envp, my_envp, pipefd,input_fd);
-		}
-
-			close(pipefd[1]);
-			input_fd = pipefd[0];
-
+			run_command(head, array_complicated_execute(head), envp, my_envp, pipefd,input_fd);
+		close(pipefd[1]);
+		input_fd = pipefd[0];
 		head = head->next;
 	}
 }
