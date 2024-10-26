@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:00:29 by schaaban          #+#    #+#             */
-/*   Updated: 2024/10/26 08:37:08 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/10/26 08:39:21 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,13 +176,11 @@ int	token_count(char *input)
 	int	count;
 	int	in_token;
 
-	// Check if input is NULL
 	if (!input)
 		return (0);
 	in_token = 0;
 	i = 0;
 	count = 0;
-	// Loop through the input string until we reach the null terminator
 	while (input[i] != '\0')
 	{
 		token_count_helper(input, &i, &count, &in_token);
@@ -197,10 +195,10 @@ char	**token_split(char *str)
 
 	token = 0;
 	i = 0;
-	if (str == NULL) // Handle NULL input
+	if (str == NULL) 
 		return (NULL);
 	tokens = malloc(sizeof(char *) * (token_count(str) + 1));
-	if (!tokens) // Check for malloc failure
+	if (!tokens) 
 		return (NULL);
 	while (str[i])
 	{
@@ -211,6 +209,6 @@ char	**token_split(char *str)
 			check_non_delimeter(tokens, &token, str, &i);
 		}
 	}
-	tokens[token] = NULL; // Null-terminate the token array
+	tokens[token] = NULL; 
 	return (tokens);
 }
