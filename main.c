@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2024/10/26 07:51:30 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/10/26 08:10:38 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,8 +156,9 @@ char **array_complicated_execute(t_token *head)
 {
 	char **current_command;
 	int len;
+
 	len = 0;
-				if (head->next && (head->next->type == WORD
+			if (head->next && (head->next->type == WORD
 					|| head->next->type == DIRECTORY))
 			{
 				current_command = malloc(3 * sizeof(char *));
@@ -178,7 +179,6 @@ char **array_complicated_execute(t_token *head)
 				current_command[1] = NULL;
 			}
 			return(current_command);
-	
 }
 void	complicated_execute(t_env *my_envp, t_token *head, char *envp[])
 {
@@ -203,31 +203,52 @@ void	complicated_execute(t_env *my_envp, t_token *head, char *envp[])
 		head = head->next;
 	}
 }
-
-void	run_command(t_token *head, char **current_command, char **envp,
-		t_env *my_envp, int *pipefd,int input_fd)
+void run_built_ins(t_token *head,char **envp, t_env *my_envp,int *pipefd,int input_fd,char **current_command)
 {
-	int		forkid;
-	 char	*path;
-	forkid = fork();
-	if (forkid == 0)
+	(void)envp;
+	(void)current_command;
+	if (strcmp(head->token, "env") == 0)
 	{
-		if (strcmp(head->token, "env") == 0)
-		{
-
-             handle_dups(check_pipe(head),pipefd,input_fd);
-			 print_listt(my_envp);
-			exit(EXIT_SUCCESS);
-		}
-		else
-		{
-         handle_dups(check_pipe(head),pipefd,input_fd);
+		handle_dups(check_pipe(head),pipefd,input_fd);
+		 print_listt(my_envp);
+		exit(EXIT_SUCCESS);
+	}
+}
+void external_commands(t_token *head,char **envp, t_env *my_envp,int *pipefd,int input_fd,char **current_command)
+{
+		(void)my_envp;
+			 char	*path;
+	         handle_dups(check_pipe(head),pipefd,input_fd);
 
 			path = find_path_of_cmd(head->token, envp);
 			if (execve(path, current_command, envp) == -1)
 				printf("execve failed");
 			exit(EXIT_SUCCESS);
+}
+void run_command_helper(t_token *head,char **envp, t_env *my_envp,int *pipefd,int input_fd,char **current_command)
+{
+		if ((strcmp(head->token, "env") == 0) || (strcmp(head -> token, "echo") == 0) || (strcmp(head -> token, "unset") == 0) || (strcmp(head -> token, "export") == 0))
+		{
+			run_built_ins(head,envp,my_envp,pipefd,input_fd,current_command);
 		}
+		// else if((strcmp(head -> token, "cd") == 0) || (strcmp(head -> token, "pwd") == 0) || (strcmp(head -> token, "exit") == 0))
+		// {
+
+		// }
+		else
+		{
+			external_commands(head,envp,my_envp,pipefd,input_fd,current_command);
+		}
+}
+
+void	run_command(t_token *head, char **current_command, char **envp,
+		t_env *my_envp, int *pipefd,int input_fd)
+{
+	int		forkid;
+	forkid = fork();
+	if (forkid == 0)
+	{
+		run_command_helper(head,envp,my_envp,pipefd,input_fd,current_command);
 	}
 	else if (forkid > 0)
 	{
