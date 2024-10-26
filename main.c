@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2024/10/26 08:16:05 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/10/26 09:53:08 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,11 +102,20 @@ int	check_pipe(t_token *head)
 	}
 	 if (head->prev && head->prev->type == PIPE)
 		return (2);
+	if(head->next && head->next->next && (head->next->type == DIRECTORY || head->next->type == WORD ) && head->next->next->type == AOUTPUT_REDIRECTION)
+	{
+		return (4);
+	}
+	if(head->next && head->next->type ==AOUTPUT_REDIRECTION)
+	{
+		return (4);
+	}
 	return (0);
 }
-
-void handle_dups(int check_pipe, int *pipefd, int input_fd)
+#include <fcntl.h>     // For open
+void handle_dups(int check_pipe, int *pipefd, int input_fd,t_token *head)
 {
+	int file_descriptor = 0;
 	if(check_pipe == 2)
 	{
 		dup2(input_fd,0);
@@ -125,6 +134,19 @@ void handle_dups(int check_pipe, int *pipefd, int input_fd)
 		dup2(pipefd[1],1);
 		close(input_fd);
 		close(pipefd[1]);
+	}
+	else if(check_pipe == 4)
+	{
+		if(head->next && head->next->type == DIRECTORY)
+		{
+		 file_descriptor = open(head->next->next->next->token, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		}
+		if(head->next && head->next->type == AOUTPUT_REDIRECTION)
+		{
+		file_descriptor = open(head->next->next->token, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		}
+		dup2(file_descriptor,1);
+		close(file_descriptor);		
 	}
 }
 int pipe_count(t_token *head)
@@ -198,7 +220,7 @@ void run_built_ins(t_token *head,char **envp, t_env *my_envp,int *pipefd,int inp
 	(void)current_command;
 	if (strcmp(head->token, "env") == 0)
 	{
-		handle_dups(check_pipe(head),pipefd,input_fd);
+		handle_dups(check_pipe(head),pipefd,input_fd,head);
 		 print_listt(my_envp);
 		exit(EXIT_SUCCESS);
 	}
@@ -207,7 +229,7 @@ void external_commands(t_token *head,char **envp, t_env *my_envp,int *pipefd,int
 {
 		(void)my_envp;
 			 char	*path;
-	         handle_dups(check_pipe(head),pipefd,input_fd);
+	         handle_dups(check_pipe(head),pipefd,input_fd,head);
 
 			path = find_path_of_cmd(head->token, envp);
 			if (execve(path, current_command, envp) == -1)
