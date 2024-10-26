@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:16:26 by wasmar            #+#    #+#             */
-/*   Updated: 2024/10/24 13:35:18 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/10/26 08:51:53 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,48 +213,38 @@ token_type	check_delimeter(char *splitted_token, char **envp)
 		return (type);
 	}
 }
+
+void input_to_linked_list_h(t_token **head,t_token *new)
+{
+	(*head)->next = new;
+	new->prev = (*head);
+	(*head) = new;
+}
 t_token	*input_to_linked_list(char **input, char **envp)
 {
 	int		i;
 	int		type;
-	bool	is_it_built_in;
 	t_token	*head;
 	t_token	*new;
 	t_token	*print;
 
 	i = 0;
-	is_it_built_in = false;
 	head = NULL;
 	new = NULL;
 	print = NULL;
-	// if (input   == NULL)
-	// {
-	//     fprintf(stderr, "Input or environment variables are NULL\n");
-	//     return (NULL); // Handle the error appropriately
-	// }
 	while (input[i])
 	{
 		type = check_delimeter(input[i], envp);
-		is_it_built_in = built_in_or_not(input[i]);
-		new = create_node_token(ft_strdup(input[i]), type, is_it_built_in);
-			// Use strdup for safety
-		// if (new == NULL) {
-		//     printf(stderr, "Failed to create token node\n");
-		//     // Handle cleanup if necessary
-		//     return (NULL);
-		// }
+		new = create_node_token(ft_strdup(input[i]), type, built_in_or_not(input[i]));
 		if (head == NULL)
 		{
 			head = new;
 			print = head;
 		}
 		else
-		{
-			head->next = new;
-			new->prev = head;
-			head = new;
-		}
+			input_to_linked_list_h(&head,new);
 		i++;
 	}
 	return (print);
 }
+
