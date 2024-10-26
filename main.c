@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2024/10/26 08:13:03 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/10/26 08:16:05 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,6 @@ void	main_helper(char *input, char **envp)
 		return ;
 	}
 	splitted_input = token_split(input);
-	// (void)splitted_input;
-	// (void)envp;
 	head = input_to_linked_list(splitted_input, envp);
 	head_env = env_to_linked_list(envp);
 	complicated_execute(head_env, head, envp);
@@ -88,34 +86,23 @@ int	check_pipe(t_token *head)
 {
 	if (head->next && head->prev && head->next->type == PIPE
 		&& head->prev->type == PIPE)
-    {
 		return (3);
-    }
 	 if (head->next && head->prev && head->next->type == WORD
 		&& head->prev->type == PIPE)
 	{
 		if (head->next->next && head->next->next->type == PIPE)
-        {
 			return (3);
-        }
 	}
 	 if (head->next && head->next->type == PIPE)
-    {
 		return (1);
-    }
 	if (head->next && head->next->type == WORD)
 	{
 		if (head->next->next && head->next->next->type == PIPE)
-        {
 			return (1);
-        }
 	}
 	 if (head->prev && head->prev->type == PIPE)
-     {
 		return (2);
-     }
-	
-		return (0);
+	return (0);
 }
 
 void handle_dups(int check_pipe, int *pipefd, int input_fd)
