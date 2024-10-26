@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2024/10/26 08:10:38 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/10/26 08:13:03 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ int	main(int ac, char **av, char **envp)
 	while (1)
 	{
 		input = readline(prompt);
+		if(*input)
+			add_history(input);
 		main_helper(input, my_envp);
 	}
 	return (0);
