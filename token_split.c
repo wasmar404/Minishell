@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:00:29 by schaaban          #+#    #+#             */
-/*   Updated: 2024/10/24 13:35:22 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/10/26 08:37:08 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,27 @@ int	delimeter_check(char **tokens, int *token, char *str, int *i)
 		return (0);
 	return (1);
 }
+
+void	check_non_delimeter_h( char *str, int *i,int *start,int *len)
+{
+		if (str[(*i)] == '"')
+		{
+			(*start)++;
+			(*i)++;
+			while (str[(*i)] && str[(*i)] != '"')
+				(*i)++;
+			(*len) = (*i) - (*start);
+			(*i)++;
+		}
+		else
+		{
+			while (str[(*i)] && str[(*i)] != ' ' && str[(*i)] != '|'
+				&& str[(*i)] != '"' && str[(*i)] != '>' && str[(*i)] != '<')
+				(*i)++;
+			(*len) = (*i) - (*start); 
+		}
+}
+
 void	check_non_delimeter(char **tokens, int *token, char *str, int *i)
 {
 	int	start;
@@ -87,29 +108,12 @@ void	check_non_delimeter(char **tokens, int *token, char *str, int *i)
 	while (str[(*i)] && str[(*i)] != ' ' && !check_double_sep(str, (*i))
 		&& !check_single_sep(str[(*i)]))
 	{
-		if (str[(*i)] == '"')
-		{
-			start++;
-			(*i)++;
-			while (str[(*i)] && str[(*i)] != '"')
-				(*i)++;
-			len = (*i) - start;
-			(*i)++;
-		}
-		else
-		{
-			while (str[(*i)] && str[(*i)] != ' ' && str[(*i)] != '|'
-				&& str[(*i)] != '"' && str[(*i)] != '>' && str[(*i)] != '<')
-				// Collect tokens outside quotes
-				(*i)++;
-			len = (*i) - start; // Calculate token length
-		}
+		check_non_delimeter_h(str,i,&start,&len);
 		break ;
 	}
 	if (len > 0)
 	{
 		tokens[(*token)] = ft_strndup(str + start, len);
-			// Copy token content (without quotes)
 		(*token)++;
 	}
 }
