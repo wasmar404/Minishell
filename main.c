@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2024/10/29 09:05:29 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/10/29 09:33:33 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,17 @@ int	check_pipe(t_token *head)
 		return(5);	
 		}
 	}
+	if(head ->prev && head->next && head->prev->type == PIPE && head->next->type == SOUTPUT_REDIRECTION)
+	{
+		return (6);
+	}
+	if(head ->prev && head->next && head->prev->type == PIPE && (head->next->type == WORD || head ->next ->type == DIRECTORY))
+	{
+		if(head->next->next && head->next->next->type == SOUTPUT_REDIRECTION)
+		{
+		return(6);	
+		}
+	}
 	if (head->next && head->prev && head->next->type == PIPE
 		&& head->prev->type == PIPE)
 		return (3);
@@ -119,6 +130,14 @@ int	check_pipe(t_token *head)
 	if(head->next && head->next->type ==AOUTPUT_REDIRECTION)
 	{
 		return (4);
+	}
+	if(head->next && head->next->next && (head->next->type == DIRECTORY || head->next->type == WORD ) && head->next->next->type == SOUTPUT_REDIRECTION)
+	{
+		return (7);
+	}
+	if(head->next && head->next->type ==SOUTPUT_REDIRECTION)
+	{
+		return (7);
 	}
 	return (0);
 }
@@ -172,6 +191,36 @@ void handle_dups(int check_pipe, int *pipefd, int input_fd,t_token *head)
 		dup2(input_fd,0);
 		close(input_fd);
 		close(pipefd[1]);
+		close(file_descriptor);		
+	}
+		else if(check_pipe == 6)
+	{
+		if(head->next && (head->next->type == DIRECTORY || head ->next->type == WORD))
+		{
+		 file_descriptor = open(head->next->next->next->token, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		}
+		if(head->next && head->next->type == SOUTPUT_REDIRECTION)
+		{
+		file_descriptor = open(head->next->next->token, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		}
+		dup2(file_descriptor,1);
+		dup2(input_fd,0);
+		close(input_fd);
+		close(pipefd[1]);
+		close(file_descriptor);		
+	}
+	else if(check_pipe == 7)
+	{
+		if(head->next && head->next->type == DIRECTORY)
+		{
+		 file_descriptor = open(head->next->next->next->token, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+
+		}
+		if(head->next && head->next->type == SOUTPUT_REDIRECTION)
+		{
+			file_descriptor = open(head->next->next->token, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		}
+		dup2(file_descriptor,1);
 		close(file_descriptor);		
 	}
 	
