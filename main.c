@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2024/10/29 09:33:33 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/10/29 10:09:51 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,23 @@ void	print_list(t_token *head)
 	}
 }
 int	check_pipe(t_token *head)
-{	if(head ->prev && head->next && head->prev->type == PIPE && head->next->type == AOUTPUT_REDIRECTION)
+
+{	
+	
+	if(head->next && head->next->type == SINPUT_REDIRECTION)
+	{
+		return(8);
+	}
+	if(head -> next && head->next -> next && head->next->type == WORD && head -> next -> next -> type == SINPUT_REDIRECTION)
+	{
+		
+		return(8);
+	}
+	if(head->next && head ->next->next && head->next->type == SINPUT_REDIRECTION && head->next->next->type == SINPUT_REDIRECTION)
+	{
+		return (8);
+	}
+	if(head ->prev && head->next && head->prev->type == PIPE && head->next->type == AOUTPUT_REDIRECTION)
 	{
 		return (5);
 	}
@@ -223,7 +239,24 @@ void handle_dups(int check_pipe, int *pipefd, int input_fd,t_token *head)
 		dup2(file_descriptor,1);
 		close(file_descriptor);		
 	}
-	
+	else if(check_pipe == 8)
+	{
+			printf("hello2");
+			fflush(stdout);
+		if(head->next->next && head->next->next->type == DIRECTORY)
+		{
+				 file_descriptor = open(head->next->next->token, O_RDONLY, 0644);	
+		}
+		if(head -> next && head -> next -> type == WORD)
+		{
+			if(head->next->next-> next && head->next->next-> next->type == DIRECTORY)
+			{
+				file_descriptor = open(head->next->next-> next ->token, O_RDONLY, 0644);	
+			}
+		}
+		dup2(file_descriptor,0);
+		close(file_descriptor);
+	}
 }
 int pipe_count(t_token *head)
 {
