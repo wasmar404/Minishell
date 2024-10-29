@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:16:26 by wasmar            #+#    #+#             */
-/*   Updated: 2024/10/26 09:54:20 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/10/29 08:51:51 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,10 @@ char	*find_path_of_cmd(char *command, char **envp)
 		free(temp);
 		if (access(cmd_path, X_OK) == 0)
 		{
+			if(strcmp(command,"test") == 0)
+			{
+				return (NULL);
+			}
 			free_array(all_path);
 			return (cmd_path);
 		}

@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2024/10/29 08:07:52 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/10/29 09:05:29 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	main_helper(char *input, char **envp)
 {
 	char	**splitted_input;
 	t_token	*head;
-	t_env	*head_env;
+	 t_env	*head_env;
 
 	if (check_if_NULL(input) == 0)
 	{
@@ -78,12 +78,22 @@ void	print_list(t_token *head)
 {
 	while (head != NULL)
 	{
-		printf("%s\n", head->token);
+		printf("%s %d\n", head->token,head->type);
 		head = head->next;
 	}
 }
 int	check_pipe(t_token *head)
-{
+{	if(head ->prev && head->next && head->prev->type == PIPE && head->next->type == AOUTPUT_REDIRECTION)
+	{
+		return (5);
+	}
+	if(head ->prev && head->next && head->prev->type == PIPE && (head->next->type == WORD || head ->next ->type == DIRECTORY))
+	{
+		if(head->next->next && head->next->next->type == AOUTPUT_REDIRECTION)
+		{
+		return(5);	
+		}
+	}
 	if (head->next && head->prev && head->next->type == PIPE
 		&& head->prev->type == PIPE)
 		return (3);
@@ -148,6 +158,23 @@ void handle_dups(int check_pipe, int *pipefd, int input_fd,t_token *head)
 		dup2(file_descriptor,1);
 		close(file_descriptor);		
 	}
+	else if(check_pipe == 5)
+	{
+		if(head->next && (head->next->type == DIRECTORY || head ->next->type == WORD))
+		{
+		 file_descriptor = open(head->next->next->next->token, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		}
+		if(head->next && head->next->type == AOUTPUT_REDIRECTION)
+		{
+		file_descriptor = open(head->next->next->token, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		}
+		dup2(file_descriptor,1);
+		dup2(input_fd,0);
+		close(input_fd);
+		close(pipefd[1]);
+		close(file_descriptor);		
+	}
+	
 }
 int pipe_count(t_token *head)
 {
@@ -236,6 +263,12 @@ void run_built_ins(t_token *head,char **envp, t_env *my_envp,int *pipefd,int inp
 	{
 		handle_dups(check_pipe(head),pipefd,input_fd,head);
 		 print_listt(my_envp);
+		exit(EXIT_SUCCESS);
+	}
+	if(strcmp(head->token,"echo") == 0)
+	{
+		handle_dups(check_pipe(head),pipefd,input_fd,head);
+		echo_main(head,my_envp);
 		exit(EXIT_SUCCESS);
 	}
 }
