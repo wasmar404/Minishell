@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2024/10/26 09:53:08 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/10/29 08:07:52 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,10 +89,10 @@ int	check_pipe(t_token *head)
 		return (3);
 	 if (head->next && head->prev && head->next->type == WORD
 		&& head->prev->type == PIPE)
-	{
-		if (head->next->next && head->next->next->type == PIPE)
-			return (3);
-	}
+		{
+			if (head->next->next && head->next->next->type == PIPE)
+				return (3);
+		}
 	 if (head->next && head->next->type == PIPE)
 		return (1);
 	if (head->next && head->next->type == WORD)
@@ -112,7 +112,7 @@ int	check_pipe(t_token *head)
 	}
 	return (0);
 }
-#include <fcntl.h>     // For open
+#include <fcntl.h>
 void handle_dups(int check_pipe, int *pipefd, int input_fd,t_token *head)
 {
 	int file_descriptor = 0;
@@ -199,6 +199,8 @@ void	complicated_execute(t_env *my_envp, t_token *head, char *envp[])
 	input_fd = STDIN_FILENO;
 	while (head != NULL)
 	{
+		if (head->type == COMMAND)
+		{
 		if((head -> next && head -> next -> type == PIPE))
 		{
 			if (pipe(pipefd) == -1)
@@ -207,8 +209,20 @@ void	complicated_execute(t_env *my_envp, t_token *head, char *envp[])
 				exit(EXIT_FAILURE);
 			}
 		}
-		if (head->type == COMMAND)
+		else if ((head -> next && head->next->type == WORD))
+		{
+			if(head->next->next && head->next->next->type == PIPE)
+			{
+				if (pipe(pipefd) == -1)
+				{
+					perror("pipe failed");
+					exit(EXIT_FAILURE);
+				}
+			}
+		}
+		
 			run_command(head, array_complicated_execute(head), envp, my_envp, pipefd,input_fd);
+		}
 		close(pipefd[1]);
 		input_fd = pipefd[0];
 		head = head->next;
