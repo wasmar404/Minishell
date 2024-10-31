@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2024/10/29 09:58:21 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/10/31 08:00:21 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,4 +107,5 @@ t_token				*input_to_linked_list(char **input, char **envp);
 void	run_command(t_token *head, char **current_command, char **envp,
 		t_env *my_envp, int *pipefd,int input_fd);
 int pipe_count(t_token *head);
+void	main_helper(char *input, char **envp);
 #endif

@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2024/10/29 10:09:51 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/10/31 08:46:40 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include <readline/readline.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <fcntl.h>
+
 #define RESET "\033[0m"
 #define BOLD_CYAN "\033[1;36m"
 
@@ -71,8 +73,9 @@ void	main_helper(char *input, char **envp)
 	}
 	splitted_input = token_split(input);
 	head = input_to_linked_list(splitted_input, envp);
-	head_env = env_to_linked_list(envp);
-	complicated_execute(head_env, head, envp);
+	// print_list(head);
+	 head_env = env_to_linked_list(envp);
+	 complicated_execute(head_env, head, envp);
 }
 void	print_list(t_token *head)
 {
@@ -157,7 +160,102 @@ int	check_pipe(t_token *head)
 	}
 	return (0);
 }
-#include <fcntl.h>
+void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd)
+{
+	int input_flag = 0;
+	int output_flag = 0;
+	int input_pipe_flag = 0;
+	int output_pipe_flag = 0;
+	t_token *current = head;
+	t_token *currentback = head;
+	t_token *current_input =NULL;
+	t_token *current_output =NULL;
+	t_token *current_input1 =NULL;
+
+	int fd;
+
+	int j =0;
+		
+    while (currentback->prev != NULL)
+    {
+		printf("flag %d\n",j);
+        if (currentback->type == SINPUT_REDIRECTION || currentback->type == PIPE)
+        {
+
+			if(currentback->type == PIPE)
+			{
+				input_pipe_flag++;
+			}
+            input_flag++;
+            current_input = currentback;
+            break;
+        }
+		j++;
+        currentback = currentback->prev;
+    }
+		if(current_input && current_input->type == PIPE)
+	{
+				printf("input3\n");
+				        fflush(stdout);
+
+		dup2(input_fd,0);
+		close(input_fd);
+		close(pipefd[1]);
+	}
+	while(current != NULL )
+	{
+
+		if(current->type == AOUTPUT_REDIRECTION || current->type == SOUTPUT_REDIRECTION)
+		{
+			printf("out1\n");
+			output_flag++;;
+			current_output=current;
+		}
+		if((current->type == SINPUT_REDIRECTION || current->type == HERE_DOC) && input_flag == 0)
+		{
+			input_flag++;
+			current_input = current;
+		}
+		if(current->type == PIPE)
+		{
+				output_pipe_flag++;
+				output_flag++;
+				current_output=current;
+		
+		}
+		current = current->next;
+	}
+   if (current_input && current_input->type == SINPUT_REDIRECTION)
+    {
+        printf("input2\n");
+        fflush(stdout);
+        fd = open(current_input->next->token, O_RDONLY, 0644);
+        dup2(fd, 0);
+        close(fd);
+    }
+
+     if (current_output && current_output->type == PIPE)
+    {
+		printf("out\n");
+		        fflush(stdout);
+
+		dup2(pipefd[1],1);
+
+		 close(input_fd);
+		close(pipefd[1]);
+
+    }
+	if(current_input1 && current_input1->type == PIPE)
+	{
+				printf("input1\n");
+				        fflush(stdout);
+
+		dup2(input_fd,0);
+		close(input_fd);
+		close(pipefd[1]);
+	}
+}
+
 void handle_dups(int check_pipe, int *pipefd, int input_fd,t_token *head)
 {
 	int file_descriptor = 0;
@@ -306,10 +404,16 @@ void	complicated_execute(t_env *my_envp, t_token *head, char *envp[])
 	int input_fd;
 
 	input_fd = STDIN_FILENO;
+				// 	if (pipe(pipefd) == -1)
+				// {
+				// 	perror("pipe failed");
+				// 	exit(EXIT_FAILURE);
+				// }
 	while (head != NULL)
 	{
-		if (head->type == COMMAND)
-		{
+		 if (head->type == COMMAND)
+		 {
+		// {
 		if((head -> next && head -> next -> type == PIPE))
 		{
 			if (pipe(pipefd) == -1)
@@ -318,10 +422,11 @@ void	complicated_execute(t_env *my_envp, t_token *head, char *envp[])
 				exit(EXIT_FAILURE);
 			}
 		}
-		else if ((head -> next && head->next->type == WORD))
+		 if ((head -> next && head->next->type == WORD))
 		{
 			if(head->next->next && head->next->next->type == PIPE)
 			{
+				printf("i am a pipe\n");
 				if (pipe(pipefd) == -1)
 				{
 					perror("pipe failed");
@@ -329,9 +434,8 @@ void	complicated_execute(t_env *my_envp, t_token *head, char *envp[])
 				}
 			}
 		}
-		
 			run_command(head, array_complicated_execute(head), envp, my_envp, pipefd,input_fd);
-		}
+		 }
 		close(pipefd[1]);
 		input_fd = pipefd[0];
 		head = head->next;
@@ -343,13 +447,13 @@ void run_built_ins(t_token *head,char **envp, t_env *my_envp,int *pipefd,int inp
 	(void)current_command;
 	if (strcmp(head->token, "env") == 0)
 	{
-		handle_dups(check_pipe(head),pipefd,input_fd,head);
+				super_complicated_handle_dups(head,pipefd,input_fd);
 		 print_listt(my_envp);
 		exit(EXIT_SUCCESS);
 	}
 	if(strcmp(head->token,"echo") == 0)
 	{
-		handle_dups(check_pipe(head),pipefd,input_fd,head);
+		super_complicated_handle_dups(head,pipefd,input_fd);
 		echo_main(head,my_envp);
 		exit(EXIT_SUCCESS);
 	}
@@ -358,7 +462,9 @@ void external_commands(t_token *head,char **envp, t_env *my_envp,int *pipefd,int
 {
 		(void)my_envp;
 			 char	*path;
-	         handle_dups(check_pipe(head),pipefd,input_fd,head);
+	        //  handle_dups(check_pipe(head),pipefd,input_fd,head);
+			super_complicated_handle_dups(head,pipefd,input_fd);
+			printf("hello is madame grep working?");
 
 			path = find_path_of_cmd(head->token, envp);
 			if (execve(path, current_command, envp) == -1)
@@ -401,5 +507,3 @@ void	run_command(t_token *head, char **current_command, char **envp,
 		exit(EXIT_FAILURE);
 	}
 }
-
-
