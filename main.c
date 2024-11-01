@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2024/11/01 08:40:21 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/11/01 08:55:25 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -404,36 +404,28 @@ void	complicated_execute(t_env *my_envp, t_token *head, char *envp[])
 	int input_fd;
 
 	input_fd = STDIN_FILENO;
-				// 	if (pipe(pipefd) == -1)
-				// {
-				// 	perror("pipe failed");
-				// 	exit(EXIT_FAILURE);
-				// }
+	t_token *temp;
 	while (head != NULL)
 	{
 		 if (head->type == COMMAND)
 		 {
-		// {
-		if((head -> next && head -> next -> type == PIPE))
-		{
-			if (pipe(pipefd) == -1)
+			temp = head->next;
+			while(temp && temp->type != SOUTPUT_REDIRECTION && temp->type != COMMAND)
 			{
-				perror("pipe failed");
-				exit(EXIT_FAILURE);
-			}
-		}
-		 if ((head -> next && head->next->type == WORD))
-		{
-			if(head->next->next && head->next->next->type == PIPE)
-			{
-				printf("i am a pipe\n");
-				if (pipe(pipefd) == -1)
+				if(temp->type == PIPE)
 				{
-					perror("pipe failed");
-					exit(EXIT_FAILURE);
+					printf("hello1");
+					fflush(stdout);
+					if (pipe(pipefd) == -1)
+					{
+						perror("pipe failed");
+						exit(EXIT_FAILURE);
+					}
+					break;
 				}
+				temp = temp -> next;
 			}
-		}
+		
 			run_command(head, array_complicated_execute(head), envp, my_envp, pipefd,input_fd);
 		 }
 		close(pipefd[1]);
