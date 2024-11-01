@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2024/11/01 08:57:23 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/11/01 09:04:37 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,6 +171,18 @@ void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd)
 		close(pipefd[1]);
 
     }
+	if(current_output && current_output->type == AOUTPUT_REDIRECTION)
+	{
+		fd = open(current_output->next->token, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		dup2(fd,1);
+		close(fd);
+	}
+	if(current_output && current_output->type == SOUTPUT_REDIRECTION)
+	{
+		fd = open(current_output->next->token, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		dup2(fd,1);
+		close(fd);
+	}
 	if(current_input1 && current_input1->type == PIPE)
 	{
 				printf("input1\n");
