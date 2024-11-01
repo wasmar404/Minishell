@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2024/10/31 08:46:40 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/11/01 08:40:21 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,7 +176,7 @@ void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd)
 
 	int j =0;
 		
-    while (currentback->prev != NULL)
+    while (currentback)
     {
 		printf("flag %d\n",j);
         if (currentback->type == SINPUT_REDIRECTION || currentback->type == PIPE)
@@ -200,7 +200,7 @@ void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd)
 
 		dup2(input_fd,0);
 		close(input_fd);
-		close(pipefd[1]);
+		// close(pipefd[1]);
 	}
 	while(current != NULL )
 	{
