@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2024/11/01 08:55:25 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/11/01 08:57:23 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,81 +85,7 @@ void	print_list(t_token *head)
 		head = head->next;
 	}
 }
-int	check_pipe(t_token *head)
 
-{	
-	
-	if(head->next && head->next->type == SINPUT_REDIRECTION)
-	{
-		return(8);
-	}
-	if(head -> next && head->next -> next && head->next->type == WORD && head -> next -> next -> type == SINPUT_REDIRECTION)
-	{
-		
-		return(8);
-	}
-	if(head->next && head ->next->next && head->next->type == SINPUT_REDIRECTION && head->next->next->type == SINPUT_REDIRECTION)
-	{
-		return (8);
-	}
-	if(head ->prev && head->next && head->prev->type == PIPE && head->next->type == AOUTPUT_REDIRECTION)
-	{
-		return (5);
-	}
-	if(head ->prev && head->next && head->prev->type == PIPE && (head->next->type == WORD || head ->next ->type == DIRECTORY))
-	{
-		if(head->next->next && head->next->next->type == AOUTPUT_REDIRECTION)
-		{
-		return(5);	
-		}
-	}
-	if(head ->prev && head->next && head->prev->type == PIPE && head->next->type == SOUTPUT_REDIRECTION)
-	{
-		return (6);
-	}
-	if(head ->prev && head->next && head->prev->type == PIPE && (head->next->type == WORD || head ->next ->type == DIRECTORY))
-	{
-		if(head->next->next && head->next->next->type == SOUTPUT_REDIRECTION)
-		{
-		return(6);	
-		}
-	}
-	if (head->next && head->prev && head->next->type == PIPE
-		&& head->prev->type == PIPE)
-		return (3);
-	 if (head->next && head->prev && head->next->type == WORD
-		&& head->prev->type == PIPE)
-		{
-			if (head->next->next && head->next->next->type == PIPE)
-				return (3);
-		}
-	 if (head->next && head->next->type == PIPE)
-		return (1);
-	if (head->next && head->next->type == WORD)
-	{
-		if (head->next->next && head->next->next->type == PIPE)
-			return (1);
-	}
-	 if (head->prev && head->prev->type == PIPE)
-		return (2);
-	if(head->next && head->next->next && (head->next->type == DIRECTORY || head->next->type == WORD ) && head->next->next->type == AOUTPUT_REDIRECTION)
-	{
-		return (4);
-	}
-	if(head->next && head->next->type ==AOUTPUT_REDIRECTION)
-	{
-		return (4);
-	}
-	if(head->next && head->next->next && (head->next->type == DIRECTORY || head->next->type == WORD ) && head->next->next->type == SOUTPUT_REDIRECTION)
-	{
-		return (7);
-	}
-	if(head->next && head->next->type ==SOUTPUT_REDIRECTION)
-	{
-		return (7);
-	}
-	return (0);
-}
 void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd)
 {
 	int input_flag = 0;
@@ -256,106 +182,7 @@ void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd)
 	}
 }
 
-void handle_dups(int check_pipe, int *pipefd, int input_fd,t_token *head)
-{
-	int file_descriptor = 0;
-	if(check_pipe == 2)
-	{
-		dup2(input_fd,0);
-		close(input_fd);
-		close(pipefd[1]);
-	}
-	else if(check_pipe == 1)
-	{
-		dup2(pipefd[1],1);
-		close(input_fd);
-		close(pipefd[1]);
-	}
-	else if(check_pipe == 3)
-	{
-		dup2(input_fd,0);
-		dup2(pipefd[1],1);
-		close(input_fd);
-		close(pipefd[1]);
-	}
-	else if(check_pipe == 4)
-	{
-		if(head->next && head->next->type == DIRECTORY)
-		{
-		 file_descriptor = open(head->next->next->next->token, O_WRONLY | O_CREAT | O_APPEND, 0644);
-		}
-		if(head->next && head->next->type == AOUTPUT_REDIRECTION)
-		{
-		file_descriptor = open(head->next->next->token, O_WRONLY | O_CREAT | O_APPEND, 0644);
-		}
-		dup2(file_descriptor,1);
-		close(file_descriptor);		
-	}
-	else if(check_pipe == 5)
-	{
-		if(head->next && (head->next->type == DIRECTORY || head ->next->type == WORD))
-		{
-		 file_descriptor = open(head->next->next->next->token, O_WRONLY | O_CREAT | O_APPEND, 0644);
-		}
-		if(head->next && head->next->type == AOUTPUT_REDIRECTION)
-		{
-		file_descriptor = open(head->next->next->token, O_WRONLY | O_CREAT | O_APPEND, 0644);
-		}
-		dup2(file_descriptor,1);
-		dup2(input_fd,0);
-		close(input_fd);
-		close(pipefd[1]);
-		close(file_descriptor);		
-	}
-		else if(check_pipe == 6)
-	{
-		if(head->next && (head->next->type == DIRECTORY || head ->next->type == WORD))
-		{
-		 file_descriptor = open(head->next->next->next->token, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		}
-		if(head->next && head->next->type == SOUTPUT_REDIRECTION)
-		{
-		file_descriptor = open(head->next->next->token, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		}
-		dup2(file_descriptor,1);
-		dup2(input_fd,0);
-		close(input_fd);
-		close(pipefd[1]);
-		close(file_descriptor);		
-	}
-	else if(check_pipe == 7)
-	{
-		if(head->next && head->next->type == DIRECTORY)
-		{
-		 file_descriptor = open(head->next->next->next->token, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 
-		}
-		if(head->next && head->next->type == SOUTPUT_REDIRECTION)
-		{
-			file_descriptor = open(head->next->next->token, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		}
-		dup2(file_descriptor,1);
-		close(file_descriptor);		
-	}
-	else if(check_pipe == 8)
-	{
-			printf("hello2");
-			fflush(stdout);
-		if(head->next->next && head->next->next->type == DIRECTORY)
-		{
-				 file_descriptor = open(head->next->next->token, O_RDONLY, 0644);	
-		}
-		if(head -> next && head -> next -> type == WORD)
-		{
-			if(head->next->next-> next && head->next->next-> next->type == DIRECTORY)
-			{
-				file_descriptor = open(head->next->next-> next ->token, O_RDONLY, 0644);	
-			}
-		}
-		dup2(file_descriptor,0);
-		close(file_descriptor);
-	}
-}
 int pipe_count(t_token *head)
 {
 	int pipes;
