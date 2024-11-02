@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2024/11/02 10:00:52 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/11/02 10:27:28 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,29 +183,33 @@ char **array_complicated_execute(t_token *head)
 {
 	char **current_command;
 	int len;
-
 	len = 0;
-			if (head->next && (head->next->type == WORD
-					|| head->next->type == DIRECTORY))
-			{
-				current_command = malloc(3 * sizeof(char *));
-				len = ft_strlenn(head->token) + 1;
-				current_command[0] = malloc(len * sizeof(char));
-				strcpy(current_command[0], head->token);
-				len = ft_strlenn(head->next->token) + 1;
-				current_command[1] = malloc(len * sizeof(char));
-				strcpy(current_command[1], head->next->token);
-				current_command[2] = NULL;
-			}
-			else
-			{
-				current_command = malloc(2 * sizeof(char *));
-				len = ft_strlenn(head->token) + 1;
-				current_command[0] = malloc(len * sizeof(char));
-				strcpy(current_command[0], head->token);
-				current_command[1] = NULL;
-			}
-			return(current_command);
+	int i = 0;
+	t_token *temp = head;
+	while(temp != NULL &&  temp->type != PIPE)
+	{
+		len++;
+		if(temp->type == COMMAND && temp != head)
+		{
+			break;
+		}
+		temp = temp ->next;
+	}
+	current_command = malloc((len+1) *sizeof(char *));
+	temp = head;
+	while(temp != NULL && temp->type != PIPE)
+	{
+		if(temp->type == COMMAND && temp != head)
+		{
+			break;
+		}
+		current_command[i]=strdup(temp->token);
+		 i++;
+		 temp = temp ->  next;
+	}
+	current_command[i]= NULL;
+	return(current_command);
+
 }
 void	complicated_execute(t_env *my_envp, t_token *head, char *envp[])
 {
