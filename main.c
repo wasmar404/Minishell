@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2024/11/02 08:10:42 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/11/02 10:00:52 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	main_helper(char *input, char **envp)
 {
 	char	**splitted_input;
 	t_token	*head;
-	 t_env	*head_env;
+	t_env	*head_env;
 
 	if (check_if_NULL(input) == 0)
 	{
@@ -73,7 +73,6 @@ void	main_helper(char *input, char **envp)
 	}
 	splitted_input = token_split(input);
 	head = input_to_linked_list(splitted_input, envp);
-	// print_list(head);
 	 head_env = env_to_linked_list(envp);
 	 complicated_execute(head_env, head, envp);
 }
@@ -113,12 +112,12 @@ void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd)
         }
         currentback = currentback->prev;
     }
-	while(current != NULL )
+	current = current ->next;
+	while(current != NULL && current->type != COMMAND)
 	{
 
 		if(current->type == AOUTPUT_REDIRECTION || current->type == SOUTPUT_REDIRECTION)
 		{
-			printf("out1\n");
 			output_flag++;;
 			current_output=current;
 		}
@@ -215,6 +214,9 @@ void	complicated_execute(t_env *my_envp, t_token *head, char *envp[])
 
 	input_fd = STDIN_FILENO;
 	t_token *temp;
+	(void)input_fd;
+	(void)my_envp;
+	(void)envp;
 	while (head != NULL)
 	{
 		 if (head->type == COMMAND)
@@ -224,7 +226,6 @@ void	complicated_execute(t_env *my_envp, t_token *head, char *envp[])
 			{
 				if(temp->type == PIPE)
 				{
-					// printf("hello1");
 					fflush(stdout);
 					if (pipe(pipefd) == -1)
 					{
@@ -235,7 +236,6 @@ void	complicated_execute(t_env *my_envp, t_token *head, char *envp[])
 				}
 				temp = temp -> next;
 			}
-		
 			run_command(head, array_complicated_execute(head), envp, my_envp, pipefd,input_fd);
 		 }
 		close(pipefd[1]);
@@ -264,10 +264,8 @@ void external_commands(t_token *head,char **envp, t_env *my_envp,int *pipefd,int
 {
 		(void)my_envp;
 			 char	*path;
-	        //  handle_dups(check_pipe(head),pipefd,input_fd,head);
 			super_complicated_handle_dups(head,pipefd,input_fd);
 			printf("hello is madame grep working?");
-
 			path = find_path_of_cmd(head->token, envp);
 			if (execve(path, current_command, envp) == -1)
 				printf("execve failed");
