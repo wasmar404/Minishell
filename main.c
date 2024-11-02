@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2024/11/01 09:04:37 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/11/02 08:10:42 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,15 +96,10 @@ void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd)
 	t_token *currentback = head;
 	t_token *current_input =NULL;
 	t_token *current_output =NULL;
-	t_token *current_input1 =NULL;
-
 	int fd;
-
-	int j =0;
 		
     while (currentback)
     {
-		printf("flag %d\n",j);
         if (currentback->type == SINPUT_REDIRECTION || currentback->type == PIPE)
         {
 
@@ -116,18 +111,8 @@ void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd)
             current_input = currentback;
             break;
         }
-		j++;
         currentback = currentback->prev;
     }
-		if(current_input && current_input->type == PIPE)
-	{
-				printf("input3\n");
-				        fflush(stdout);
-
-		dup2(input_fd,0);
-		close(input_fd);
-		// close(pipefd[1]);
-	}
 	while(current != NULL )
 	{
 
@@ -144,33 +129,28 @@ void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd)
 		}
 		if(current->type == PIPE)
 		{
-				output_pipe_flag++;
-				output_flag++;
-				current_output=current;
-		
+			output_pipe_flag++;
+			output_flag++;
+			current_output=current;
 		}
 		current = current->next;
 	}
-   if (current_input && current_input->type == SINPUT_REDIRECTION)
+	if (current_input && current_input->type == SINPUT_REDIRECTION)
     {
-        printf("input2\n");
-        fflush(stdout);
         fd = open(current_input->next->token, O_RDONLY, 0644);
         dup2(fd, 0);
         close(fd);
     }
-
-     if (current_output && current_output->type == PIPE)
+    if (current_output && current_output->type == PIPE)
     {
-		printf("out\n");
-		        fflush(stdout);
-
 		dup2(pipefd[1],1);
-
-		 close(input_fd);
 		close(pipefd[1]);
-
     }
+	if(current_input && current_input->type == PIPE)
+	{
+		dup2(input_fd,0);
+		close(input_fd);
+	}
 	if(current_output && current_output->type == AOUTPUT_REDIRECTION)
 	{
 		fd = open(current_output->next->token, O_WRONLY | O_CREAT | O_APPEND, 0644);
@@ -182,15 +162,6 @@ void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd)
 		fd = open(current_output->next->token, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		dup2(fd,1);
 		close(fd);
-	}
-	if(current_input1 && current_input1->type == PIPE)
-	{
-				printf("input1\n");
-				        fflush(stdout);
-
-		dup2(input_fd,0);
-		close(input_fd);
-		close(pipefd[1]);
 	}
 }
 
@@ -253,7 +224,7 @@ void	complicated_execute(t_env *my_envp, t_token *head, char *envp[])
 			{
 				if(temp->type == PIPE)
 				{
-					printf("hello1");
+					// printf("hello1");
 					fflush(stdout);
 					if (pipe(pipefd) == -1)
 					{
