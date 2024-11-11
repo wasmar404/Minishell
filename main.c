@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2024/11/11 09:56:39 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/11/11 10:01:04 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd)
 		
     while (currentback)
     {
-        if (currentback->type == SINPUT_REDIRECTION || currentback->type == PIPE)
+        if (currentback->type == SINPUT_REDIRECTION || currentback->type == PIPE || currentback->type == HERE_DOC)
         {
 
 			if(currentback->type == PIPE)
