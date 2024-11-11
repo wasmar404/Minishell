@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2024/11/02 10:27:28 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/11/11 09:02:19 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,6 +193,10 @@ char **array_complicated_execute(t_token *head)
 		{
 			break;
 		}
+		if(temp->type == SINPUT_REDIRECTION || temp->type == SOUTPUT_REDIRECTION || temp->type == AOUTPUT_REDIRECTION)
+		{
+			break;
+		}
 		temp = temp ->next;
 	}
 	current_command = malloc((len+1) *sizeof(char *));
@@ -200,6 +204,10 @@ char **array_complicated_execute(t_token *head)
 	while(temp != NULL && temp->type != PIPE)
 	{
 		if(temp->type == COMMAND && temp != head)
+		{
+			break;
+		}
+		if(temp->type == SINPUT_REDIRECTION || temp->type == SOUTPUT_REDIRECTION || temp->type == AOUTPUT_REDIRECTION)
 		{
 			break;
 		}
