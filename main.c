@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2024/11/11 09:02:19 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/11/11 09:56:39 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,16 @@ void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd)
 		}
 		current = current->next;
 	}
+	if(current_input && current_input->type == HERE_DOC)
+	{
+		fd = open("temp", O_WRONLY | O_CREAT | O_APPEND , 0644);
+		heredoc(current_input->next->token,fd);
+		close(fd);
+		fd = open("temp",O_RDONLY);
+		dup2(fd,0);
+		close(fd);
+		unlink("temp");
+	}
 	if (current_input && current_input->type == SINPUT_REDIRECTION)
     {
         fd = open(current_input->next->token, O_RDONLY, 0644);
@@ -193,7 +203,7 @@ char **array_complicated_execute(t_token *head)
 		{
 			break;
 		}
-		if(temp->type == SINPUT_REDIRECTION || temp->type == SOUTPUT_REDIRECTION || temp->type == AOUTPUT_REDIRECTION)
+		if(temp->type == SINPUT_REDIRECTION || temp->type == SOUTPUT_REDIRECTION || temp->type == AOUTPUT_REDIRECTION || temp->type == HERE_DOC)
 		{
 			break;
 		}
@@ -207,7 +217,7 @@ char **array_complicated_execute(t_token *head)
 		{
 			break;
 		}
-		if(temp->type == SINPUT_REDIRECTION || temp->type == SOUTPUT_REDIRECTION || temp->type == AOUTPUT_REDIRECTION)
+		if(temp->type == SINPUT_REDIRECTION || temp->type == SOUTPUT_REDIRECTION || temp->type == AOUTPUT_REDIRECTION || temp->type == HERE_DOC)
 		{
 			break;
 		}
@@ -317,5 +327,19 @@ void	run_command(t_token *head, char **current_command, char **envp,
 	{
 		perror("fork failed");
 		exit(EXIT_FAILURE);
+	}
+}
+void heredoc(char *str,int fd)
+{
+	char *input;
+	while(1)
+	{
+		input = readline("heredoc ");
+		if(strcmp(str,input) == 0)
+		{
+			break;
+		}
+		write(fd,input,ft_strlenn(input));
+		 write(fd,"\n",1);
 	}
 }
