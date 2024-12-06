@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2024/11/11 09:39:15 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/12/05 11:13:47 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,4 +109,5 @@ void	run_command(t_token *head, char **current_command, char **envp,
 int pipe_count(t_token *head);
 void	main_helper(char *input, char **envp);
 void heredoc(char *str,int fd);
+void run_command_helper(t_token *head,char **envp, t_env *my_envp,int *pipefd,int input_fd,char **current_command);
 #endif

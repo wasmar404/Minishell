@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2024/11/11 10:01:04 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/12/05 11:33:22 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,9 +236,8 @@ void	complicated_execute(t_env *my_envp, t_token *head, char *envp[])
 
 	input_fd = STDIN_FILENO;
 	t_token *temp;
-	(void)input_fd;
-	(void)my_envp;
-	(void)envp;
+	pid_t pid ;
+
 	while (head != NULL)
 	{
 		 if (head->type == COMMAND)
@@ -248,6 +247,7 @@ void	complicated_execute(t_env *my_envp, t_token *head, char *envp[])
 			{
 				if(temp->type == PIPE)
 				{
+					printf("pipe");
 					fflush(stdout);
 					if (pipe(pipefd) == -1)
 					{
@@ -256,15 +256,42 @@ void	complicated_execute(t_env *my_envp, t_token *head, char *envp[])
 					}
 					break;
 				}
+				else{
+					pipefd[0]=-1;
+					pipefd[1]=-1;
+				}
 				temp = temp -> next;
 			}
-			run_command(head, array_complicated_execute(head), envp, my_envp, pipefd,input_fd);
-		 }
+			pid = fork();
+			
+            if (pid == 0)
+            {
+                
+                if (pipefd[0] != -1)
+                    close(pipefd[0]);
+				run_command_helper(head,envp,my_envp,pipefd,input_fd,array_complicated_execute(head));
+                exit(EXIT_SUCCESS);
+            }
+            else if (pid > 0)
+            {
+                if (input_fd != STDIN_FILENO)
+                    close(input_fd);
+                 input_fd = pipefd[0];
+            }
+            else
+            {
+                perror("fork failed");
+                exit(EXIT_FAILURE);
+            }
+        }
 		close(pipefd[1]);
 		input_fd = pipefd[0];
+
 		head = head->next;
 	}
+			    while (wait(NULL) > 0);
 }
+
 void run_built_ins(t_token *head,char **envp, t_env *my_envp,int *pipefd,int input_fd,char **current_command)
 {
 	(void)envp;
@@ -309,26 +336,26 @@ void run_command_helper(t_token *head,char **envp, t_env *my_envp,int *pipefd,in
 		}
 }
 
-void	run_command(t_token *head, char **current_command, char **envp,
-		t_env *my_envp, int *pipefd,int input_fd)
-{
-	int		forkid;
-	forkid = fork();
-	if (forkid == 0)
-	{
-		run_command_helper(head,envp,my_envp,pipefd,input_fd,current_command);
-	}
-	else if (forkid > 0)
-	{
-		close(pipefd[1]);
-		waitpid(forkid, NULL, 0);
-	}
-	else
-	{
-		perror("fork failed");
-		exit(EXIT_FAILURE);
-	}
-}
+// void	run_command(t_token *head, char **current_command, char **envp,
+// 		t_env *my_envp, int *pipefd,int input_fd)
+// {
+// 	int		forkid;
+// 	forkid = fork();
+// 	if (forkid == 0)
+// 	{
+// 		// run_command_helper(head,envp,my_envp,pipefd,input_fd,current_command);
+// 	}
+// 	else if (forkid > 0)
+// 	{
+// 		close(pipefd[1]);
+// 		waitpid(forkid, NULL, 0);
+// 	}
+// 	else
+// 	{
+// 		perror("fork failed");
+// 		exit(EXIT_FAILURE);
+// 	}
+// }
 void heredoc(char *str,int fd)
 {
 	char *input;
