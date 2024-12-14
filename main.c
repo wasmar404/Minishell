@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2024/12/14 19:13:24 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/12/14 19:42:57 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -252,8 +252,6 @@ void	complicated_execute(t_env *my_envp, t_token *head, char *envp[])
 			{
 				if(temp->type == PIPE)
 				{
-					printf("pipe");
-					fflush(stdout);
 					if (pipe(pipefd) == -1)
 					{
 						perror("pipe failed");
@@ -287,8 +285,6 @@ void	complicated_execute(t_env *my_envp, t_token *head, char *envp[])
             }
         }
 		close(pipefd[1]);
-		input_fd = pipefd[0];
-
 		head = head->next;
 	}
 			    while (wait(NULL) > 0);
