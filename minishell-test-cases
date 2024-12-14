@@ -1,0 +1,10 @@
+cat | cat | ls
+ls | cat
+env | cat
+env | grep PWD
+env | cat | cat | grep PWD
+< main.c cat
+< main.c cat | grep if
+< main.c cat | grep if >l
+cat << hh
+cat Makefile | grep srcs | grep srcs | cat -e

@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2024/12/05 11:33:22 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/12/14 19:13:24 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,10 @@ void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd)
 	t_token *current_input =NULL;
 	t_token *current_output =NULL;
 	int fd;
-		
+			if (input_fd != STDIN_FILENO) {
+						dup2(input_fd, STDIN_FILENO);
+						close(input_fd);
+					}
     while (currentback)
     {
         if (currentback->type == SINPUT_REDIRECTION || currentback->type == PIPE || currentback->type == HERE_DOC)
@@ -172,6 +175,8 @@ void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd)
 		dup2(fd,1);
 		close(fd);
 	}
+	close(pipefd[0]);
+	close(pipefd[1]);
 }
 
 
@@ -266,9 +271,6 @@ void	complicated_execute(t_env *my_envp, t_token *head, char *envp[])
 			
             if (pid == 0)
             {
-                
-                if (pipefd[0] != -1)
-                    close(pipefd[0]);
 				run_command_helper(head,envp,my_envp,pipefd,input_fd,array_complicated_execute(head));
                 exit(EXIT_SUCCESS);
             }
