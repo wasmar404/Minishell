@@ -10,3 +10,4 @@ cat << hh
 cat Makefile | grep srcs | grep srcs | cat -e
 cat < main.c
 cat <main.c >>kk
+>> kk cat < main.c

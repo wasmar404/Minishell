@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   header.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2024/12/05 11:13:47 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/12/16 13:59:52 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,13 @@
 # include <stdlib.h>
 # include <sys/wait.h>
 # include <unistd.h>
+#include <readline/readline.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+
+#define RESET "\033[0m"
+#define BOLD_CYAN "\033[1;36m"
 typedef enum token_type
 {
 	COMMAND,
@@ -74,7 +81,6 @@ void				token_count_helper(char *input, int *i, int *count,
 int					ft_strcmp(char *str1, char *str2);
 void				print_list(t_token *head);
 t_token				*input_to_linked_list(char **input, char **envp);
-void				main_helper(char *input, char **envp);
 int					count_nodes(t_env *head);
 int					ft_strlenn(char *input);
 t_env				*create_node_tokenn(char *str, char *type, bool equal,
@@ -107,7 +113,8 @@ t_token				*input_to_linked_list(char **input, char **envp);
 void	run_command(t_token *head, char **current_command, char **envp,
 		t_env *my_envp, int *pipefd,int input_fd);
 int pipe_count(t_token *head);
-void	main_helper(char *input, char **envp);
 void heredoc(char *str,int fd);
 void run_command_helper(t_token *head,char **envp, t_env *my_envp,int *pipefd,int input_fd,char **current_command);
+void	main_helper(char *input, char **envp,t_env *env_linked);
+void check_back_and_front(t_token *head_back,t_token **current_input,t_token **current_output,t_token *current);
 #endif

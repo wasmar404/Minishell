@@ -3,140 +3,79 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2024/12/14 19:42:57 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/12/16 14:08:01 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
-#include <readline/readline.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <fcntl.h>
-
-#define RESET "\033[0m"
-#define BOLD_CYAN "\033[1;36m"
 
 int	main(int ac, char **av, char **envp)
 {
 	char	*input;
 	t_env	*head;
 	char	**my_envp;
-	char	*prompt;
 
 	(void)ac;
 	(void)av;
-	(void)input;
 	head = env_to_linked_list(envp);
-	(void)head;
 	my_envp = env_to_array(head);
-	(void)my_envp;
-	prompt = BOLD_CYAN "sw_shell> " RESET;
 	while (1)
 	{
-		input = readline(prompt);
+		input = readline(BOLD_CYAN "sw_shell> " RESET);
 		if(*input)
 			add_history(input);
-		main_helper(input, my_envp);
+		main_helper(input, my_envp,head);
 	}
 	return (0);
 }
 
-int	check_if_NULL(char *input)
+int check_if_null(char *input)
 {
-	int	i;
-
+	int i;
+	int j;
+	
 	i = 0;
-	int non_space_count = 0; 
-	if (input == NULL)
-		return (0); 
-	while (input[i] != '\0')
+	j = 0;
+	if(input == NULL)
+		return (0);
+	while(input[i])
 	{
-		if (input[i] != ' ')
-			non_space_count++;
+		if(input[i] != ' ')
+			j++;
 		i++;
 	}
-	return (non_space_count > 0 ? 1 : 0);// fix this
+	if(j == 0)
+		return(0);
+	else
+		return(1);
+	
 }
-
-void	main_helper(char *input, char **envp)
+void	main_helper(char *input, char **envp,t_env *env_linked)
 {
 	char	**splitted_input;
 	t_token	*head;
-	t_env	*head_env;
 
-	if (check_if_NULL(input) == 0)
-	{
+	if (check_if_null(input) == 0)
 		return ;
-	}
 	splitted_input = token_split(input);
 	head = input_to_linked_list(splitted_input, envp);
-	 head_env = env_to_linked_list(envp);
-	 complicated_execute(head_env, head, envp);
+	complicated_execute(env_linked, head, envp);
 }
-void	print_list(t_token *head)
-{
-	while (head != NULL)
-	{
-		printf("%s %d\n", head->token,head->type);
-		head = head->next;
-	}
-}
-
 void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd)
 {
-	int input_flag = 0;
-	int output_flag = 0;
-	int input_pipe_flag = 0;
-	int output_pipe_flag = 0;
 	t_token *current = head;
-	t_token *currentback = head;
 	t_token *current_input =NULL;
 	t_token *current_output =NULL;
 	int fd;
-			if (input_fd != STDIN_FILENO) {
-						dup2(input_fd, STDIN_FILENO);
-						close(input_fd);
-					}
-    while (currentback)
-    {
-        if (currentback->type == SINPUT_REDIRECTION || currentback->type == PIPE || currentback->type == HERE_DOC)
-        {
-
-			if(currentback->type == PIPE)
-			{
-				input_pipe_flag++;
-			}
-            input_flag++;
-            current_input = currentback;
-            break;
-        }
-        currentback = currentback->prev;
-    }
-	current = current ->next;
-	while(current != NULL && current->type != COMMAND)
-	{
-
-		if(current->type == AOUTPUT_REDIRECTION || current->type == SOUTPUT_REDIRECTION)
+		if (input_fd != STDIN_FILENO) 
 		{
-			output_flag++;;
-			current_output=current;
+		dup2(input_fd, STDIN_FILENO);
+		close(input_fd);
 		}
-		if((current->type == SINPUT_REDIRECTION || current->type == HERE_DOC) && input_flag == 0)
-		{
-			input_flag++;
-			current_input = current;
-		}
-		if(current->type == PIPE)
-		{
-			output_pipe_flag++;
-			output_flag++;
-			current_output=current;
-		}
-		current = current->next;
-	}
+	check_back_and_front(current,&current_input,&current_output,current->next);
 	if(current_input && current_input->type == HERE_DOC)
 	{
 		fd = open("temp", O_WRONLY | O_CREAT | O_APPEND , 0644);
@@ -178,7 +117,39 @@ void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd)
 	close(pipefd[0]);
 	close(pipefd[1]);
 }
-
+void check_back_and_front(t_token *head_back,t_token **current_input,t_token **current_output,t_token *current)
+{
+	int flag;
+	
+	flag = 0;
+	(void)current_input;
+	(void)current_output;
+	while(head_back)
+	{
+		if(head_back ->type == SINPUT_REDIRECTION || head_back ->type == PIPE || head_back ->type ==HERE_DOC)
+		{
+			(*current_input) = head_back;
+			break;
+		}
+		if(head_back->type == AOUTPUT_REDIRECTION || head_back ->type == SOUTPUT_REDIRECTION)
+		{
+			(*current_output) = head_back;
+			flag++;
+		}
+		head_back = head_back -> prev;
+	}
+		while(current != NULL && current->type != COMMAND )
+	{
+		if((current->type == AOUTPUT_REDIRECTION || current->type == SOUTPUT_REDIRECTION )&& flag == 0)
+			(*current_output)=current;
+		if((current->type == SINPUT_REDIRECTION || current->type == HERE_DOC))
+			(*current_input) = current;
+		if(current->type == PIPE)
+			(*current_output)=current;
+		current = current->next;
+	}
+	
+}
 
 int pipe_count(t_token *head)
 {
