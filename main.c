@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2024/12/16 14:08:01 by schaaban         ###   ########.fr       */
+/*   Updated: 2024/12/16 14:13:21 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -283,7 +283,6 @@ void external_commands(t_token *head,char **envp, t_env *my_envp,int *pipefd,int
 		(void)my_envp;
 			 char	*path;
 			super_complicated_handle_dups(head,pipefd,input_fd);
-			printf("hello is madame grep working?");
 			path = find_path_of_cmd(head->token, envp);
 			if (execve(path, current_command, envp) == -1)
 				printf("execve failed");
