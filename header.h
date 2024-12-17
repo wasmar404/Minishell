@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2024/12/16 13:59:52 by schaaban         ###   ########.fr       */
+/*   Updated: 2024/12/17 11:09:45 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int					delimeter_check_echo(t_token *head);
 int					check_dollar(t_token *head);
 t_env				*check_in_envp(t_env *head, char *a);
 void				echo_main(t_token *head, t_env *envp);
-void				complicated_execute(t_env *my_env, t_token *head,
+void				complicated_execute(t_env **my_env, t_token *head,
 						char **my_envp);
 t_token				*create_node_token(char *str, int i, bool built_in_or_not);
 bool				built_in_or_not(char *cmd);
@@ -114,7 +114,13 @@ void	run_command(t_token *head, char **current_command, char **envp,
 		t_env *my_envp, int *pipefd,int input_fd);
 int pipe_count(t_token *head);
 void heredoc(char *str,int fd);
-void run_command_helper(t_token *head,char **envp, t_env *my_envp,int *pipefd,int input_fd,char **current_command);
-void	main_helper(char *input, char **envp,t_env *env_linked);
+void run_command_helper(t_token *head,char **envp, t_env **my_envp,int *pipefd,int input_fd,char **current_command);
+void	main_helper(char *input, char **envp,t_env **env_linked);
 void check_back_and_front(t_token *head_back,t_token **current_input,t_token **current_output,t_token *current);
+void dups1(t_token *current_input,t_token *current_output,int *pipefd);
+void dups2(t_token *current_input,t_token *current_output,int input_fd);
+void main_cd(t_token *head, t_env **my_envp);
+void main_pwd();
+void run_built_ins1(t_token *head,char **envp, t_env **my_envp,int *pipefd,int input_fd,char **current_command);
+
 #endif
