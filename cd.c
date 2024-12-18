@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/05 12:28:27 by wasmar            #+#    #+#             */
-/*   Updated: 2024/12/17 21:07:31 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/12/18 09:33:27 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,26 +96,23 @@ if(head->next && head->next->type == TWO_POINTS)
 
 }
 if (head->next && head->next->type == MINUS) {
-    // Find and store OLDPWD
     search_and_find_a_type_my_envp(my_envp, "OLDPWD");
-    t_env *oldpwd = *my_envp;
-
-    // Change the directory to PWD
-    search_and_find_a_type_my_envp(my_envp, "PWD");
-    t_env *new_path = *my_envp;
-    chdir(new_path->enva);
-
-    // Update OLDPWD to the current directory
+    char *oldpwd = strdup((*my_envp)->enva);
+    chdir(oldpwd);
     return_env_to_beginning(my_envp);
+    
+    search_and_find_a_type_my_envp(my_envp, "PWD");
+    char *new_oldpwd = strdup((*my_envp)->enva);
+    strcpy((*my_envp)->enva,oldpwd);
+    return_env_to_beginning(my_envp);
+
     search_and_find_a_type_my_envp(my_envp, "OLDPWD");
-    strcpy((*my_envp)->enva, new_path->enva);
-
-    // Update PWD to the directory in new_path
+    strcpy((*my_envp)->enva,new_oldpwd);
     return_env_to_beginning(my_envp);
-    search_and_find_a_type_my_envp(my_envp, "PWD");
-    strcpy((*my_envp)->enva, oldpwd->enva);
-
-    return_env_to_beginning(my_envp);
+    free(oldpwd);
+    free(new_oldpwd);
+    
 }
 
 }
+
