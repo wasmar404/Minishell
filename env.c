@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 21:54:01 by wasmar            #+#    #+#             */
-/*   Updated: 2024/11/02 08:40:44 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/12/18 12:37:51 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,16 +39,18 @@ int	count_nodes(t_env *head)
 	}
 	return (i);
 }
-void	print_listt(t_env *head)
+void print_listt(t_env *head)
 {
-	while (head != NULL)
-	{
-		// printf("%s", head->type);
-		printf("%s", head->all);
-		printf("\n");
-		head = head->next;
-	}
+    while (head != NULL)
+    {
+        if (head->all && head -> equal == true)                        
+        {
+            printf("%s\n", head->all);
+        }
+        head = head->next;
+    }
 }
+
 int	check_equal(char *str)
 {
 	int	j;
@@ -84,13 +86,14 @@ t_env	*env_to_linked_list(char **envp)
 	i = 0;
 	head = NULL;
 	a = NULL;
-	equal = false;
+	
 	j = 0;
 	while (envp[i])
 	{
 		a = NULL;
 		j = 0;
 		j = check_equal(envp[i]);
+		equal = false;
 		if (j != 0)
 		{
 			j++;

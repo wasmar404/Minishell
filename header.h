@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2024/12/17 11:09:45 by schaaban         ###   ########.fr       */
+/*   Updated: 2024/12/19 13:09:03 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,8 +107,6 @@ char				*find_path_of_cmd_helper(char *command);
 char				*find_path_of_cmd(char *command, char **envp);
 token_type			check_delimeter1(char *splitted_token);
 token_type			check_delimeter2(char *splitted_token);
-token_type			check_delimeter3(char *splitted_token, char **envp);
-token_type			check_delimeter(char *splitted_token, char **envp);
 t_token				*input_to_linked_list(char **input, char **envp);
 void	run_command(t_token *head, char **current_command, char **envp,
 		t_env *my_envp, int *pipefd,int input_fd);
@@ -122,5 +120,12 @@ void dups2(t_token *current_input,t_token *current_output,int input_fd);
 void main_cd(t_token *head, t_env **my_envp);
 void main_pwd();
 void run_built_ins1(t_token *head,char **envp, t_env **my_envp,int *pipefd,int input_fd,char **current_command);
-
+void export_main(t_env **my_envp,t_token *head);
+int	check_equal(char *str);
+void main_unset1(t_env **my_envp ,char *var_name);
+void find_var_name(t_env **my_envp,char *var_name);
+int valid_identifier(t_token *head);
+int invalid_option(t_token *head);
+token_type	check_delimeter(char *splitted_token, char **envp);
+token_type	check_delimeter3(char *splitted_token, char **envp);
 #endif

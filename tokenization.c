@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenization.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:16:26 by wasmar            #+#    #+#             */
-/*   Updated: 2024/10/29 08:51:51 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/12/19 13:08:41 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,4 +251,13 @@ t_token	*input_to_linked_list(char **input, char **envp)
 	}
 	return (print);
 }
+// int check_if_commmand(t_token *head )
+// {
+// 	if(head -> prev ==NULL)
+// 		return (1);
+// 	else if (strcmp(head->prev->token,"|") == 0)
+// 		return (1);
+// 	else 
+// 		return (0);
+// }
 
