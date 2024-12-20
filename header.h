@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   header.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2024/12/19 13:09:03 by schaaban         ###   ########.fr       */
+/*   Updated: 2024/12/20 13:35:55 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
+#include "libft/libft.h"
 
 #define RESET "\033[0m"
 #define BOLD_CYAN "\033[1;36m"
@@ -128,4 +129,12 @@ int valid_identifier(t_token *head);
 int invalid_option(t_token *head);
 token_type	check_delimeter(char *splitted_token, char **envp);
 token_type	check_delimeter3(char *splitted_token, char **envp);
+
+char *return_value_of_envp_type(t_env *envp_linked,char *search_for);
+token_type	check_if_heredoc_aoutput_minus_tilde(char *input);
+token_type	check_if_pipe_soutput_sinput(char *input);
+token_type	check_input_type(char *input, char **envp,char **splitted_input,int i);
+int check_if_cmd(char *input, char **envp,char **splitted_input,int i);
+token_type	check_if_twopoints_dir_cmd_word(char *input, char **envp,char **splitted_input,int i);
+token_type	check_input_type(char *input, char **envp,char **splitted_input,int i);
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2024/12/19 13:14:31 by schaaban         ###   ########.fr       */
+/*   Updated: 2024/12/20 13:55:24 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +161,7 @@ int pipe_count(t_token *head)
 	pipes = 0;
 	while(head != NULL)
 	{
-		if(head -> type == PIPE)
+		if(head -> type == PIPE || head->type == AOUTPUT_REDIRECTION)
 		{
 			pipes ++;
 		}
