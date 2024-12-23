@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 11:27:21 by schaaban          #+#    #+#             */
-/*   Updated: 2024/12/18 10:30:02 by schaaban         ###   ########.fr       */
+/*   Updated: 2024/12/23 11:26:04 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,14 +69,9 @@ t_env	*check_in_envp(t_env *head, char *a)
 void	echo_main(t_token *head, t_env *envp)
 {
 	int		flag;
-	char	*a;
-	int		i;
-	int		x;
-	int		len;
-	t_env	*found_env;
-
+(void)envp;
 	flag = 0;
-	i = 0;
+
 	if (!head->next)
 		// start : if there is no input after the echo it should just print a newline
 	{
@@ -91,32 +86,7 @@ void	echo_main(t_token *head, t_env *envp)
 	}
 	while (head != NULL && delimeter_check_echo(head) == 0)
 	{
-		if (check_dollar(head) >= 0)
-		{
-			flag = 1;
-			x = check_dollar(head);
-			len = ft_strlen(head->token);
-			a = ft_strndup(head->token + (x + 1), len - x);
-			while (head->token[i] != '$')
-			{
-				printf("%c", head->token[i]);
-				i++;
-			}
-			if (len == 1 || head->token[x + 1] == ' ')
-			{
-				printf("%c", '$');
-			}
-			found_env = check_in_envp(envp, a);
-			if (found_env != NULL)
-			{
-				printf("%s", found_env->enva);
-			}
-			printf("\n");
-			if (head->next != NULL)
-				head = head->next;
-			else
-				break ;
-		}
+
 		printf("%s ", head->token);
 		head = head->next;
 	}

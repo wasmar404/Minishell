@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2024/12/23 09:16:53 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/12/23 16:41:52 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,9 @@ void	main_helper(char *input, char **envp,t_env **env_linked)
 		return ;
 	splitted_input = token_split(input);
 	head = input_to_linked_listt(*env_linked,splitted_input,envp);
-	// print_list(head);
-	// (void)env_linked;
-	 complicated_execute(env_linked, head, envp);
+	 //print_list(head);
+	//(void)env_linked;
+	   complicated_execute(env_linked, head, envp);
 }
 void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd)
 {
@@ -291,7 +291,7 @@ void	complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
 		close(pipefd[1]);}
 		head = head->next;
 	}
-			    while (wait(NULL) > 0);
+	while (wait(NULL) > 0);
 }
 int find_var_name_return(t_env *my_envp,char *var_name)
 {

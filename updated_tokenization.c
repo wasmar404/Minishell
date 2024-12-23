@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:02:23 by wasmar            #+#    #+#             */
-/*   Updated: 2024/12/23 09:33:59 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/12/23 16:43:05 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,14 @@ void return_head_to_beginning(t_token **head)
         (*head) = (*head)->prev;
     }
 }
+void update_token_linked_list(t_token **head,t_env *envp_linked);
 t_token *input_to_linked_listt(t_env *envp_linked,char **splitted_input,char **envp)
 {
     int i;
     t_token *head;
     t_token *new_node;
     t_token	*print;
-        //  t_token	*print1;
+      t_token	*print1;
 
 
 
@@ -32,7 +33,7 @@ t_token *input_to_linked_listt(t_env *envp_linked,char **splitted_input,char **e
     head = NULL;
     new_node =  NULL;
     print = NULL;
-        //  print1 = NULL;
+          print1 = NULL;
 
     while(splitted_input[i])
     {
@@ -41,15 +42,14 @@ t_token *input_to_linked_listt(t_env *envp_linked,char **splitted_input,char **e
 		{
 			head = new_node;
 			print = head;
-            //  print1 = head;
+              print1 = head;
 		}
 		else
 			input_to_linked_list_h(&head,new_node);
         i++;
     }
-    quotes_check_remove(&print,envp_linked);
-return_head_to_beginning(&print);
-    return (print);
+     update_token_linked_list(&print,envp_linked);
+    return (print1);
 }
 char *return_value_of_envp_type(t_env *envp_linked,char *search_for)
 {
@@ -143,78 +143,21 @@ t_token	*create_node_token(char *str, int i, bool built_in_or_not)
 	new_node->prev = NULL;
 	return (new_node);
 }
-// void return_head_to_beginning(t_token **head)
-// {
-//     if(!((*head)->prev))
-//         return;
-//     while((*head)->prev)
-//     {
-//         (*head) = (*head) ->prev;
-//     }
-// }
-char *check_dollar_and_replace(t_token *head,int flag,t_env *envp);
-void quotes_check_remove(t_token **head, t_env *envp)
-{
-    t_token *current = *head; // Use a local pointer for traversal.
-    int i, end, flag;
-    char *new;
 
-    while (current != NULL)
+
+t_env *search_and_find_a_type_my_envpp(t_env *envp,char *to_find)
+{
+    while((envp) != NULL)
     {
-        i = 0;
-        while (current->token[i])
+        if(ft_strcmp(to_find,(envp)->type) == 0)
         {
-            if (current->token[i] == '"')
-            {
-                printf("double quotes");
-                fflush(stdout);
-                end = find_quotes_end(current->token, i + 1, 1);
-                new = new_string(current->token, i, end);
-                strcpy(current->token, new);
-                flag = 4;
-                free(new);
-                break;
-            }
-            if (current->token[i] == '\'')
-            {
-                printf("single quotes");
-                fflush(stdout);
-                end = find_quotes_end(current->token, i + 1, 0);
-                new = new_string(current->token, i, end);
-                strcpy(current->token, new);
-                printf("\n%s\n",current->token);
-                fflush(stdout);
-                flag = 5;
-                free(new);
-                break;
-            }
-            i++;
+            return(envp);
         }
-        // new = check_dollar_and_replace(current, flag, envp);
-        // if(new)
-        // {
-        //     strcpy(current->token,new);
-        // }
-        (void)flag;
-        (void)envp;
-        current = current->next; // Move to the next node.
+        (envp) = (envp)->next;
     }
+    return(NULL);
 }
 
-int find_quotes_end(char *str,int i,int flag)
-{
-    // "1"
-    // '0'
-    while(str[i])
-    {
-        if(flag == 1 && str[i] =='"')
-            break;
-        if (flag == 0 && str[i]=='\'')
-            break;
-        i++;
-    }
-    return(i);
-}
 char *new_string(char *str,int i,int j)
 {
     int len = strlen(str);
@@ -234,87 +177,158 @@ char *new_string(char *str,int i,int j)
     new_str[x] = '\0';
     return(new_str);
 }
-char *check_if_dollar_exist(char *str,t_env *envp);
-char *check_dollar_and_replace(t_token *head,int flag,t_env *envp)
+int expand_or_not(t_token *head)
 {
-    if(flag == 5)
-        return (NULL);
-    if(flag == 4)
-    {
-       char *new_token = check_if_dollar_exist((head)->token,envp);
-       return(new_token);
-    }
-    return(NULL);
-}
-t_env *search_and_find_a_type_my_envpp(t_env *envp,char *to_find)
-{
-    while((envp) != NULL)
-    {
-        if(ft_strcmp(to_find,(envp)->type) == 0)
-        {
-            return(envp);
-        }
-        (envp) = (envp)->next;
-    }
-    return(NULL);
-}
-char *check_if_dollar_exist(char *str,t_env *envp)
-{
-
     int i = 0;
-    int flag =0;
-    int start =0;
-    char *find;
-    int len_enva;
-    int len_find;
-    t_env *head;
-    while(str[i])
+    while(head->token[i])
     {
-        if(str[i] == '$')
-        {   flag++;
-            break;
+        if(head->token[i] == '"')
+        {
+            return(1);
+        }
+        if(head->token[i] == '\'')
+        {
+            return(0);
         }
         i++;
     }
-    if(flag != 0)
+    return(1);
+}
+int check_dollar1(t_token *head)
+{
+    int i = 0;
+     while(head->token[i])
     {
-        start =i;
-        while(str[i] && str[i] != '"' && str[i] !=  '\'')
+        if(head->token[i] == '$')
         {
-            i++;
+            return(1);
         }
-        int len = i - (start + 1);
-        find = ft_strndup(str + start + 1, len);
-        len_find = strlen(find);
-        head = search_and_find_a_type_my_envpp(envp,find);
-        len_enva = strlen(head->enva);
-        int len_str = strlen(str);
-        len = len_str-len_find+len_enva;
-        char *new_token = malloc(len+1);
-        int x = 0;
-        int y = 0;
-        int j = 0;
-        while (x < len && y < start)
-        {
-            new_token[x] = str[y];
-            x++;
-            y++;
-        }
-        while (x < len && head->enva[j])
-        {
-            new_token[x]=head->enva[j];
-            x++;
-            j++;
-        }
-        y = i;
-        while (x < len && str[y])
-        {
-            new_token[x] = str[y];
-            x++;
-            y++;
-        }
-        new_token[x] ='\0';
-        return(new_token);
+        i++;
     }
-    return(NULL);
+    return(0);
+}
+int check_dollar_pos(t_token *head)
+{
+    int i = 0;
+     while(head->token[i])
+    {
+        if(head->token[i] == '$')
+        {
+            return(i);
+        }
+        i++;
+    }
+    return(0);
+}
+int return_end_pos(t_token *head)
+{
+    int i = check_dollar_pos(head);
+    i++;
+    while(head->token[i] && ((head->token[i] >='a' &&head->token[i] <= 'z') || (head->token[i] >='A' &&head->token[i] <= 'Z') ||  (head->token[i] >= '0' && head->token[i] <= '9') || head->token[i] == '_'))
+    {
+        i++;
+    }
+    return(i);
+}
+void update_token_linked_list(t_token **head,t_env *envp_linked)
+{
+    int start = 0;
+    int end = 0;
+    int len = 0;
+    char *find;
+    t_env *enva = NULL;
+    int len_enva = 0;
+    int len_token = 0;
+    int len_find = 0;
+    int x =0;
+    int y = 0;
+    char *new = NULL;
+    int flagg = 0;
+    int flag = 0;
+    while ((*head))
+    {
+         if ((*head)) {
+            // Check for the first condition (e.g., check_dollar1) 
+            if (check_dollar1(*head) == 0 ) {
+
+                 if(!(*head)->next)
+                {
+                    break;
+                }
+                (*head) = (*head)->next;
+            }
+                 if (check_dollar1(*head) == 1 ) {
+
+                 flag++;
+          
+            }
+             if (expand_or_not(*head) ==0)
+             {
+
+                flag++;
+                if(!(*head)->next)
+                {
+                    break;
+                }
+                (*head) = (*head)->next;
+             }
+            }
+            if(flag != 0)
+                flagg++;
+         
+
+        if(flagg == 1)
+        {
+
+        start = check_dollar_pos(*head);
+        end = return_end_pos(*head);
+        end--;
+        len = end - start;
+        find = ft_strndup((*head)->token+start+1,len);
+        enva = search_and_find_a_type_my_envpp(envp_linked,find);
+
+        if(enva)
+        {
+        len_enva = strlen(enva->enva);
+        }
+        len_token= strlen((*head)->token);
+        len_find = strlen(find);
+        len = 0;
+        len = len_token-len_find+len_enva;
+        new = malloc(len+1);
+        while (x <len && y < start)
+        {
+            new[x] = (*head)->token[y];
+            x++;
+            y++;
+        }
+        if(enva)
+        {
+            y = 0;
+            while (x <len && enva->enva[y])
+            {
+                new[x] = enva->enva[y];
+                x++;
+                y++;
+            }
+        }
+        y = end;
+        y++;
+        while(x <len && (*head)->token[y])
+        {
+            new[x] = (*head)->token[y];
+            x++;
+            y++;
+        }
+        new[x] ='\0'; 
+        //echo hello"$PWD"jjjjjjjjjjj
+        // if((*head)->token!= NULL)
+         (*head)->token = malloc (strlen((*head)->token) + strlen(new) + 1);
+            strcpy((*head)->token ,new);
+            //  free(new);
+            //new = NULL;
+        
+        }
+                (*head) = (*head) ->next;
+    }
 }

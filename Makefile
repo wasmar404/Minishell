@@ -1,8 +1,8 @@
 # Compiler and flags
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS =  -g
 LIBS = -lreadline -Llibft -lft  # Link to the libft library (-lft) and readline
-
+#-Wall -Wextra -Werror
 # Files
 SRC = $(wildcard *.c)  # Wildcard to include all .c files in the current directory
 OBJ = $(SRC:.c=.o)
