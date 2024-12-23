@@ -3,28 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   tokenization.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:16:26 by wasmar            #+#    #+#             */
-/*   Updated: 2024/12/19 13:08:41 by schaaban         ###   ########.fr       */
+/*   Updated: 2024/12/22 20:15:37 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 #include "libft/libft.h"
 
-t_token	*create_node_token(char *str, int i, bool built_in_or_not)
-{
-	t_token	*new_node;
+// t_token	*create_node_token(char *str, int i, bool built_in_or_not)
+// {
+// 	t_token	*new_node;
 
-	new_node = malloc(sizeof(t_token));
-	new_node->token = str;
-	new_node->built_in_or_not = built_in_or_not;
-	new_node->type = i;
-	new_node->next = NULL;
-	new_node->prev = NULL;
-	return (new_node);
-}
+// 	new_node = malloc(sizeof(t_token));
+// 	new_node->token = str;
+// 	new_node->built_in_or_not = built_in_or_not;
+// 	new_node->type = i;
+// 	new_node->next = NULL;
+// 	new_node->prev = NULL;
+// 	return (new_node);
+// }
 bool	built_in_or_not(char *cmd)
 {
 	if (ft_strcmp(cmd, "echo") == 0)

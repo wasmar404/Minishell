@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2024/12/20 13:35:55 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/12/22 23:30:32 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,6 @@ void dups1(t_token *current_input,t_token *current_output,int *pipefd);
 void dups2(t_token *current_input,t_token *current_output,int input_fd);
 void main_cd(t_token *head, t_env **my_envp);
 void main_pwd();
-void run_built_ins1(t_token *head,char **envp, t_env **my_envp,int *pipefd,int input_fd,char **current_command);
 void export_main(t_env **my_envp,t_token *head);
 int	check_equal(char *str);
 void main_unset1(t_env **my_envp ,char *var_name);
@@ -137,4 +136,15 @@ token_type	check_input_type(char *input, char **envp,char **splitted_input,int i
 int check_if_cmd(char *input, char **envp,char **splitted_input,int i);
 token_type	check_if_twopoints_dir_cmd_word(char *input, char **envp,char **splitted_input,int i);
 token_type	check_input_type(char *input, char **envp,char **splitted_input,int i);
+void run_built_ins(t_token *head, t_env **my_envp,int *pipefd,int input_fd,int flag);
+void check_dollorr(t_token *head);
+void input_to_linked_list_h(t_token **head,t_token *new);
+t_token	*create_node_token(char *str, int i, bool built_in_or_not);
+bool	built_in_or_not(char *cmd);
+t_token *generate_tokenn(t_env *envp_linked,char **splitted_input,char **envp,int i);
+t_token *input_to_linked_listt(t_env *envp_linked, char **splitted_input, char **envp);
+int find_quotes_end(char *str,int i,int flag);
+char *new_string(char *str,int i,int j);
+void quotes_check_remove(t_token **head,t_env *envp);
+void search_and_find_a_type_my_envp(t_env **envp,char *to_find);
 #endif
