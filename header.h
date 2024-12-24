@@ -6,28 +6,28 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2024/12/22 23:30:32 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/12/24 08:02:01 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef HEADEAR_H
 # define HEADER_H
 
+# include "libft/libft.h"
+# include <fcntl.h>
 # include <readline/history.h>
+# include <readline/readline.h>
 # include <readline/readline.h>
 # include <stdbool.h>
 # include <stdio.h>
+# include <stdio.h>
+# include <stdlib.h>
 # include <stdlib.h>
 # include <sys/wait.h>
 # include <unistd.h>
-#include <readline/readline.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <fcntl.h>
-#include "libft/libft.h"
 
-#define RESET "\033[0m"
-#define BOLD_CYAN "\033[1;36m"
+# define RESET "\033[0m"
+# define BOLD_CYAN "\033[1;36m"
 typedef enum token_type
 {
 	COMMAND,
@@ -109,42 +109,64 @@ char				*find_path_of_cmd(char *command, char **envp);
 token_type			check_delimeter1(char *splitted_token);
 token_type			check_delimeter2(char *splitted_token);
 t_token				*input_to_linked_list(char **input, char **envp);
-void	run_command(t_token *head, char **current_command, char **envp,
-		t_env *my_envp, int *pipefd,int input_fd);
-int pipe_count(t_token *head);
-void heredoc(char *str,int fd);
-void run_command_helper(t_token *head,char **envp, t_env **my_envp,int *pipefd,int input_fd,char **current_command);
-void	main_helper(char *input, char **envp,t_env **env_linked);
-void check_back_and_front(t_token *head_back,t_token **current_input,t_token **current_output,t_token *current);
-void dups1(t_token *current_input,t_token *current_output,int *pipefd);
-void dups2(t_token *current_input,t_token *current_output,int input_fd);
-void main_cd(t_token *head, t_env **my_envp);
-void main_pwd();
-void export_main(t_env **my_envp,t_token *head);
-int	check_equal(char *str);
-void main_unset1(t_env **my_envp ,char *var_name);
-void find_var_name(t_env **my_envp,char *var_name);
-int valid_identifier(t_token *head);
-int invalid_option(t_token *head);
-token_type	check_delimeter(char *splitted_token, char **envp);
-token_type	check_delimeter3(char *splitted_token, char **envp);
+void				run_command(t_token *head, char **current_command,
+						char **envp, t_env *my_envp, int *pipefd, int input_fd);
+int					pipe_count(t_token *head);
+void				heredoc(char *str, int fd);
+void				run_command_helper(t_token *head, char **envp,
+						t_env **my_envp, int *pipefd, int input_fd,
+						char **current_command);
+void				main_helper(char *input, char **envp, t_env **env_linked);
+void				check_back_and_front(t_token *head_back,
+						t_token **current_input, t_token **current_output,
+						t_token *current);
+void				dups1(t_token *current_input, t_token *current_output,
+						int *pipefd);
+void				dups2(t_token *current_input, t_token *current_output,
+						int input_fd);
+void				main_cd(t_token *head, t_env **my_envp);
+void				main_pwd(void);
+void				export_main(t_env **my_envp, t_token *head);
+int					check_equal(char *str);
+void				main_unset1(t_env **my_envp, char *var_name);
+void				find_var_name(t_env **my_envp, char *var_name);
+int					valid_identifier(t_token *head);
+int					invalid_option(t_token *head);
+token_type			check_delimeter(char *splitted_token, char **envp);
+token_type			check_delimeter3(char *splitted_token, char **envp);
 
-char *return_value_of_envp_type(t_env *envp_linked,char *search_for);
-token_type	check_if_heredoc_aoutput_minus_tilde(char *input);
-token_type	check_if_pipe_soutput_sinput(char *input);
-token_type	check_input_type(char *input, char **envp,char **splitted_input,int i);
-int check_if_cmd(char *input, char **envp,char **splitted_input,int i);
-token_type	check_if_twopoints_dir_cmd_word(char *input, char **envp,char **splitted_input,int i);
-token_type	check_input_type(char *input, char **envp,char **splitted_input,int i);
-void run_built_ins(t_token *head, t_env **my_envp,int *pipefd,int input_fd,int flag);
-void check_dollorr(t_token *head);
-void input_to_linked_list_h(t_token **head,t_token *new);
-t_token	*create_node_token(char *str, int i, bool built_in_or_not);
-bool	built_in_or_not(char *cmd);
-t_token *generate_tokenn(t_env *envp_linked,char **splitted_input,char **envp,int i);
-t_token *input_to_linked_listt(t_env *envp_linked, char **splitted_input, char **envp);
-int find_quotes_end(char *str,int i,int flag);
-char *new_string(char *str,int i,int j);
-void quotes_check_remove(t_token **head,t_env *envp);
-void search_and_find_a_type_my_envp(t_env **envp,char *to_find);
+char				*return_value_of_envp_type(t_env *envp_linked,
+						char *search_for);
+token_type			check_if_heredoc_aoutput_minus_tilde(char *input);
+token_type			check_if_pipe_soutput_sinput(char *input);
+token_type			check_input_type(char *input, char **envp,
+						char **splitted_input, int i);
+int					check_if_cmd(char *input, char **envp,
+						char **splitted_input, int i);
+token_type			check_if_twopoints_dir_cmd_word(char *input, char **envp,
+						char **splitted_input, int i);
+token_type			check_input_type(char *input, char **envp,
+						char **splitted_input, int i);
+void				run_built_ins(t_token *head, t_env **my_envp, int *pipefd,
+						int input_fd, int flag);
+void				check_dollorr(t_token *head);
+void				input_to_linked_list_h(t_token **head, t_token *new);
+t_token				*create_node_token(char *str, int i, bool built_in_or_not);
+bool				built_in_or_not(char *cmd);
+t_token				*generate_tokenn(t_env *envp_linked, char **splitted_input,
+						char **envp, int i);
+t_token				*input_to_linked_listt(t_env *envp_linked,
+						char **splitted_input, char **envp);
+int					find_quotes_end(char *str, int i, int flag);
+char				*new_string(char *str, int i, int j);
+void				quotes_check_remove(t_token **head, t_env *envp);
+void				search_and_find_a_type_my_envp(t_env **envp, char *to_find);
+int					calculate_len(t_env *enva, t_token **head, char *find);
+void				update_token_in_list(char *new, t_token **head);
+char				*fill_array(int len, int start, int end, t_token **head,
+						t_env *enva);
+int					process_token(t_token **head, t_env *envp_linked);
+void				update_token_linked_list(t_token **head,
+						t_env *envp_linked);
+
 #endif
