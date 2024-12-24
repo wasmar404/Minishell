@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:02:23 by wasmar            #+#    #+#             */
-/*   Updated: 2024/12/24 08:01:52 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/12/24 08:21:23 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -274,31 +274,23 @@ void	update_token_linked_list(t_token **head, t_env *envp_linked)
 			if (check_dollar1(*head) == 0)
 			{
 				if (!(*head)->next)
-				{
 					break ;
-				}
 				(*head) = (*head)->next;
 			}
 			if (check_dollar1(*head) == 1)
-			{
 				flag++;
-			}
 			if (expand_or_not(*head) == 0)
 			{
 				flag++;
 				if (!(*head)->next)
-				{
 					break ;
-				}
 				(*head) = (*head)->next;
 			}
 		}
 		if (flag != 0)
 			flagg++;
 		if (flagg == 1)
-		{
 			process_token(head, envp_linked);
-		}
 		(*head) = (*head)->next;
 	}
 }
@@ -359,12 +351,6 @@ char	*fill_array(int len, int start, int end, t_token **head, t_env *enva)
 	new[x] = '\0';
 	return (new);
 }
-
-/*
-to test gjhgk
-jkvjnxcjlnvln
-zjdvnzjknfjknj
-*/
 
 int	process_token(t_token **head, t_env *envp_linked)
 {
