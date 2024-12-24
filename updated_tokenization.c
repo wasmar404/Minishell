@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:02:23 by wasmar            #+#    #+#             */
-/*   Updated: 2024/12/24 08:21:23 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/12/24 11:34:49 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -368,9 +368,16 @@ int	process_token(t_token **head, t_env *envp_linked)
 	new = NULL;
 	len = 0;
 	start = check_dollar_pos(*head);
+	if (start == -1)
+	{ // No '$' found, nothing to process
+		return (0);
+	}
 	end = return_end_pos(*head);
 	end--;
 	len = end - start;
+	if (len == 0 || ((*head)->token[start + 1] == ' ' || (*head)->token[start
+			+ 1] == '\0'))
+		return (1); // Skip substitution, leave `$` as is
 	find = ft_strndup((*head)->token + start + 1, len);
 	enva = search_and_find_a_type_my_envpp(envp_linked, find);
 	len = calculate_len(enva, head, find);
@@ -379,3 +386,4 @@ int	process_token(t_token **head, t_env *envp_linked)
 	strcpy((*head)->token, new);
 	return (1);
 }
+
