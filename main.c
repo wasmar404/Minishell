@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2024/12/23 16:41:52 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/12/24 22:05:46 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	main_helper(char *input, char **envp,t_env **env_linked)
 		return ;
 	splitted_input = token_split(input);
 	head = input_to_linked_listt(*env_linked,splitted_input,envp);
-	 //print_list(head);
+	 print_list(head);
 	//(void)env_linked;
 	   complicated_execute(env_linked, head, envp);
 }

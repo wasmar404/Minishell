@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:02:23 by wasmar            #+#    #+#             */
-/*   Updated: 2024/12/24 11:34:49 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/12/24 22:08:52 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ t_token	*input_to_linked_listt(t_env *envp_linked, char **splitted_input,
 	t_token	*new_node;
 	t_token	*print;
 	t_token	*print1;
+	t_token *head3;
 
 	i = 0;
 	head = NULL;
@@ -42,12 +43,14 @@ t_token	*input_to_linked_listt(t_env *envp_linked, char **splitted_input,
 			head = new_node;
 			print = head;
 			print1 = head;
+			head3 = head;
 		}
 		else
 			input_to_linked_list_h(&head, new_node);
 		i++;
 	}
 	update_token_linked_list(&print, envp_linked);
+	remove_quotes_main(&head3);
 	return (print1);
 }
 
@@ -262,34 +265,35 @@ int	return_end_pos(t_token *head)
 
 void	update_token_linked_list(t_token **head, t_env *envp_linked)
 {
-	int	flagg;
-	int	flag;
+	// int	flagg;
+	// int	flag;
 
-	flagg = 0;
-	flag = 0;
+	// flagg = 0;
+	// flag = 0;
 	while ((*head))
 	{
-		if ((*head))
-		{
-			if (check_dollar1(*head) == 0)
+		// if ((*head))
+		// {
+			if ((check_dollar1(*head) == 0 || expand_or_not(*head) == 0) && (*head))
 			{
 				if (!(*head)->next)
 					break ;
 				(*head) = (*head)->next;
+				continue;
 			}
-			if (check_dollar1(*head) == 1)
-				flag++;
-			if (expand_or_not(*head) == 0)
-			{
-				flag++;
-				if (!(*head)->next)
-					break ;
-				(*head) = (*head)->next;
-			}
-		}
-		if (flag != 0)
-			flagg++;
-		if (flagg == 1)
+		// 	if (check_dollar1(*head) == 1)
+		// 		flag++;
+		// 	if (expand_or_not(*head) == 0)
+		// 	{
+		// 		flag++;
+		// 		if (!(*head)->next)
+		// 			break ;
+		// 		(*head) = (*head)->next;
+		// 	}
+		// }
+		// if (flag != 0)
+		// 	flagg++;
+		// if (flagg == 1)
 			process_token(head, envp_linked);
 		(*head) = (*head)->next;
 	}
@@ -387,3 +391,97 @@ int	process_token(t_token **head, t_env *envp_linked)
 	return (1);
 }
 
+void remove_quotes_main(t_token **head)
+{
+	int i = 0;
+	int end = 0;
+	int single_quotes = 0;
+	int double_quotes = 0;
+	 int len = 0;
+	 char *copy;
+	while((*head))
+	{
+		i = 0;
+		while((*head)->token && (*head)->token[i])
+		{
+			if((*head)->token[i] == '"' && single_quotes == 0)
+			{
+				copy=ft_strdup((*head)->token);
+				remove_quotes_and_replace(head,i);
+			 	double_quotes++;
+			len = strlen((*head)->token);
+			end = find_end_of_quotes(copy,'"',i);
+			printf("end %d\n",end);
+
+			if(end-1 > len)
+			{
+				break;
+			}
+			if((*head)->token[end-1])
+			{
+			i = end -1;
+				printf("i :%d\n",i);
+			single_quotes = 0;
+	 		double_quotes = 0;
+			}
+			 continue;
+			}
+			if((*head)->token[i] == '\'' && double_quotes == 0)
+			{
+								copy=ft_strdup((*head)->token);
+				remove_quotes_and_replace(head,i);
+				single_quotes++;
+							len = strlen((*head)->token);
+					end = find_end_of_quotes(copy,'\'',i);
+											printf("end %d\n",end);
+					if(end-1 > len)
+					{
+						break;
+					}
+					if((*head)->token[end-1])
+					{
+					i = end -1;
+						printf("%d\n",i);
+					single_quotes = 0;
+					double_quotes = 0;
+					}
+					continue;
+		 }
+		 i++;					
+		}
+		(*head) = (*head) -> next;
+	}
+}
+
+void remove_quotes_and_replace(t_token **head,int start)
+{
+	int end = 0;
+	char *new = NULL;
+	int len =0;
+	end = find_end_of_quotes((*head)->token,(*head)->token[start],start);
+	if(end == -1)
+	{
+		return;
+	}
+	new = new_string((*head)->token,start,end);
+	 printf("\n new: %s \n",new);
+	len = strlen(new);
+	(*head)->token =malloc(len+1);
+	strcpy((*head)->token,new);
+}
+int find_end_of_quotes(char *str, char quote,int start)
+{
+	int x= start+1 ;
+	
+	while(str[x])
+	{
+		if(str[x] == quote)
+			return(x);
+		x++;
+	}
+	return(-1);
+}
+// echo "'hello'""kkkm'
+// echo "'"ho'l'a"'"
+// 'hola'
+// echo "'"ho'l'a"'"

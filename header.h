@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2024/12/24 08:02:01 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/12/24 11:54:46 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,5 +168,7 @@ char				*fill_array(int len, int start, int end, t_token **head,
 int					process_token(t_token **head, t_env *envp_linked);
 void				update_token_linked_list(t_token **head,
 						t_env *envp_linked);
-
+int find_end_of_quotes(char *str, char quote,int i);
+void remove_quotes_and_replace(t_token **head,int i);
+void remove_quotes_main(t_token **head);
 #endif
