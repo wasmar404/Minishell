@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:00:29 by schaaban          #+#    #+#             */
-/*   Updated: 2024/12/22 20:22:38 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/12/25 17:15:32 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,22 +80,22 @@ int	delimeter_check(char **tokens, int *token, char *str, int *i)
 
 void	check_non_delimeter_h( char *str, int *i,int *start,int *len)
 {
-		// if (str[(*i)] == '"')
-		// {
-		// 	(*start)++;
-		// 	(*i)++;
-		// 	while (str[(*i)] && str[(*i)] != '"')
-		// 		(*i)++;
-		// 	(*len) = (*i) - (*start);
-		// 	(*i)++;
-		// }
-		// else
-		// {
+		if (str[(*i)] == '"')
+		{
+			// (*start)++;
+			(*i)++;
+			while (str[(*i)] && str[(*i)] != '"')
+				(*i)++;
+			(*len) = (*i) - (*start)+1;
+			 (*i)++;
+		}
+		else
+		{
 			while (str[(*i)] && str[(*i)] != ' ' && str[(*i)] != '|'
-				&& str[(*i)] != '>' && str[(*i)] != '<')//&& str[(*i)] != '"' 
+				 && str[(*i)] != '>' && str[(*i)] != '<')//&& str[(*i)] != '"' 
 				(*i)++;
 			(*len) = (*i) - (*start); 
-		// }
+		}
 }
 
 void	check_non_delimeter(char **tokens, int *token, char *str, int *i)

@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:02:23 by wasmar            #+#    #+#             */
-/*   Updated: 2024/12/24 22:08:52 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/12/25 18:02:14 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -411,7 +411,8 @@ void remove_quotes_main(t_token **head)
 			 	double_quotes++;
 			len = strlen((*head)->token);
 			end = find_end_of_quotes(copy,'"',i);
-			printf("end %d\n",end);
+            break;
+			printf("end1 %d\n",end);
 
 			if(end-1 > len)
 			{
@@ -420,7 +421,7 @@ void remove_quotes_main(t_token **head)
 			if((*head)->token[end-1])
 			{
 			i = end -1;
-				printf("i :%d\n",i);
+		    printf("i :%d\n",i);
 			single_quotes = 0;
 	 		double_quotes = 0;
 			}
@@ -472,7 +473,7 @@ void remove_quotes_and_replace(t_token **head,int start)
 int find_end_of_quotes(char *str, char quote,int start)
 {
 	int x= start+1 ;
-	
+	// printf("\n%s\n",str);
 	while(str[x])
 	{
 		if(str[x] == quote)
