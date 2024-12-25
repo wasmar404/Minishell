@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:00:29 by schaaban          #+#    #+#             */
-/*   Updated: 2024/12/25 17:15:32 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/12/25 18:52:49 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ void	check_non_delimeter_h( char *str, int *i,int *start,int *len)
 			(*len) = (*i) - (*start)+1;
 			 (*i)++;
 		}
+		
 		else
 		{
 			while (str[(*i)] && str[(*i)] != ' ' && str[(*i)] != '|'

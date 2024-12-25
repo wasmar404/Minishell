@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 11:27:21 by schaaban          #+#    #+#             */
-/*   Updated: 2024/12/25 17:52:07 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/12/25 18:37:01 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,72 +32,36 @@ int	check_n(t_token *head)
 	}
 	return (1);
 }
-// int	delimeter_check_echo(t_token *head)
-// {
-// 	if (ft_strcmp(head->token, ">>") == 0 || ft_strcmp(head->token, "|") == 0
-// 		|| ft_strcmp(head->token, "<<") == 0 || ft_strcmp(head->token, ">") == 0
-// 		|| ft_strcmp(head->token, "<") == 0)
-// 		return (1);
-// 	return (0);
-// }
-int	check_dollar(t_token *head)
-{
-	int	i;
 
-	i = 0;
-	while (head->token[i])
-	{
-		if (head->token[i] == '$')
-		{
-			return (i);
-		}
-		i++;
-	}
-	return (-1);
-}
-t_env	*check_in_envp(t_env *head, char *a)
-{
-	while (head != NULL)
-	{
-		if (ft_strcmp(head->type, a) == 0)
-		{
-			return (head);
-		}
-		head = head->next;
-	}
-	return (NULL);
-}
-void	echo_main(t_token *head, t_env *envp)
+void	echo_main(t_token *head)
 {
 	int		flag;
-(void)envp;
+	int flag1 = 0;
 	flag = 0;
 
 	if (!head->next)
-		// start : if there is no input after the echo it should just print a newline
 	{
 		printf("\n");
 		return ;
 	}
 	head = head->next;
-	if (check_n(head) == 1)
-	{
-		flag = 1;
-		head = head->next;
-	}
 	while (head != NULL && head->type == WORD)
 	{
-
+		if (check_n(head) == 1 && flag1 == 0)
+		{
+			flag = 1;
+			head = head->next;
+			continue;
+		}
+		else
+		{
+			flag1++;
 		printf("%s", head->token);
 		if(head->next)
-		{
 			printf(" ");
-		}
 		head = head->next;
-		
+		}
 	}
 	if (flag == 0)
-	{
 		printf("\n");
-	}
 }

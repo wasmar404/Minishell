@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2024/12/25 17:47:15 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/12/25 18:53:21 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	main_helper(char *input, char **envp,t_env **env_linked)
 	head = input_to_linked_listt(*env_linked,splitted_input,envp);
 	//  print_list(head);
 	// //(void)env_linked;
-	   complicated_execute(env_linked, head, envp);
+	 complicated_execute(env_linked, head, envp);
 }
 void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd)
 {
@@ -312,7 +312,7 @@ void run_built_ins(t_token *head, t_env **my_envp,int *pipefd,int input_fd,int f
 	if ((strcmp(head->token, "env") == 0) && (find_var_name_return((*my_envp),"PATH") == 1))
 		 print_listt((*my_envp));
 	if(strcmp(head->token,"echo") == 0)
-		echo_main(head,(*my_envp));
+		echo_main(head);
 	if(strcmp(head->token,"pwd") == 0)
 		main_pwd();
 	if(strcmp(head->token,"cd") == 0)

@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2024/12/24 11:54:46 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/12/25 18:26:23 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int					check_n(t_token *head);
 int					delimeter_check_echo(t_token *head);
 int					check_dollar(t_token *head);
 t_env				*check_in_envp(t_env *head, char *a);
-void				echo_main(t_token *head, t_env *envp);
+void				echo_main(t_token *head);
 void				complicated_execute(t_env **my_env, t_token *head,
 						char **my_envp);
 t_token				*create_node_token(char *str, int i, bool built_in_or_not);

@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:02:23 by wasmar            #+#    #+#             */
-/*   Updated: 2024/12/25 18:23:07 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/12/25 18:53:09 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ t_token	*input_to_linked_listt(t_env *envp_linked, char **splitted_input,
 		i++;
 	}
 	update_token_linked_list(&print, envp_linked);
-	remove_quotes_main(&head3);
+	 remove_quotes_main(&head3);
 	return (print1);
 }
 
