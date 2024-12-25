@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2024/12/25 18:53:21 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/12/25 19:00:26 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	main_helper(char *input, char **envp,t_env **env_linked)
 	head = input_to_linked_listt(*env_linked,splitted_input,envp);
 	//  print_list(head);
 	// //(void)env_linked;
-	 complicated_execute(env_linked, head, envp);
+	  complicated_execute(env_linked, head, envp);
 }
 void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd)
 {
