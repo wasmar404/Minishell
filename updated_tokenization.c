@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:02:23 by wasmar            #+#    #+#             */
-/*   Updated: 2024/12/25 18:02:14 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/12/25 18:23:07 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -412,7 +412,7 @@ void remove_quotes_main(t_token **head)
 			len = strlen((*head)->token);
 			end = find_end_of_quotes(copy,'"',i);
             break;
-			printf("end1 %d\n",end);
+			// printf("end1 %d\n",end);
 
 			if(end-1 > len)
 			{
@@ -421,7 +421,7 @@ void remove_quotes_main(t_token **head)
 			if((*head)->token[end-1])
 			{
 			i = end -1;
-		    printf("i :%d\n",i);
+		    // printf("i :%d\n",i);
 			single_quotes = 0;
 	 		double_quotes = 0;
 			}
@@ -434,7 +434,7 @@ void remove_quotes_main(t_token **head)
 				single_quotes++;
 							len = strlen((*head)->token);
 					end = find_end_of_quotes(copy,'\'',i);
-											printf("end %d\n",end);
+											// printf("end %d\n",end);
 					if(end-1 > len)
 					{
 						break;
@@ -442,7 +442,7 @@ void remove_quotes_main(t_token **head)
 					if((*head)->token[end-1])
 					{
 					i = end -1;
-						printf("%d\n",i);
+						// printf("%d\n",i);
 					single_quotes = 0;
 					double_quotes = 0;
 					}
@@ -465,7 +465,7 @@ void remove_quotes_and_replace(t_token **head,int start)
 		return;
 	}
 	new = new_string((*head)->token,start,end);
-	 printf("\n new: %s \n",new);
+	//  printf("\n new: %s \n",new);
 	len = strlen(new);
 	(*head)->token =malloc(len+1);
 	strcpy((*head)->token,new);
