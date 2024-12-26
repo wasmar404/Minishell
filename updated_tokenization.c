@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:02:23 by wasmar            #+#    #+#             */
-/*   Updated: 2024/12/25 18:58:41 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/12/26 12:30:23 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -253,6 +253,12 @@ int	return_end_pos(t_token *head)
 
 	i = check_dollar_pos(head);
 	i++;
+	if(head->token[i] && !((head->token[i] >= 'a' && head->token[i] <= 'z')
+			|| (head->token[i] >= 'A' && head->token[i] <= 'Z')
+			|| head->token[i] == '_'))
+			{
+				return(i);
+			}
 	while (head->token[i] && ((head->token[i] >= 'a' && head->token[i] <= 'z')
 			|| (head->token[i] >= 'A' && head->token[i] <= 'Z')
 			|| (head->token[i] >= '0' && head->token[i] <= '9')
@@ -260,7 +266,7 @@ int	return_end_pos(t_token *head)
 	{
 		i++;
 	}
-	return (i);
+	return (i-1);
 }
 
 void	update_token_linked_list(t_token **head, t_env *envp_linked)
@@ -377,7 +383,7 @@ int	process_token(t_token **head, t_env *envp_linked)
 		return (0);
 	}
 	end = return_end_pos(*head);
-	end--;
+	// end--;
 	len = end - start;
 	if (len == 0 || ((*head)->token[start + 1] == ' ' || (*head)->token[start
 			+ 1] == '\0'))
