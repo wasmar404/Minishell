@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 11:27:21 by schaaban          #+#    #+#             */
-/*   Updated: 2024/12/25 18:37:01 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/12/26 12:39:43 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	echo_main(t_token *head)
 		{
 			flag1++;
 		printf("%s", head->token);
-		if(head->next)
+		if(head->next && head -> next -> type == WORD)
 			printf(" ");
 		head = head->next;
 		}

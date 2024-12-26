@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:02:23 by wasmar            #+#    #+#             */
-/*   Updated: 2024/12/26 12:30:23 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/12/26 14:27:05 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ t_token	*input_to_linked_listt(t_env *envp_linked, char **splitted_input,
 		else
 			input_to_linked_list_h(&head, new_node);
 		i++;
-	}
+	 }
 	update_token_linked_list(&print, envp_linked);
 	  remove_quotes_main(&head3);
 	return (print1);
@@ -417,7 +417,7 @@ void remove_quotes_main(t_token **head)
 			 	double_quotes++;
 			len = strlen((*head)->token);
 			end = find_end_of_quotes(copy,'"',i);
-            break;
+            // break;
 			// printf("end1 %d\n",end);
 
 			if(end-1 > len)

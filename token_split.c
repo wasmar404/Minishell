@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:00:29 by schaaban          #+#    #+#             */
-/*   Updated: 2024/12/25 18:56:26 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/12/26 14:22:54 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,8 @@ void	check_non_delimeter_h( char *str, int *i,int *start,int *len)
 		{
 			// (*start)++;
 			(*i)++;
-			while (str[(*i)] && str[(*i)] != '"')
+			while (str[(*i)] &&!check_double_sep(str, (*i))
+			&& !check_single_sep(str[(*i)]) && str[(*i)] != ' ')
 				(*i)++;
 			(*len) = (*i) - (*start)+1;
 			 (*i)++;
@@ -92,7 +93,8 @@ void	check_non_delimeter_h( char *str, int *i,int *start,int *len)
 				else if (str[(*i)] == '\'')
 		{
 			(*i)++;
-			while (str[(*i)] && str[(*i)] != '\'')
+			while (str[(*i)] && !check_double_sep(str, (*i))
+			&& !check_single_sep(str[(*i)]) && str[(*i)] != ' ')
 				(*i)++;
 			(*len) = (*i) - (*start)+1;
 			 (*i)++;
@@ -144,18 +146,20 @@ void	check_quotes(char *input, int *i, int *count, int *in_token)
 {
 	if (input[(*i)] == '"')
 	{
-		(*i)++;
-		while (input[(*i)] && input[(*i)] != '"')
-			(*i)++;
+		(*i)++;//SKIP "
+		while (input[(*i)]&& !check_double_sep(input, (*i))
+			&& !check_single_sep(input[(*i)]) && input[(*i)] != ' ')
+			(*i)++;//find th end for "
 		if (input[(*i)] == '"')
-			(*i)++;
+			(*i)++;//skip last "
 		(*count)++;
 		(*in_token) = 0;
 	}
 	else 	if (input[(*i)] == '\'')
 	{
 		(*i)++;
-		while (input[(*i)] && input[(*i)] != '\'')
+		while (input[(*i)] && !check_double_sep(input, (*i))
+			&& !check_single_sep(input[(*i)]) && input[(*i)] != ' ')
 			(*i)++;
 		if (input[(*i)] == '\'')
 			(*i)++;
@@ -176,17 +180,17 @@ void	token_count_helper(char *input, int *i, int *count, int *in_token)
 		(*in_token) = 0;
 	}
 	else if (check_single_sep(input[(*i)]) == 1)
-		single_sep_case(count, i, in_token, input);
+		single_sep_case(count, i, in_token, input);//if there is sapce after sep skip
 	else
 	{
-		if ((*in_token) == 0)
+		if ((*in_token) == 0)//not sure why
 		{
 			(*count)++;
 			(*in_token) = 1;
 		}
 		while (input[*i] && !check_double_sep(input, (*i))
 			&& !check_single_sep(input[(*i)]) && input[(*i)] != ' '
-			&& input[(*i)] != '"')
+			&& input[(*i)] != '"' && input[(*i)] != '\'' )
 			(*i)++;
 	}
 }
