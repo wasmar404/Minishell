@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:02:23 by wasmar            #+#    #+#             */
-/*   Updated: 2024/12/26 14:27:05 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/12/27 14:23:53 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -471,7 +471,6 @@ void remove_quotes_and_replace(t_token **head,int start)
 		return;
 	}
 	new = new_string((*head)->token,start,end);
-	//  printf("\n new: %s \n",new);
 	len = strlen(new);
 	(*head)->token =malloc(len+1);
 	strcpy((*head)->token,new);
