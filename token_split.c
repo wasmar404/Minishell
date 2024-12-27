@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:00:29 by schaaban          #+#    #+#             */
-/*   Updated: 2024/12/27 14:44:18 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/12/27 14:45:45 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	check_non_delimeter_h( char *str, int *i,int *start,int *len)
 			// (*start)++;
 			(*i)++;
 			while (str[(*i)] &&!check_double_sep(str, (*i))
-			&& !check_single_sep(str[(*i)]) && !(str[(*i)] != ' '))
+			&& !check_single_sep(str[(*i)]) && str[(*i)] != ' ')
 				(*i)++;
 			(*len) = (*i) - (*start)+1;
 			 (*i)++;
@@ -94,7 +94,7 @@ void	check_non_delimeter_h( char *str, int *i,int *start,int *len)
 		{
 			(*i)++;
 			while (str[(*i)] && !check_double_sep(str, (*i))
-			&& !check_single_sep(str[(*i)]) && !(str[(*i)] != ' '))
+			&& !check_single_sep(str[(*i)]) && str[(*i)] != ' ')
 				(*i)++;
 			(*len) = (*i) - (*start)+1;
 			 (*i)++;
