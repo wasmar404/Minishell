@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2024/12/25 18:26:23 by wasmar           ###   ########.fr       */
+/*   Updated: 2024/12/30 12:46:31 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,13 @@ typedef enum token_type
 	TWO_POINTS,
 	DIRECTORY
 }					token_type;
+typedef enum dollar_type
+{
+	QUOTES,
+	CHARACTERS,
+	NUMBERS,
+	STRING
+}	dollar_type;
 
 typedef struct t_token
 {
@@ -99,6 +106,7 @@ t_env				*check_in_envp(t_env *head, char *a);
 void				echo_main(t_token *head);
 void				complicated_execute(t_env **my_env, t_token *head,
 						char **my_envp);
+int	check_dollar1(t_token *head);
 t_token				*create_node_token(char *str, int i, bool built_in_or_not);
 bool				built_in_or_not(char *cmd);
 void				find_the_word_path_in_envp(char ***envp);
@@ -149,7 +157,6 @@ token_type			check_input_type(char *input, char **envp,
 						char **splitted_input, int i);
 void				run_built_ins(t_token *head, t_env **my_envp, int *pipefd,
 						int input_fd, int flag);
-void				check_dollorr(t_token *head);
 void				input_to_linked_list_h(t_token **head, t_token *new);
 t_token				*create_node_token(char *str, int i, bool built_in_or_not);
 bool				built_in_or_not(char *cmd);
@@ -171,4 +178,10 @@ void				update_token_linked_list(t_token **head,
 int find_end_of_quotes(char *str, char quote,int i);
 void remove_quotes_and_replace(t_token **head,int i);
 void remove_quotes_main(t_token **head);
+void main_dollar(t_token **head,t_env *envp);
+char * check_dollar_plus1_char(char **str);
+char *dollar_main_char(char *str);
+t_env	*search_and_find_a_type_my_envpp(t_env *envp, char *to_find);
+void expand_dollar1(t_token **head,t_env *envp_linked);
+
 #endif
