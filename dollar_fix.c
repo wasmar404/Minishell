@@ -1,0 +1,214 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   dollar_fix.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/03 10:37:55 by wasmar            #+#    #+#             */
+/*   Updated: 2025/01/03 12:44:37 by wasmar           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "header.h"
+char *create_array_till_dollar(t_token *head,int index);
+int find_dollar_pos1(char *str);
+int find_end_variable(char *str);
+void check_quotes_status_and_update(int *inside_quote, int *d_start,int *d_end, int *s_start,int *s_end , char c);
+int is_num_or_char(char c);
+void check_quotes_till_end(char *str,int *inside_quote, int *d_start,int *d_end, int *s_start,int *s_end,int start,int end);
+char *check_char_after_dollar(char *str, int inside_quote,t_env *envp);
+void main_dollar(t_token **head,t_env *env)
+{
+    int i = 0;
+    char *str = NULL;
+    int end = 0;
+    char *to_expand = NULL;
+    int start = 0;
+    char *expanded;
+    int len = 0;
+    int inside_quote = 0; // 1 for "" and 2 for ' and 0 i am outside
+    int d_start = 0;
+    int d_end = 0;
+    int s_start = 0;
+    int s_end = 0;
+    while((*head))
+    {
+        i = 0;
+        str = NULL;
+        while((*head)->token[i])
+        {
+            if((*head)->token[i] == '$')
+            {
+               str = create_array_till_dollar(*head,i);
+               start = i;
+               end = find_end_variable((*head)->token);
+               to_expand = ft_strndup((*head)->token+start,end -start);
+               if((*head)-> token[end])
+                    i = end;
+                check_quotes_till_end((*head)->token,&inside_quote,&d_start,&d_end,&s_start,&s_end,start,end);
+                expanded = check_char_after_dollar(to_expand,inside_quote,env);
+                str = ft_strjoin(str,expanded);
+                free(to_expand);
+                free(expanded);
+            }
+            if(!(*head)->token[i+1])
+            {
+                if(str != NULL)
+                {
+
+                    //                 printf("aa tfuft?");
+                    len = strlen(str);
+                    // printf("len :%i\n",len);
+                    free( (*head)->token );
+                    (*head)->token =  malloc(len+1);
+                    if ((*head)->token == NULL) 
+                    {
+                    printf("Memory allocation failed\n");
+                    return;
+                    }
+                      strcpy((*head)->token,str);
+                     break;
+                }
+                // else
+                // {
+                //     break;
+                // }
+            }
+            i++;
+        }
+
+        (*head) = (*head) ->next;
+    }
+    
+}
+void check_quotes_till_end(char *str,int *inside_quote, int *d_start,int *d_end, int *s_start,int *s_end,int start,int end)
+{
+    int i = start;
+    while(i <= end)
+    {
+        check_quotes_status_and_update(inside_quote,d_start,d_end,s_start,s_end,str[i]); 
+        i++;
+    }
+}
+char *create_array_till_dollar(t_token *head,int index)
+{
+    char * new_string;
+    int i;
+    i = 0;
+    new_string = NULL;
+    new_string = malloc(index+1);
+    while(i < index)
+    {
+        new_string[i] = head->token[i];
+        i++;
+    }
+    new_string[i] = '\0';
+    return(new_string);
+}
+int find_end_variable(char *str)
+{
+    int i = find_dollar_pos1(str);
+    i++;
+	while (str[i] && ((str[i] >= 'a' && str[i] <= 'z')
+			|| (str[i] >= 'A' && str[i] <= 'Z')
+			|| (str[i] >= '0' && str[i] <= '9')
+			|| str[i] == '_'))
+	{
+		i++;
+	}
+    return(i);
+    
+}
+int find_dollar_pos1(char *str)
+{
+    int i = 0;
+    while(str[i])
+    {
+        if(str[i] == '$')
+            return(i);
+        i++;
+    }
+    return(-42);
+}
+
+void check_quotes_status_and_update(int *inside_quote, int *d_start,int *d_end, int *s_start,int *s_end , char c)
+{
+     if ((c == '"' || c == '\'') && (*inside_quote) == 0)
+            {
+               if(c == '"')
+               {
+                    (*inside_quote) = 1;
+                    (*d_start) = 1;
+               }
+            
+               if(c == '\'')
+               {
+                    (*inside_quote) = 2;
+                    (*s_start) = 1;
+               }
+            }
+            else if  ((c == '"' || c == '\'') && ((*inside_quote) == 1 || (*inside_quote) == 2))
+            {
+                 if(c == '"')
+               {
+                    (*inside_quote) = 0;
+                    (*d_end) = 1;
+               }
+            
+               if(c == '\'')
+               {
+                    (*inside_quote) = 0;
+                    (*s_end) = 1;
+               }
+            }
+}
+t_env	*search_and_find_a_type_my_envpp(t_env *envp, char *to_find)
+{
+	while ((envp) != NULL)
+	{
+		if (ft_strcmp(to_find, (envp)->type) == 0)
+		{
+			return (envp);
+		}
+		(envp) = (envp)->next;
+	}
+	return (NULL);
+}
+char *expand_dollar(char *str,t_env *envp)
+{
+    char *find;
+    find = strdup(str+1);
+    t_env *to_replace;
+    char *new_string = NULL;
+    
+    to_replace = search_and_find_a_type_my_envpp(envp,find);
+    
+    if(to_replace != NULL)
+    {
+        new_string = strdup(to_replace -> enva);
+    }
+    return(new_string);
+    
+}
+char *check_char_after_dollar(char *str, int inside_quote,t_env *envp)
+{
+    char *new_string = NULL;
+    if(str[0] == '$' && (str[1] == '"' || str[1] == '\'') && (inside_quote == 0 || inside_quote ==1))
+        new_string = strdup(str+1);
+    else if(str[0] == '$' && (str[1] >= '0' && str[1] <= '9') && (inside_quote == 0 || inside_quote ==1))
+        new_string = strdup(str+2);
+    else if((is_num_or_char(str[1]) == 0 && (str[1] != '_')) && str[0] == '$')
+        new_string = strdup(str);
+    else if((is_num_or_char(str[1]) == 1 || (str[1] == '_')) && str[0] == '$')
+        new_string = expand_dollar(str,envp);
+    return (new_string);
+}
+int is_num_or_char(char c)
+{
+    if((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9'))
+    {
+        return(1);
+    }
+    return (0);
+}

@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:02:23 by wasmar            #+#    #+#             */
-/*   Updated: 2024/12/30 13:50:24 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/01/03 12:41:42 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ t_token	*input_to_linked_listt(t_env *envp_linked, char **splitted_input,
 	 }
 	// update_token_linked_list(&print, envp_linked);
 	main_dollar(&print,envp_linked);
-	 remove_quotes_main(&head3);
+	//  remove_quotes_main(&head3);
 	return (print1);
 }
 
@@ -158,18 +158,18 @@ t_token	*create_node_token(char *str, int i, bool built_in_or_not)
 	return (new_node);
 }
 
-t_env	*search_and_find_a_type_my_envpp(t_env *envp, char *to_find)
-{
-	while ((envp) != NULL)
-	{
-		if (ft_strcmp(to_find, (envp)->type) == 0)
-		{
-			return (envp);
-		}
-		(envp) = (envp)->next;
-	}
-	return (NULL);
-}
+// t_env	*search_and_find_a_type_my_envpp(t_env *envp, char *to_find)
+// {
+// 	while ((envp) != NULL)
+// 	{
+// 		if (ft_strcmp(to_find, (envp)->type) == 0)
+// 		{
+// 			return (envp);
+// 		}
+// 		(envp) = (envp)->next;
+// 	}
+// 	return (NULL);
+// }
 
 char	*new_string(char *str, int i, int j)
 {
