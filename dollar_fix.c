@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 10:37:55 by wasmar            #+#    #+#             */
-/*   Updated: 2025/01/03 12:44:37 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/01/03 17:27:52 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void check_quotes_status_and_update(int *inside_quote, int *d_start,int *d_end, 
 int is_num_or_char(char c);
 void check_quotes_till_end(char *str,int *inside_quote, int *d_start,int *d_end, int *s_start,int *s_end,int start,int end);
 char *check_char_after_dollar(char *str, int inside_quote,t_env *envp);
+void expand_and_replace(t_token **head,char *str, int end);
 void main_dollar(t_token **head,t_env *env)
 {
     int i = 0;
@@ -38,41 +39,28 @@ void main_dollar(t_token **head,t_env *env)
         str = NULL;
         while((*head)->token[i])
         {
+            // check_quotes_status_and_update(&inside_quote,&d_start,&d_end,&s_start,&s_end,(*head)->token[i]);
             if((*head)->token[i] == '$')
             {
+                printf("%i",i);
+                printf("%c",(*head) -> token[i]);
+                // printf("hjguiydctujcukgoftudutjfcy");
                str = create_array_till_dollar(*head,i);
                start = i;
                end = find_end_variable((*head)->token);
                to_expand = ft_strndup((*head)->token+start,end -start);
-               if((*head)-> token[end])
-                    i = end;
-                check_quotes_till_end((*head)->token,&inside_quote,&d_start,&d_end,&s_start,&s_end,start,end);
-                expanded = check_char_after_dollar(to_expand,inside_quote,env);
-                str = ft_strjoin(str,expanded);
-                free(to_expand);
-                free(expanded);
-            }
-            if(!(*head)->token[i+1])
-            {
-                if(str != NULL)
-                {
+            //    if((*head)-> token[end])
+                    // i = end;
 
-                    //                 printf("aa tfuft?");
-                    len = strlen(str);
-                    // printf("len :%i\n",len);
-                    free( (*head)->token );
-                    (*head)->token =  malloc(len+1);
-                    if ((*head)->token == NULL) 
-                    {
-                    printf("Memory allocation failed\n");
-                    return;
-                    }
-                      strcpy((*head)->token,str);
-                     break;
-                }
-                // else
+                printf("%i",end);
+                // check_quotes_till_end((*head)->token,&inside_quote,&d_start,&d_end,&s_start,&s_end,start,end);
+                // expanded = check_char_after_dollar(to_expand,inside_quote,env);
+                // if(expanded)
                 // {
-                //     break;
+                //     str = ft_strjoin(str,expanded);
+                //     free(to_expand);
+                //     free(expanded);
+                // expand_and_replace(head,str,end);
                 // }
             }
             i++;
@@ -81,6 +69,29 @@ void main_dollar(t_token **head,t_env *env)
         (*head) = (*head) ->next;
     }
     
+}
+void expand_and_replace(t_token **head,char *str, int end)
+{
+    char *s;
+    int i = 0;
+    int x = 0;
+    s = strdup((*head) -> token + end);
+    int len = strlen(str) + strlen(s);
+    (*head) -> token = malloc(len + 1);
+    while(str[i])
+    {
+        (*head) -> token[x] = str[i];
+        i ++;
+        x ++;
+    }
+    i = 0;
+    while(s[i])
+    {
+        (*head)->token[x] = s[i];
+        i ++;
+        x ++;
+    }
+
 }
 void check_quotes_till_end(char *str,int *inside_quote, int *d_start,int *d_end, int *s_start,int *s_end,int start,int end)
 {
@@ -198,9 +209,9 @@ char *check_char_after_dollar(char *str, int inside_quote,t_env *envp)
         new_string = strdup(str+1);
     else if(str[0] == '$' && (str[1] >= '0' && str[1] <= '9') && (inside_quote == 0 || inside_quote ==1))
         new_string = strdup(str+2);
-    else if((is_num_or_char(str[1]) == 0 && (str[1] != '_')) && str[0] == '$')
+    else if((is_num_or_char(str[1]) == 0 && (str[1] != '_')) && str[0] == '$' && (inside_quote == 0 || inside_quote ==1))
         new_string = strdup(str);
-    else if((is_num_or_char(str[1]) == 1 || (str[1] == '_')) && str[0] == '$')
+    else if((is_num_or_char(str[1]) == 1 || (str[1] == '_')) && str[0] == '$' && (inside_quote == 0 || inside_quote ==1))
         new_string = expand_dollar(str,envp);
     return (new_string);
 }
