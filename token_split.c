@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:00:29 by schaaban          #+#    #+#             */
-/*   Updated: 2024/12/30 12:36:14 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/01/06 22:03:55 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	ft_strlenn(char *input)
 char	*ft_strndup(char *str, int i)
 {
 	int		z;
-	char	*array;
+	char	*array ;
 
 	z = 0;
 	array = malloc((i + 1) * sizeof(char));
