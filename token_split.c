@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_split.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:00:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/06 22:03:55 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/01/07 12:06:07 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,25 +77,43 @@ int	delimeter_check(char **tokens, int *token, char *str, int *i)
 		return (0);
 	return (1);
 }
-
+int	check_single_sep_quote(char input)
+{
+	if (input == '>' || input == '<' || input == '|' || input == ' ')
+		return (1);
+	return (0);
+}
 void	check_non_delimeter_h( char *str, int *i,int *start,int *len)
 {
 		if (str[(*i)] == '"')
 		{
-			// (*start)++;
 			(*i)++;
-			while (str[(*i)] &&!check_double_sep(str, (*i))
-			&& !check_single_sep(str[(*i)]) && str[(*i)] != ' ')
+			while (str[(*i)] && str[(*i)] != '"' ) //&& str[(*i)] != ' '
+			{
 				(*i)++;
+			}
+						(*i)++;
+			while (str[(*i)] && !check_double_sep(str, (*i))
+			&& !check_single_sep(str[(*i)])  )			
+			{
+				(*i)++;
+			}
 			(*len) = (*i) - (*start)+1;
 			 (*i)++;
 		}
 				else if (str[(*i)] == '\'')
 		{
 			(*i)++;
-			while (str[(*i)] && !check_double_sep(str, (*i))
-			&& !check_single_sep(str[(*i)]) && str[(*i)] != ' ')
+			while (str[(*i)] && str[(*i)] != '\'' ) //&& str[(*i)] != ' '
+			{
 				(*i)++;
+			}
+						(*i)++;
+			while (str[(*i)] && !check_double_sep(str, (*i))
+			&& !check_single_sep(str[(*i)]))			
+			{
+				(*i)++;
+			}
 			(*len) = (*i) - (*start)+1;
 			 (*i)++;
 		}
@@ -148,7 +166,7 @@ void	check_quotes(char *input, int *i, int *count, int *in_token)
 	{
 		(*i)++;//SKIP "
 		while (input[(*i)]&& !check_double_sep(input, (*i))
-			&& !check_single_sep(input[(*i)]) && input[(*i)] != ' ')
+			&& !check_single_sep(input[(*i)]) )//&& input[(*i)] != ' '
 			(*i)++;//find th end for "
 		if (input[(*i)] == '"')
 			(*i)++;//skip last "
@@ -159,7 +177,7 @@ void	check_quotes(char *input, int *i, int *count, int *in_token)
 	{
 		(*i)++;
 		while (input[(*i)] && !check_double_sep(input, (*i))
-			&& !check_single_sep(input[(*i)]) && input[(*i)] != ' ')
+			&& !check_single_sep(input[(*i)]) )//&& input[(*i)] != ' '
 			(*i)++;
 		if (input[(*i)] == '\'')
 			(*i)++;

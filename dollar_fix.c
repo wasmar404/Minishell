@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dollar_fix.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 10:37:55 by wasmar            #+#    #+#             */
-/*   Updated: 2025/01/06 23:08:34 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/01/07 12:45:17 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,33 +48,34 @@ void main_dollar(t_token **head,t_env *env)
                end = find_end_variable((*head)->token,i);
                to_expand = strndup((*head)->token+start,end -start);
                 expanded = check_char_after_dollar(to_expand,inside_quote,env);
-                // printf("expand: %s\n",expanded);
+                // printf("expand: %s\n",to_expand);
                 // printf("inside%d\n",inside_quote);
                 if(expanded == NULL&& (inside_quote == 0 || inside_quote == 1))
                 {
                     expand_and_replace(head,str,end);
-                     i = strlen(str);
+                     i = strlen(str) -1;
                 }
                 else if(expanded)
                 {
-                    str = ft_strjoin(str,expanded);
+                    char *temp = ft_strjoin(str,expanded);
+                    free(str);
+                    str = temp;
                     free(to_expand);
                     free(expanded);
                      expand_and_replace(head,str,end);
                     // printf("head: %s\n",(*head)->token);
-                    i = strlen(str);
+                    i = strlen(str)-1 ;
                     
                 }
                 else
                 {
-                    i = end;
+                    i = end - 1;
                 }
              check_quotes_till_end((*head)->token,&inside_quote,&d_start,&d_end,&s_start,&s_end,start,end);
 
             }
             i++;
         }
-
         (*head) = (*head) ->next;
     }
     
@@ -239,7 +240,7 @@ char *check_char_after_dollar(char *str, int inside_quote,t_env *envp)
     char *new_string = NULL;
     // printf("str: \"%s\" %d\n",str,inside_quote);
     // printf("\n%c\n",str[0]);
-     if(str[0] == '$' && (str[1] == '"' || str[1] == '\'') && (inside_quote == 0 || inside_quote ==1))
+     if(str[0] == '$' && (str[1] == '"' || str[1] == '\'') && (inside_quote == 0))
     {
         new_string = strdup(str+1);
     }
@@ -251,8 +252,8 @@ char *check_char_after_dollar(char *str, int inside_quote,t_env *envp)
     {
         new_string = strdup(str);
     }
-     if((is_num_or_char(str[1]) == 1 || (str[1] == '_')) && str[0] == '$' && (inside_quote == 0 || inside_quote ==1))
-     {
+    else if((is_num_or_char(str[1]) == 1 || (str[1] == '_')) && str[0] == '$' && (inside_quote == 0 || inside_quote ==1))
+     {//check ffirst charr
         new_string = expand_dollar(str,envp);
      }
     //  printf("null1");

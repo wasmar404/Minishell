@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   updated_tokenization.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:02:23 by wasmar            #+#    #+#             */
-/*   Updated: 2025/01/06 22:14:41 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/01/07 12:50:54 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,9 @@ t_token	*input_to_linked_listt(t_env *envp_linked, char **splitted_input,
 	 }
 	// update_token_linked_list(&print, envp_linked);
 	 main_dollar(&print,envp_linked);
-	 remove_quotes_main(&head3);
+	  remove_quotes_main(&head3);
 	return (print1);
 }
-
 char	*return_value_of_envp_type(t_env *envp_linked, char *search_for)
 {
 	char	*result;

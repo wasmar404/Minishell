@@ -3,11 +3,88 @@ ls | cat
 env | cat
 env | grep PWD
 env | cat | cat | grep PWD
-< main.c cat
+< main.c cat !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 < main.c cat | grep if
 < main.c cat | grep if >l
 cat << hh
 cat Makefile | grep srcs | grep srcs | cat -e
 cat < main.c
 cat <main.c >>kk
->> kk cat < main.c
+>> kk cat < main.c !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+
+$> echo $
+$>  done
+$> echo $:$= | cat -e
+$>  done
+$> echo $HOME
+$>  done
+$> echo my shit terminal is [$TERM]
+$>  done
+$> echo my shit terminal is [$TERM4
+$>  done
+$> echo my shit terminal is [$TERM4]
+$>  done
+$> echo $HOME9
+$>  done
+$> echo $HOME%
+$>  done
+$> echo Le path de mon HOME est $HOME
+$>  done
+$> echo $""
+$>  done
+$> echo '$'''
+$>  done
+$> echo $"HOME"
+$>done
+$> echo $''HOME
+$>done
+$> echo $""HOME
+$>done
+$> echo "$HO"ME
+$>done there is an extra spacee!!!!!!!!!!!!!!!!!!!!!!
+$> echo '$HO'ME
+$>done
+$> echo "$HO""ME"
+$>done
+$> echo '$HO''ME'
+$>  done
+$> echo "'$HO''ME'"
+$>done
+$> echo ""$HOME
+$>done
+$> echo ''$HOME
+$>done
+$> echo $"HO""ME"
+$>  done
+$> echo $'HO''ME'
+$>  done
+$> echo $'HOME'
+$>  done
+$> echo $=HOME
+$>  done
+$> echo $"HOLA"
+$>done
+$> echo $'HOLA'
+$>done
+$> echo \$HOME
+ done
+ echo '' $HOME
+ done with an extra space
+$> echo " $ " | cat -e
+$>  done with an extra space
+$> echo ' $ ' | cat -e
+$>done with an extra space
+$> echo "$"""
+$>  working 
+$> echo $9HOME
+$>  working 
+$> echo $PWD$HOME
+$> WORKING
+$> echo $USER$var\$USER$USER\$USERtest$USER
+$> working
+  echo "$"HOME"
+
+
+$> echo "" $HOME
+$>done but there is a extra space 
+
