@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:16:26 by wasmar            #+#    #+#             */
-/*   Updated: 2025/01/07 15:04:34 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/07 15:43:05 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,11 +232,29 @@ void remove_empty_nodes(t_token **head)
     {
         if(check_if_null((*head)->token) == 0)
         {
+			if((*head) -> next == NULL){
+				 temp = (*head)->prev;
+            	temp1=(*head);
+				temp -> next = NULL;
+				free(temp1);
+			}
+			else if(((*head) -> next != NULL) && ((*head) -> prev != NULL))
+			{
             temp = (*head)->prev;
             temp1=(*head);
             (*head) = (*head)->next;
             temp ->next = (*head);
             (*head)->prev = temp;
+			free(temp1);
+			}
+			else if((*head) -> prev == NULL) 
+			{
+				temp = (*head) ->next;
+				temp1 = (*head);
+				temp -> prev = NULL;
+				free(temp1);
+			}
+			
         }
         (*head) = (*head)->next;
     }

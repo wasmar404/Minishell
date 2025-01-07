@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/05 12:28:27 by wasmar            #+#    #+#             */
-/*   Updated: 2024/12/18 10:26:07 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/07 15:51:56 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,14 @@ void cd(t_token *head, t_env **my_envp)
 {
         char *a;
     char *new_oldpwd;
-    if(head->next && head->next->type ==TILDE)
-    {
+ 
         search_and_find_a_type_my_envp(my_envp,"HOME");
         a = strdup((*my_envp)->enva);
         chdir(a);
         return_env_to_beginning(my_envp);
         search_and_find_a_type_my_envp(my_envp,"PWD");
+        if((*my_envp))
+        {
         new_oldpwd = strdup((*my_envp)->enva);
         strcpy((*my_envp)->enva,a);
         return_env_to_beginning(my_envp);
@@ -51,7 +52,8 @@ void cd(t_token *head, t_env **my_envp)
         return_env_to_beginning(my_envp);
         free(a);
         free(new_oldpwd);
-}
+        }
+
 }
 void cd_TILDE(t_token *head, t_env **my_envp)
 {
