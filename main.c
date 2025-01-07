@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/07 12:37:16 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/07 14:10:41 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void print_list(t_token *head)
 {
 	while(head)
 	{
-		printf("%s\n",head->token);
+		printf("%s%d\n",head->token,head->type);
 		// fflush(stdout);
 		head = head ->next;
 	}
@@ -74,7 +74,7 @@ void	main_helper(char *input, char **envp,t_env **env_linked)
 		return ;
 	splitted_input = token_split(input);
 	head = input_to_linked_listt(*env_linked,splitted_input,envp);
-//  print_list(head);
+//   print_list(head);
 	//(void)env_linked;
 	   complicated_execute(env_linked, head, envp);
 }

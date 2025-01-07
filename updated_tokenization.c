@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   updated_tokenization.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:02:23 by wasmar            #+#    #+#             */
-/*   Updated: 2025/01/07 12:50:54 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/07 14:10:10 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ t_token	*generate_tokenn(t_env *envp_linked, char **splitted_input, char **envp,
 token_type	check_input_type(char *input, char **envp, char **splitted_input,
 		int i)
 {
+	printf("input :%s\n",input);
 	if (check_if_heredoc_aoutput_minus_tilde(input) != 0)
 		return (check_if_heredoc_aoutput_minus_tilde(input));
 	else if (check_if_pipe_soutput_sinput(input) != 0)
@@ -124,6 +125,7 @@ token_type	check_if_pipe_soutput_sinput(char *input)
 token_type	check_if_twopoints_dir_cmd_word(char *input, char **envp,
 		char **splitted_input, int i)
 {
+	printf("cmd function: \"%s\"\n",input);
 	if (ft_strcmp(input, "..") == 0)
 		return (TWO_POINTS);
 	if (access(input, F_OK) == 0)
@@ -136,9 +138,10 @@ token_type	check_if_twopoints_dir_cmd_word(char *input, char **envp,
 
 int	check_if_cmd(char *input, char **envp, char **splitted_input, int i)
 {
+		printf("cmd function1: \"%s\"\n",input);
 	if (find_path_of_cmd(input, envp))
 	{
-		if (i == 0 || strcmp(splitted_input[i - 1], "|") == 0)
+		if (i == 0 || strcmp(splitted_input[i - 1], "|") == 0 || strcmp(splitted_input[i - 2], ">") || strcmp(splitted_input[i - 2], ">>") || strcmp(splitted_input[i - 2], "<"))
 			return (1);
 	}
 	return (0);
