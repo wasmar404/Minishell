@@ -41,7 +41,7 @@ $>done
 $> echo $""HOME
 $>done
 $> echo "$HO"ME
-$>done there is an extra spacee!!!!!!!!!!!!!!!!!!!!!!
+$>done
 $> echo '$HO'ME
 $>done
 $> echo "$HO""ME"
@@ -68,7 +68,7 @@ $> echo $'HOLA'
 $>done
 $> echo \$HOME
  done
- echo '' $HOME
+$>echo '' $HOME
  done with an extra space
 $> echo " $ " | cat -e
 $>  done with an extra space

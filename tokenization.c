@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenization.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:16:26 by wasmar            #+#    #+#             */
-/*   Updated: 2024/12/22 20:15:37 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/01/07 15:04:34 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,6 +223,23 @@ void input_to_linked_list_h(t_token **head,t_token *new)
 	(*head)->next = new;
 	new->prev = (*head);
 	(*head) = new;
+}
+void remove_empty_nodes(t_token **head)
+{
+    t_token *temp;
+    t_token *temp1;
+    while ((*head))
+    {
+        if(check_if_null((*head)->token) == 0)
+        {
+            temp = (*head)->prev;
+            temp1=(*head);
+            (*head) = (*head)->next;
+            temp ->next = (*head);
+            (*head)->prev = temp;
+        }
+        (*head) = (*head)->next;
+    }
 }
 t_token	*input_to_linked_list(char **input, char **envp)
 {

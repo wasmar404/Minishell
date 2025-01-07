@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   header.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2024/12/30 12:46:31 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/01/07 15:04:45 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,5 +183,6 @@ char * check_dollar_plus1_char(char **str);
 char *dollar_main_char(char *str);
 t_env	*search_and_find_a_type_my_envpp(t_env *envp, char *to_find);
 void expand_dollar1(t_token **head,t_env *envp_linked);
-
+int check_if_null(char *input);
+void remove_empty_nodes(t_token **head);
 #endif

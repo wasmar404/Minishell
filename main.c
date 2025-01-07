@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/07 14:10:41 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/01/07 15:15:35 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,9 @@ void	main_helper(char *input, char **envp,t_env **env_linked)
 		return ;
 	splitted_input = token_split(input);
 	head = input_to_linked_listt(*env_linked,splitted_input,envp);
-//   print_list(head);
+  print_list(head);
 	//(void)env_linked;
-	   complicated_execute(env_linked, head, envp);
+	//   complicated_execute(env_linked, head, envp);
 }
 void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd)
 {
