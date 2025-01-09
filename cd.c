@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/05 12:28:27 by wasmar            #+#    #+#             */
-/*   Updated: 2025/01/07 15:51:56 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/08 15:28:06 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ void cd(t_token *head, t_env **my_envp)
 {
         char *a;
     char *new_oldpwd;
- 
+ if(!(head -> next))
+ {
         search_and_find_a_type_my_envp(my_envp,"HOME");
         a = strdup((*my_envp)->enva);
         chdir(a);
@@ -53,7 +54,7 @@ void cd(t_token *head, t_env **my_envp)
         free(a);
         free(new_oldpwd);
         }
-
+ }
 }
 void cd_TILDE(t_token *head, t_env **my_envp)
 {

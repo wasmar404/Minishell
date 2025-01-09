@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/07 15:45:33 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/08 15:17:54 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	main_helper(char *input, char **envp,t_env **env_linked)
 		return ;
 	splitted_input = token_split(input);
 	head = input_to_linked_listt(*env_linked,splitted_input,envp);
-	//   print_list(head);
+	//  print_list(head);
 	//(void)env_linked;
 	complicated_execute(env_linked, head, envp);
 }
@@ -335,6 +335,8 @@ void run_built_ins(t_token *head, t_env **my_envp,int *pipefd,int input_fd,int f
 }
 void external_commands(t_token *head,char **envp, t_env *my_envp,int *pipefd,int input_fd,char **current_command)
 {
+	if(find_var_name_return((my_envp),"PATH"))
+	{
 		(void)my_envp;
 			 char	*path;
 			super_complicated_handle_dups(head,pipefd,input_fd);
@@ -342,6 +344,7 @@ void external_commands(t_token *head,char **envp, t_env *my_envp,int *pipefd,int
 			if (execve(path, current_command, envp) == -1)
 				printf("execve failed");
 			exit(EXIT_SUCCESS);
+	}
 }
 void run_command_helper(t_token *head,char **envp, t_env **my_envp,int *pipefd,int input_fd,char **current_command)
 {

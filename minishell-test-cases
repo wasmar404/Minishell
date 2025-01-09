@@ -88,3 +88,44 @@ $> working
 $> echo "" $HOME
 $>done but there is a extra space 
 
+unset:
+1) $> export HOLA=bonjour
+   $> env
+   $> unset HOLA
+   $> unset HOLA
+   $> env
+   doneeeeeeeeeeeeeeeee
+2) $> export HOLA=bonjour
+$> env
+$> unset HOLA
+$> env
+doneeeeee
+3)> unset PATH
+$> echo $PATH 
+doneeee
+4) $> unset PATH
+   $> ls
+  doneeeeeee
+5) $> unset INEXISTANT
+ doneeeeeeee
+6) unset "" doneeeeeeee
+7)	$> unset PWD
+  $> env | grep PWD
+  $> pwd
+  doneeeeeeeee
+8) 	$> pwd
+$> unset PWD
+$> env | grep PWD
+$> cd $PWd doneeeeee
+9) 	$> unset OLDPWD
+$> env | grep OLDPWD doneeeeeeeee
+10) enset sudo doneeee
+
+
+10)unset HOL!A    output: bash: !A: event not found
+11) 	$> unset "" HOLA
+$> env | grep HOLA doneeeee
+12) $> unset PATH
+$> echo $PATH doneeeee
+13) $> unset PATH
+$> cat Makefile doneeeee

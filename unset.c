@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:29:11 by wasmar            #+#    #+#             */
-/*   Updated: 2024/12/19 12:29:03 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/08 11:50:51 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,14 @@ void find_var_name(t_env **my_envp,char *var_name)
         {
            break;
         }
+        if((*my_envp) -> next != NULL)
+        {
         (*my_envp) = (*my_envp) -> next;
+        }
+        else 
+        {
+            break;
+        }
     }
 }
 void delete_first_node(t_env **my_envp)
@@ -61,6 +68,7 @@ void main_unset1(t_env **my_envp ,char *var_name)
     find_var_name(my_envp,var_name);
     if(*my_envp == NULL)
     {
+        printf("hellooo\n");
         return;
     }
 
