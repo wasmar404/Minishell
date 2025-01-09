@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/09 14:32:34 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/01/09 16:43:32 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ typedef struct t_token
 	char			*token;
 	int				type;
 	bool			built_in_or_not;
+	int node_count;
 	struct t_token	*next;
 	struct t_token	*prev;
 }					t_token;

@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:02:23 by wasmar            #+#    #+#             */
-/*   Updated: 2025/01/08 15:18:13 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/01/09 16:44:47 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,11 @@ t_token	*generate_tokenn(t_env *envp_linked, char **splitted_input, char **envp,
 	t_token	*new_node;
 
 	(void)envp_linked;
+	
 	 type = check_input_type(splitted_input[i], envp, splitted_input, i);
 	new_node = create_node_token(strdup(splitted_input[i]), type,
 			built_in_or_not(splitted_input[i]));
+			new_node ->node_count = i;
 	return (new_node);
 }
 
