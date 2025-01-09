@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/09 14:32:12 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/01/09 15:37:48 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,19 +163,21 @@ int is_file(const char *path) {
 char *check_access_for_files(t_token *head) {
     
 	char *s = NULL;
-    while (head != NULL && head->type == WORD) {
-		if(is_file())
-        if (access(head->token, R_OK) == -1 || 
+    while (head != NULL)
+	 {
+		if(is_file(head -> token) == 1)
+		{
+       		if (access(head->token, R_OK) == -1 || 
             access(head->token, F_OK) == -1 || 
             access(head->token, W_OK) == -1 || 
-            access(head->token, X_OK) == -1) {
-            s = head -> token; 
+            access(head->token, X_OK) == -1) 
+            s = head -> token;
+		}
         head = head->next; 
     }
-
     return (s); 
 }
-}
+
 void dups1(t_token *current_input,t_token *current_output,int *pipefd)
 {
 	int fd;
