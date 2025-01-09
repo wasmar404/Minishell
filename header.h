@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   header.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/07 15:04:45 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/09 14:32:34 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@
 # include <stdlib.h>
 # include <stdlib.h>
 # include <sys/wait.h>
+#include <errno.h>
 # include <unistd.h>
+#include <sys/stat.h>
+
 
 # define RESET "\033[0m"
 # define BOLD_CYAN "\033[1;36m"
@@ -131,7 +134,7 @@ void				check_back_and_front(t_token *head_back,
 void				dups1(t_token *current_input, t_token *current_output,
 						int *pipefd);
 void				dups2(t_token *current_input, t_token *current_output,
-						int input_fd);
+						int input_fd,t_token *head);
 void				main_cd(t_token *head, t_env **my_envp);
 void				main_pwd(void);
 void				export_main(t_env **my_envp, t_token *head);
@@ -185,4 +188,5 @@ t_env	*search_and_find_a_type_my_envpp(t_env *envp, char *to_find);
 void expand_dollar1(t_token **head,t_env *envp_linked);
 int check_if_null(char *input);
 void remove_empty_nodes(t_token **head);
+char *check_access_for_files(t_token *head);
 #endif

@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/08 15:17:54 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/01/09 14:32:12 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	main_helper(char *input, char **envp,t_env **env_linked)
 		return ;
 	splitted_input = token_split(input);
 	head = input_to_linked_listt(*env_linked,splitted_input,envp);
-	//  print_list(head);
+	 // print_list(head);
 	//(void)env_linked;
 	complicated_execute(env_linked, head, envp);
 }
@@ -90,30 +90,91 @@ void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd)
 		}
 	check_back_and_front(current,&current_input,&current_output,current->next);
 	dups1(current_input,current_output,pipefd);
-	dups2(current,current_output,input_fd);
+	dups2(current,current_output,input_fd,head);
 	close(pipefd[0]);
 	close(pipefd[1]);
 }
-void dups2(t_token *current_input,t_token *current_output,int input_fd)
+void dups2(t_token *current_input,t_token *current_output,int input_fd,t_token *head)
 {
 	int fd;
+	char *s;
+	s = check_access_for_files(head);
 	if(current_input && current_input->type == PIPE)
-	{
+	{				
 		dup2(input_fd,0);
+
 		close(input_fd);
+	
 	}
 	if(current_output && current_output->type == AOUTPUT_REDIRECTION)
 	{
+			
 		fd = open(current_output->next->token, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		dup2(fd,1);
-		close(fd);
-	}
+		 close(fd);
+		
+		 }
+	
 	if(current_output && current_output->type == SOUTPUT_REDIRECTION)
 	{
-		fd = open(current_output->next->token, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		dup2(fd,1);
-		close(fd);
+
+		head = head ->next;
+		while (head && head->type != COMMAND && head->type != PIPE )
+		{
+			if (head->type == AOUTPUT_REDIRECTION || head->type == SOUTPUT_REDIRECTION)
+			{
+				fd = open(head->next->token, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+				if(s != NULL)
+				{
+					printf("zsh: permission denied: %s",s);
+					fflush(stdout);
+					 int null_fd = open("/dev/null", O_WRONLY);
+					dup2(null_fd, STDOUT_FILENO) ;
+					break;
+				}
+	
+				if (fd < 0) 
+				{
+				printf("The file exists, but you do not have read permission.\n");
+					break;
+				}
+			
+				dup2(fd, 1);
+				close(fd);
+				
+
+			}
+			head = head->next;
+		}
+		
 	}
+}
+int is_file(const char *path) {
+    struct stat buffer;
+    // Check if stat succeeds
+    if (stat(path, &buffer) == 0) {
+        // If it's a regular file
+        if (S_ISREG(buffer.st_mode)) {
+            return 1; // It's a file
+        }
+    }
+    return 0; // Not a file
+}
+char *check_access_for_files(t_token *head) {
+    
+	char *s = NULL;
+    while (head != NULL && head->type == WORD) {
+		if(is_file())
+        if (access(head->token, R_OK) == -1 || 
+            access(head->token, F_OK) == -1 || 
+            access(head->token, W_OK) == -1 || 
+            access(head->token, X_OK) == -1) {
+            s = head -> token; 
+        head = head->next; 
+    }
+
+    return (s); 
+}
 }
 void dups1(t_token *current_input,t_token *current_output,int *pipefd)
 {
@@ -159,14 +220,23 @@ void check_back_and_front(t_token *head_back,t_token **current_input,t_token **c
 		}
 		head_back = head_back -> prev;
 	}
+
 	while(current != NULL && current->type != COMMAND )
 	{
 		if((current->type == AOUTPUT_REDIRECTION || current->type == SOUTPUT_REDIRECTION || current->type == PIPE )&& flag == 0)
+		{
 			(*current_output)=current;
+		}
 		if((current->type == SINPUT_REDIRECTION || current->type == HERE_DOC))
 			(*current_input) = current;
 		current = current->next;
 	}
+	// 	if(*current_output)
+	// {
+	// printf("current_output: %s\n",(*current_output)->token);
+	// 	fflush(stdout);
+
+	// }
 }
 
 int pipe_count(t_token *head)
@@ -270,7 +340,6 @@ void	complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
 			}
 			else{
 			pid = fork();
-			
             if (pid == 0)
             {
 				run_command_helper(head,envp,my_envp,pipefd,input_fd,array_complicated_execute(head));
