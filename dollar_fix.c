@@ -69,7 +69,7 @@ void main_dollar(t_token **head,t_env *env)
                 }
                 else
                 {
-                    i = end - 1;
+                    i = end;
                 }
              check_quotes_till_end((*head)->token,&inside_quote,&d_start,&d_end,&s_start,&s_end,start,end);
 
@@ -194,13 +194,13 @@ void check_quotes_status_and_update(int *inside_quote, int *d_start,int *d_end, 
             }
             else if  ((c == '"' || c == '\'') && ((*inside_quote) == 1 || (*inside_quote) == 2))
             {
-                 if(c == '"')
+                 if(c == '"' && d_start == 1)
                {
                     (*inside_quote) = 0;
                     (*d_end) = 1;
                }
             
-               if(c == '\'')
+               if(c == '\'' && s_start == 1)
                {
                     (*inside_quote) = 0;
                     (*s_end) = 1;
