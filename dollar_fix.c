@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dollar_fix.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 10:37:55 by wasmar            #+#    #+#             */
-/*   Updated: 2025/01/13 17:17:37 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/01/13 17:50:19 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int is_num_or_char(char c);
 void check_quotes_till_end(char *str,int *inside_quote, int *d_start,int *d_end, int *s_start,int *s_end,int start,int end);
 char *check_char_after_dollar(char *str, int inside_quote,t_env *envp);
 void expand_and_replace(t_token **head,char *str, int end);
+void  main_dollar_helper(int *i,t_token **head,char **str,int *inside_quote,t_env *env,int *d_start,int *d_end,int *s_start,int *s_end);
 void main_dollar(t_token **head,t_env *env)
 {
     int i = 0;
@@ -40,8 +41,7 @@ void main_dollar(t_token **head,t_env *env)
         while((*head)->token[i])
         {
             check_quotes_status_and_update(&inside_quote,&d_start,&d_end,&s_start,&s_end,(*head)->token[i]);
-            main_dollar_helper(&i,head,&str,&inside_quote)
-            
+            main_dollar_helper(&i, head, &str, &inside_quote, env, &d_start, &d_end, &s_start, &s_end);
             i++;
         }
         (*head) = (*head) ->next;

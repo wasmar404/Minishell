@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/13 15:45:39 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/13 17:40:29 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,10 @@ void free_doubly_linked_list(t_token *head) {
     t_token *temp;
 
     while (head != NULL) {
-        temp = head;        // Save the current node
-        head = head->next;  // Move to the next node
-        free(temp->token);   // Free the data if necessary
-        free(temp);         // Free the node itself
+        temp = head;        
+        head = head->next;
+        free(temp->token); 
+        free(temp);
     }
 }
 void    main_helper(char *input, char **envp,t_env **env_linked)
