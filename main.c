@@ -6,14 +6,14 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/09 16:51:43 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/01/13 13:07:42 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 int main(int ac, char **av, char **envp)
 {
-    char    *input;
+    char    *input =NULL;
     t_env   *head;
     char    **my_envp;
     (void)ac;
@@ -22,10 +22,13 @@ int main(int ac, char **av, char **envp)
     my_envp = env_to_array(head);
     while (1)
     {
+
         input = readline(BOLD_CYAN "sw_shell> " RESET);
-        if(*input)
+        if(input)
+        {
             add_history(input);
-        main_helper(input, my_envp,&head);
+        }
+         main_helper(input, my_envp,&head);
     }
     return (0);
 }
@@ -67,7 +70,7 @@ void    main_helper(char *input, char **envp,t_env **env_linked)
     head = input_to_linked_listt(*env_linked,splitted_input,envp);
     // print_list(head);
     //(void)env_linked;
-    complicated_execute(env_linked, head, envp);
+     complicated_execute(env_linked, head, envp);
 }
 void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd)
 {
@@ -79,7 +82,7 @@ void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd)
         dup2(input_fd, STDIN_FILENO);
         close(input_fd);
         }
-    check_back_and_front(current,&current_input,&current_output,current->next);
+     check_back_and_front(current,&current_input,&current_output,current->next);
     dups1(current_input,current_output,pipefd);
     dups2(current,current_output,input_fd,head);
     close(pipefd[0]);
@@ -259,6 +262,7 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
     t_token *head1 = head;
     int saved_stdin=dup(STDIN_FILENO);
     int saved_stdout=dup(STDOUT_FILENO);
+    int flag = 0;
     while (head != NULL)
     {
             char **envp = env_to_array(*my_envp);
@@ -274,6 +278,7 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
                         perror("pipe failed");
                         exit(EXIT_FAILURE);
                     }
+                    flag++;
                     break;
                 }
                 else{
@@ -310,11 +315,14 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
                 exit(EXIT_FAILURE);
             }
         }
-        close(pipefd[1]);}
+         if(flag == 1)
+         close(pipefd[1]);
+         }
         head = head->next;
     }
     while (wait(NULL) > 0);
 }
+
 int find_var_name_return(t_env *my_envp,char *var_name)
 {
     while(my_envp != NULL)
@@ -329,7 +337,7 @@ int find_var_name_return(t_env *my_envp,char *var_name)
 }
 void run_built_ins(t_token *head, t_env **my_envp,int *pipefd,int input_fd,int flag)
 {
-    super_complicated_handle_dups(head,pipefd,input_fd);
+    // super_complicated_handle_dups(head,pipefd,input_fd);
     if ((strcmp(head->token, "env") == 0) && (find_var_name_return((*my_envp),"PATH") == 1))
          print_listt((*my_envp));
     if(strcmp(head->token,"echo") == 0)
@@ -359,7 +367,7 @@ void external_commands(t_token *head,char **envp, t_env *my_envp,int *pipefd,int
     {
         (void)my_envp;
              char   *path;
-            super_complicated_handle_dups(head,pipefd,input_fd);
+            // super_complicated_handle_dups(head,pipefd,input_fd);
             path = find_path_of_cmd(head->token, envp);
             if (execve(path, current_command, envp) == -1)
                 printf("execve failed");

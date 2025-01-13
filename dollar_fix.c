@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dollar_fix.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 10:37:55 by wasmar            #+#    #+#             */
-/*   Updated: 2025/01/07 12:45:17 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/13 13:08:20 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,13 +194,13 @@ void check_quotes_status_and_update(int *inside_quote, int *d_start,int *d_end, 
             }
             else if  ((c == '"' || c == '\'') && ((*inside_quote) == 1 || (*inside_quote) == 2))
             {
-                 if(c == '"' && d_start == 1)
+                 if(c == '"' && (*d_start) == 1)
                {
                     (*inside_quote) = 0;
                     (*d_end) = 1;
                }
             
-               if(c == '\'' && s_start == 1)
+               if(c == '\'' && (*s_start) == 1)
                {
                     (*inside_quote) = 0;
                     (*s_end) = 1;
