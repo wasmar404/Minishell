@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 21:04:03 by wasmar            #+#    #+#             */
-/*   Updated: 2024/12/19 12:24:04 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/13 13:25:56 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,15 +122,19 @@ void find_type(t_token *head,t_env **my_envp)
         new_node -> next = NULL;
         new_node -> prev = tail;
     }
-    else{
-        int len = ft_strlen(head->token);
-        char *enva =ft_strdupp(head->token+i+1,len -(i+1));
-        strcpy(a->enva,enva);
-         a->equal=true;
-         char *all = ft_strjoin(a->type,"=");
-         all = ft_strjoin(all,a->enva);
-         a->all =all;
-    }
+else {
+    int len = ft_strlen(head->token);
+    char *enva = ft_strdupp(head->token + i + 1, len - (i + 1));
+    strcpy(a->enva, enva);
+    free(enva); // Free `enva` after copying its contents
+    a->equal = true;
+
+    char *all = ft_strjoin(a->type, "=");
+    char *temp = ft_strjoin(all, a->enva);
+    free(all); // Free intermediate `all`
+    a->all = temp; // Assign the final result to `a->all`
+}
+
 }
 void export_main(t_env **my_envp,t_token *head)
 {

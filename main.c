@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/13 13:07:42 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/01/13 15:45:39 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ int main(int ac, char **av, char **envp)
         {
             add_history(input);
         }
-         main_helper(input, my_envp,&head);
+        main_helper(input, my_envp,&head);
+        free(input);
     }
     return (0);
 }
@@ -60,6 +61,16 @@ void print_list(t_token *head)
         head = head ->next;
     }
 }
+void free_doubly_linked_list(t_token *head) {
+    t_token *temp;
+
+    while (head != NULL) {
+        temp = head;        // Save the current node
+        head = head->next;  // Move to the next node
+        free(temp->token);   // Free the data if necessary
+        free(temp);         // Free the node itself
+    }
+}
 void    main_helper(char *input, char **envp,t_env **env_linked)
 {
     char    **splitted_input;
@@ -71,6 +82,8 @@ void    main_helper(char *input, char **envp,t_env **env_linked)
     // print_list(head);
     //(void)env_linked;
      complicated_execute(env_linked, head, envp);
+     free_doubly_linked_list(head);
+     free_array(splitted_input);
 }
 void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd)
 {
@@ -254,6 +267,7 @@ char **array_complicated_execute(t_token *head)
 void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
 {
     int     pipefd[2];
+     char **envp;
     int input_fd;
     (void)envp1;
     input_fd = STDIN_FILENO;
@@ -265,7 +279,7 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
     int flag = 0;
     while (head != NULL)
     {
-            char **envp = env_to_array(*my_envp);
+        envp = env_to_array(*my_envp);
          if (head->type == COMMAND)
          {
             temp = head->next;
@@ -321,6 +335,7 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
         head = head->next;
     }
     while (wait(NULL) > 0);
+    free_array(envp);
 }
 
 int find_var_name_return(t_env *my_envp,char *var_name)

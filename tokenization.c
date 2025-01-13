@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:16:26 by wasmar            #+#    #+#             */
-/*   Updated: 2025/01/07 15:43:05 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/13 17:02:01 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,11 +110,8 @@ char	*find_path_of_cmd(char *command, char **envp)
 		free(temp);
 		if (access(cmd_path, X_OK) == 0)
 		{
-			if(strcmp(command,"test") == 0)
-			{
-				return (NULL);
-			}
 			free_array(all_path);
+			
 			return (cmd_path);
 		}
 		free(cmd_path);
