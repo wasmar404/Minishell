@@ -6,13 +6,13 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:16:26 by wasmar            #+#    #+#             */
-/*   Updated: 2025/01/13 17:02:01 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/14 09:53:25 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 #include "libft/libft.h"
-
+int x = 0;
 // t_token	*create_node_token(char *str, int i, bool built_in_or_not)
 // {
 // 	t_token	*new_node;
@@ -76,6 +76,10 @@ int	ft_strcmp(char *str1, char *str2)
 	}
 	return (str1[i] - str2[i]);
 }
+// WHERE IS THE ECHOOOOOOOOOOOOOOOOOOOOOOOOOOOOO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 char	*find_path_of_cmd_helper(char *command)
 {
 	if (ft_strcmp(command, "cd") == 0)
@@ -111,7 +115,6 @@ char	*find_path_of_cmd(char *command, char **envp)
 		if (access(cmd_path, X_OK) == 0)
 		{
 			free_array(all_path);
-			
 			return (cmd_path);
 		}
 		free(cmd_path);

@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/13 17:40:29 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/14 10:08:29 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -255,7 +255,7 @@ char **array_complicated_execute(t_token *head)
         }
         if(temp->type == SINPUT_REDIRECTION || temp->type == SOUTPUT_REDIRECTION || temp->type == AOUTPUT_REDIRECTION || temp->type == HERE_DOC)
         {
-            break;  while (wait(NULL) > 0);
+            break;  
         }
         current_command[i]=strdup(temp->token);
          i++;
@@ -332,10 +332,11 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
          if(flag == 1)
          close(pipefd[1]);
          }
+         free_array(envp);
         head = head->next;
     }
     while (wait(NULL) > 0);
-    free_array(envp);
+    // free_doubly_linked_list(head);
 }
 
 int find_var_name_return(t_env *my_envp,char *var_name)
