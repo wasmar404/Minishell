@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/14 10:08:29 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/14 16:16:26 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -353,7 +353,7 @@ int find_var_name_return(t_env *my_envp,char *var_name)
 }
 void run_built_ins(t_token *head, t_env **my_envp,int *pipefd,int input_fd,int flag)
 {
-    // super_complicated_handle_dups(head,pipefd,input_fd);
+    super_complicated_handle_dups(head,pipefd,input_fd);
     if ((strcmp(head->token, "env") == 0) && (find_var_name_return((*my_envp),"PATH") == 1))
          print_listt((*my_envp));
     if(strcmp(head->token,"echo") == 0)
@@ -383,7 +383,7 @@ void external_commands(t_token *head,char **envp, t_env *my_envp,int *pipefd,int
     {
         (void)my_envp;
              char   *path;
-            // super_complicated_handle_dups(head,pipefd,input_fd);
+            super_complicated_handle_dups(head,pipefd,input_fd);
             path = find_path_of_cmd(head->token, envp);
             if (execve(path, current_command, envp) == -1)
                 printf("execve failed");
