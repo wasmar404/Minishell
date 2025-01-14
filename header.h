@@ -6,11 +6,11 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/09 16:43:32 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/01/14 12:21:13 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HEADEAR_H
+#ifndef HEADER_H
 # define HEADER_H
 
 # include "libft/libft.h"
@@ -190,4 +190,5 @@ void expand_dollar1(t_token **head,t_env *envp_linked);
 int check_if_null(char *input);
 void remove_empty_nodes(t_token **head);
 char *check_access_for_files(t_token *head);
+char	*find_path_of_cmd(char *command, char **envp);
 #endif
