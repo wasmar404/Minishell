@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_error_handling.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 10:14:57 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/14 18:14:04 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/15 11:04:46 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,10 @@ int check_command(char *array,char **envp)
     str = find_path_of_cmd(array,envp);
     if(str == NULL)
     {
-        printf("hhhhh");
-        fflush(stdout);
         flag =1;
     }
     if(flag == 1 && !(strcmp(array, ">") == 0 || strcmp(array, "<") == 0 || 
-                       strcmp(array, "<<") == 0 || strcmp(array, ">>") == 0))
+                       strcmp(array, "<<") == 0 || strcmp(array, ">>") == 0 || strcmp(array,"|") == 0))
     {
             ft_putendl_fd("zsh: command not found: ",2);
             ft_putendl_fd(array,2);
@@ -42,40 +40,6 @@ int check_command(char *array,char **envp)
     }
     return (1);
 }
-
-    // if (flag == 1 && !(strcmp(array, ">") == 0 || strcmp(array, "<") == 0 || 
-    //                    strcmp(array, "<<") == 0 || strcmp(array, ">>") == 0))
-    // {
-    //     ft_putendl_fd("zsh: command not found: ", 2);
-    //     ft_putendl_fd(array, 2);
-    //     return 0; // Invalid command
-    // }
-
-    // return 1;
-// int check_command(char *array, char **envp)
-// {
-//     char *str = NULL;
-//     int flag = 0;
-
-//     // Check if the command is valid by attempting to find its path
-//     str = find_path_of_cmd(array, envp);
-//     if (str == NULL)
-//     {
-//         flag = 1; // Command not found
-//     }
-
-//     // If the command is invalid and not a redirection operator
-//     if (flag == 1 && !(strcmp(array, ">") == 0 || strcmp(array, "<") == 0 || 
-//                        strcmp(array, "<<") == 0 || strcmp(array, ">>") == 0))
-//     {
-//         ft_putendl_fd("zsh: command not found: ", 2);
-//         ft_putendl_fd(array, 2);
-//         return 0; // Invalid command
-//     }
-
-//     return 1; // Valid command or valid redirection operator
-// }
-
 int check_if_pipe_is_valid(t_token *head)
 {
     int flag =0;
@@ -94,7 +58,7 @@ int check_if_pipe_is_valid(t_token *head)
             }
             if(head -> next != COMMAND)
             {
-                ft_putendl_fd(head->token,2);
+                ft_putendl_fd(head-> next ->token,2);
                 ft_putendl_fd(": command not found2",2);
                 return (0);
             }
@@ -115,7 +79,19 @@ int check_if_pipe_is_valid(t_token *head)
     }
     return(1);
 }
-
+int check_if_redirections_valid(t_token *head)
+{
+    int flag;
+    flag = 0;
+    while(head)
+    {
+        if(head -> type == SOUTPUT_REDIRECTION)
+        {
+            
+        }
+        
+    }
+}
 int input_check(t_token *head,char **array,char **envp)
 {
     int i = 0;
@@ -125,9 +101,9 @@ int input_check(t_token *head,char **array,char **envp)
             return (0);
         }
 
-    // if(check_if_pipe_is_valid(head) == 0)
-    // {
-    //     return(0);
-    // }
+    if(check_if_pipe_is_valid(head) == 0)
+    {
+        return(0);
+    }
     return(1);
 }
