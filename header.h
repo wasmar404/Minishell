@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   header.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/14 12:21:13 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/01/14 17:41:18 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,4 +191,5 @@ int check_if_null(char *input);
 void remove_empty_nodes(t_token **head);
 char *check_access_for_files(t_token *head);
 char	*find_path_of_cmd(char *command, char **envp);
+int input_check(t_token *head,char **array,char **envp);
 #endif

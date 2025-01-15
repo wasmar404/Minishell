@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/14 16:16:26 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/01/14 17:46:43 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ void    main_helper(char *input, char **envp,t_env **env_linked)
     head = input_to_linked_listt(*env_linked,splitted_input,envp);
     // print_list(head);
     //(void)env_linked;
+    if(input_check(head,splitted_input,envp) == 0)
+        return ;
      complicated_execute(env_linked, head, envp);
      free_doubly_linked_list(head);
      free_array(splitted_input);
@@ -283,7 +285,7 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
          if (head->type == COMMAND)
          {
             temp = head->next;
-            while(temp && temp->type != SOUTPUT_REDIRECTION && temp->type != COMMAND)
+            while(temp && temp->type != COMMAND)
             {
                 if(temp->type == PIPE)
                 {
