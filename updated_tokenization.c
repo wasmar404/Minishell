@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:02:23 by wasmar            #+#    #+#             */
-/*   Updated: 2025/01/09 16:44:47 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/01/15 14:38:12 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,10 +131,10 @@ token_type	check_if_twopoints_dir_cmd_word(char *input, char **envp,
 {
 	if (ft_strcmp(input, "..") == 0)
 		return (TWO_POINTS);
-	else if (access(input, F_OK) == 0)
-		return (DIRECTORY);
 	else if (check_if_cmd(input, envp, splitted_input, i))
 		return (COMMAND);
+	else if (access(input, F_OK) == 0)
+		return (DIRECTORY);
 	else
 		return (WORD);
 }
@@ -150,7 +150,7 @@ int	check_if_cmd(char *input, char **envp, char **splitted_input, int i)
 		else if(i >= 2)
 		{
 			
-			if(strcmp(splitted_input[i - 2], ">")==0 || strcmp(splitted_input[i - 2], "<")==0 || strcmp(splitted_input[i - 2], ">>")==0)
+			if(strcmp(splitted_input[i - 2], ">")==0 || strcmp(splitted_input[i - 2], "<")==0 || strcmp(splitted_input[i - 2], ">>")==0 || strcmp(splitted_input[i - 2], "<<")==0)
 			{
 				return(1);
 			}

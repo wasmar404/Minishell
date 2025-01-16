@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/14 17:46:43 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/16 11:21:02 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,11 +79,11 @@ void    main_helper(char *input, char **envp,t_env **env_linked)
         return ;
     splitted_input = token_split(input);
     head = input_to_linked_listt(*env_linked,splitted_input,envp);
-    // print_list(head);
+    //  print_list(head);
     //(void)env_linked;
-    if(input_check(head,splitted_input,envp) == 0)
-        return ;
-     complicated_execute(env_linked, head, envp);
+    // if(input_check(head,splitted_input,envp) == 0)
+    //     return ;
+    complicated_execute(env_linked, head, envp);
      free_doubly_linked_list(head);
      free_array(splitted_input);
 }
@@ -266,6 +266,32 @@ char **array_complicated_execute(t_token *head)
     current_command[i]= NULL;
     return(current_command);
 }
+int check_check_if_there_is_a_cmd(t_token *head)
+{
+    while(head)
+    {
+        if(head->type == COMMAND)
+        {
+            return (1);
+        }
+        head = head->next;
+    }
+    return (0);
+}
+void heredoc_dup(t_token *head)
+{
+    int fd = 0;
+        if(head && head->type == HERE_DOC)
+    {
+        fd = open("temp", O_WRONLY | O_CREAT | O_APPEND , 0644);
+        heredoc(head->next->token,fd);
+        close(fd);
+        fd = open("temp",O_RDONLY);
+        dup2(fd,0);
+        close(fd);
+        unlink("temp");
+    }
+}
 void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
 {
     int     pipefd[2];
@@ -282,7 +308,14 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
     while (head != NULL)
     {
         envp = env_to_array(*my_envp);
-         if (head->type == COMMAND)
+        if(check_check_if_there_is_a_cmd(head) == 0)
+        {
+            if(head ->type == HERE_DOC)
+            {
+                 heredoc_dup(head);
+            }
+        }
+        if (head->type == COMMAND)
          {
             temp = head->next;
             while(temp && temp->type != COMMAND)
@@ -303,6 +336,7 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
                 }
                 temp = temp -> next;
             }
+            
             if(pipe_count(head1) == 0 && ((strcmp(head->token, "env") == 0) || (strcmp(head -> token, "echo") == 0) ||
                     (strcmp(head -> token, "cd") == 0) || (strcmp(head -> token, "pwd") == 0) || (strcmp(head -> token,"export") == 0) || (strcmp(head -> token,"unset") == 0) || (strcmp(head -> token,"exit") == 0)) )
             {
@@ -414,4 +448,5 @@ void heredoc(char *str,int fd)
         write(fd,input,ft_strlenn(input));
          write(fd,"\n",1);
     }
+    printf("%s",str);
 }
