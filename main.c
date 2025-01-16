@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/16 11:21:02 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/01/16 17:56:48 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,6 @@ void dups2(t_token *current_input,t_token *current_output,int input_fd,t_token *
     {
 
 		find_a_node_move_pointer(&head,current_output->node_count);
-		printf("count: %d\n",current_output->node_count);
         while(head)
         {
             if(head->type == SOUTPUT_REDIRECTION)
@@ -281,15 +280,35 @@ int check_check_if_there_is_a_cmd(t_token *head)
 void heredoc_dup(t_token *head)
 {
     int fd = 0;
-        if(head && head->type == HERE_DOC)
+    if(head && head->type == HERE_DOC)
     {
         fd = open("temp", O_WRONLY | O_CREAT | O_APPEND , 0644);
         heredoc(head->next->token,fd);
         close(fd);
         fd = open("temp",O_RDONLY);
-        dup2(fd,0);
+        // dup2(fd,0);
+    //     close(fd);
+    //     unlink("temp");
+    }
+}
+void s_out_redirection(t_token *head)
+{
+    int fd;
+    fd = 0;
+    if(head && head -> type == SOUTPUT_REDIRECTION)
+    {
+        fd = open(head ->next -> token, O_CREAT | O_WRONLY | O_TRUNC, 0644);
         close(fd);
-        unlink("temp");
+    }
+}
+void a_out_redirection(t_token *head)
+{
+    int fd;
+    fd = 0;
+    if(head && head -> type == AOUTPUT_REDIRECTION)
+    {
+        fd = open(head -> next -> token, O_CREAT | O_WRONLY | O_APPEND, 0644);
+        close (fd);
     }
 }
 void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
@@ -305,16 +324,21 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
     int saved_stdin=dup(STDIN_FILENO);
     int saved_stdout=dup(STDOUT_FILENO);
     int flag = 0;
+
     while (head != NULL)
     {
         envp = env_to_array(*my_envp);
         if(check_check_if_there_is_a_cmd(head) == 0)
         {
             if(head ->type == HERE_DOC)
-            {
-                 heredoc_dup(head);
-            }
+                heredoc_dup(head);
+            if(head -> type == SOUTPUT_REDIRECTION)
+                s_out_redirection(head);
+            if(head -> type = AOUTPUT_REDIRECTION)
+                a_out_redirection(head);
+            
         }
+        
         if (head->type == COMMAND)
          {
             temp = head->next;
