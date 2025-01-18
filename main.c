@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/16 17:56:48 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/18 13:19:25 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,11 @@ void    main_helper(char *input, char **envp,t_env **env_linked)
         return ;
     splitted_input = token_split(input);
     head = input_to_linked_listt(*env_linked,splitted_input,envp);
-    //  print_list(head);
+     // print_list(head);
     //(void)env_linked;
     // if(input_check(head,splitted_input,envp) == 0)
     //     return ;
+    main_error1(head);
     complicated_execute(env_linked, head, envp);
      free_doubly_linked_list(head);
      free_array(splitted_input);
@@ -334,7 +335,7 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
                 heredoc_dup(head);
             if(head -> type == SOUTPUT_REDIRECTION)
                 s_out_redirection(head);
-            if(head -> type = AOUTPUT_REDIRECTION)
+            if(head -> type == AOUTPUT_REDIRECTION)
                 a_out_redirection(head);
             
         }

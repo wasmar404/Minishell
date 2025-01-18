@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   header.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/14 17:41:18 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/18 13:10:27 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@
 #include <errno.h>
 # include <unistd.h>
 #include <sys/stat.h>
-
 
 # define RESET "\033[0m"
 # define BOLD_CYAN "\033[1;36m"
@@ -74,7 +73,10 @@ typedef struct t_env
 	struct t_env	*prev;
 
 }					t_env;
+// globals.h
+extern int global_variable;
 
+int main_error1(t_token *head);
 int					check_double_sep(char *input, int i);
 int					check_single_sep(char input);
 char				*ft_strndup(char *str, int i);
