@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_error_handling.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 10:14:57 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/15 11:04:46 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/01/20 14:47:05 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int check_command(char *array,char **envp)
 {
     char *str;
     str = NULL;
-        int flag = 0;
+    int flag = 0;
     str = find_path_of_cmd(array,envp);
     if(str == NULL)
     {
@@ -48,15 +48,17 @@ int check_if_pipe_is_valid(t_token *head)
     {
         if(head -> type == PIPE)
         {
+            temp = head;
+            flag = 0;
             while(temp -> prev != NULL && temp -> prev ->type != PIPE)
             {
-                if(temp -> type == COMMAND)
+                if(temp -> next -> type == COMMAND)
                 {
                     flag = 1;
                 }
                 temp = temp -> prev;
             }
-            if(head -> next != COMMAND)
+            if(head -> next -> type != COMMAND)
             {
                 ft_putendl_fd(head-> next ->token,2);
                 ft_putendl_fd(": command not found2",2);
@@ -79,19 +81,49 @@ int check_if_pipe_is_valid(t_token *head)
     }
     return(1);
 }
-int check_if_redirections_valid(t_token *head)
+int count_commands(t_token *head)
 {
-    int flag;
-    flag = 0;
+    int count;
+    count = 0;
     while(head)
     {
-        if(head -> type == SOUTPUT_REDIRECTION)
-        {
-            
-        }
-        
+        if(head -> type == COMMAND)
+            count ++;
+        head = head -> next;
     }
+    return (count);
 }
+int count_redirections(t_token *head)
+{
+    int redirections_count;
+    redirections_count = 0;
+    while(head)
+    {
+        if(head -> type == SOUTPUT_REDIRECTION || head -> type == SINPUT_REDIRECTION || head -> type == SOUTPUT_REDIRECTION || head -> type == HERE_DOC)
+            redirections_count ++;
+        head = head -> next;
+    }
+    return (redirections_count);
+}
+
+// int check_if_redirections_valid(t_token *head)
+// {
+//     int redirections_count;
+//     int command_count;
+    
+//     while(head)
+//     {
+//         redirections_count = 0;
+//         command_count = 0;
+//         while(head -> type != PIPE)
+//         {
+//             redirections_count = count_redirections(head);
+//             command_count = count_commands(head);
+//             if()
+//         }
+        
+//     }
+// }
 int input_check(t_token *head,char **array,char **envp)
 {
     int i = 0;
