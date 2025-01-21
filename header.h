@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   header.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/18 13:10:27 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/01/21 17:17:50 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ int					pipe_count(t_token *head);
 void				heredoc(char *str, int fd);
 void				run_command_helper(t_token *head, char **envp,
 						t_env **my_envp, int *pipefd, int input_fd,
-						char **current_command);
+						char **current_command,int flag);
 void				main_helper(char *input, char **envp, t_env **env_linked);
 void				check_back_and_front(t_token *head_back,
 						t_token **current_input, t_token **current_output,
@@ -162,7 +162,7 @@ token_type			check_if_twopoints_dir_cmd_word(char *input, char **envp,
 token_type			check_input_type(char *input, char **envp,
 						char **splitted_input, int i);
 void				run_built_ins(t_token *head, t_env **my_envp, int *pipefd,
-						int input_fd, int flag);
+						int input_fd, int flag,int flag2);
 void				input_to_linked_list_h(t_token **head, t_token *new);
 t_token				*create_node_token(char *str, int i, bool built_in_or_not);
 bool				built_in_or_not(char *cmd);

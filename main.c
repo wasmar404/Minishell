@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/21 12:27:09 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/21 17:30:57 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int main(int ac, char **av, char **envp)
     while (1)
     {
 
-        input = readline(BOLD_CYAN "sw_shell> " RESET);
+        input = readline("sw_shell> ");
         if(input)
             add_history(input);
         main_helper(input, my_envp,&head);
@@ -87,10 +87,10 @@ void    main_helper(char *input, char **envp,t_env **env_linked)
         return ;
     // main_error1(head);
     complicated_execute(env_linked, head, envp);
-     free_doubly_linked_list(head);
-     free_array(splitted_input);
+    //  free_doubly_linked_list(head);
+    //  free_array(splitted_input);
 }
-void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd)
+void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd,int flag)
 {
     t_token *current = head;
     t_token *current_input =NULL;
@@ -103,8 +103,13 @@ void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd)
      check_back_and_front(current,&current_input,&current_output,current->next);
     dups1(current_input,current_output,pipefd);
     dups2(current,current_output,input_fd,head);
+    printf("flag 1: %d\n",flag);
+    fflush(stdout);
+if(flag == 1)
+{
     close(pipefd[0]);
     close(pipefd[1]);
+}
 }
 void find_a_node_move_pointer(t_token **head,int i)
 {
@@ -185,32 +190,37 @@ void check_back_and_front(t_token *head_back,t_token **current_input,t_token **c
 {
     int flag;
     flag = 0;
-    while(head_back)
+    while(head_back && head_back -> type != PIPE)
     {
         if(head_back ->type == SINPUT_REDIRECTION || head_back ->type == PIPE || head_back ->type ==HERE_DOC)
         {
             (*current_input) = head_back;
-            break;
+            // break;
         }
         if(head_back->type == AOUTPUT_REDIRECTION || head_back ->type == SOUTPUT_REDIRECTION)
         {
             (*current_output) = head_back;
             flag++;
-			break;
+			// break;
         }
         head_back = head_back -> prev;
     }
     while(current != NULL && current->type != COMMAND )
     {
-        if((current->type == AOUTPUT_REDIRECTION || current->type == SOUTPUT_REDIRECTION || current->type == PIPE )&& flag == 0)
+        if((current->type == AOUTPUT_REDIRECTION || current->type == SOUTPUT_REDIRECTION  )&& flag == 0)
 		{
             (*current_output)=current;
-			break;
+			// break;
 		}
+        if (current->type == PIPE && ((!(*current_output) || ((*current_output)->type != AOUTPUT_REDIRECTION && (*current_output)->type != SOUTPUT_REDIRECTION))) && flag == 0)
+        {
+            (*current_output) = current;
+            break;
+        }
         if((current->type == SINPUT_REDIRECTION || current->type == HERE_DOC))
 		{
             (*current_input) = current;
-				break;
+				// break;
 		}
         current = current->next;
     }
@@ -338,11 +348,12 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
             a_out_redirection(head);
     }
     while (head != NULL)
-    {
+    { 
         envp = env_to_array(*my_envp);
         
         if (head->type == COMMAND)
          {
+            flag =0;
             temp = head->next;
             while(temp && temp->type != COMMAND)
             {
@@ -366,7 +377,7 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
             if(pipe_count(head1) == 0 && ((strcmp(head->token, "env") == 0) || (strcmp(head -> token, "echo") == 0) ||
                     (strcmp(head -> token, "cd") == 0) || (strcmp(head -> token, "pwd") == 0) || (strcmp(head -> token,"export") == 0) || (strcmp(head -> token,"unset") == 0) || (strcmp(head -> token,"exit") == 0)) )
             {
-                run_built_ins(head,my_envp,pipefd,input_fd,0);
+                run_built_ins(head,my_envp,pipefd,input_fd,0,flag);
                 dup2(saved_stdin,STDIN_FILENO);
                 dup2(saved_stdout,STDOUT_FILENO);
                 close(saved_stdin);
@@ -376,7 +387,7 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
             pid = fork();
             if (pid == 0)
             {
-                run_command_helper(head,envp,my_envp,pipefd,input_fd,array_complicated_execute(head));
+                run_command_helper(head,envp,my_envp,pipefd,input_fd,array_complicated_execute(head),flag);
                 exit(EXIT_SUCCESS);
             }
             else if (pid > 0)
@@ -391,7 +402,7 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
                 exit(EXIT_FAILURE);
             }
         }
-         if(flag == 1)
+         if(flag==  1)
          close(pipefd[1]);
          }
          free_array(envp);
@@ -413,9 +424,9 @@ int find_var_name_return(t_env *my_envp,char *var_name)
     }
     return(0);
 }
-void run_built_ins(t_token *head, t_env **my_envp,int *pipefd,int input_fd,int flag)
+void run_built_ins(t_token *head, t_env **my_envp,int *pipefd,int input_fd,int flag,int flag2)
 {
-    super_complicated_handle_dups(head,pipefd,input_fd);
+    super_complicated_handle_dups(head,pipefd,input_fd,flag2);
     if ((strcmp(head->token, "env") == 0) && (find_var_name_return((*my_envp),"PATH") == 1))
          print_listt((*my_envp));
     if(strcmp(head->token,"echo") == 0)
@@ -439,27 +450,27 @@ void run_built_ins(t_token *head, t_env **my_envp,int *pipefd,int input_fd,int f
     if(flag == 1)
         exit(EXIT_SUCCESS);
 }
-void external_commands(t_token *head,char **envp, t_env *my_envp,int *pipefd,int input_fd,char **current_command)
+void external_commands(t_token *head,char **envp, t_env *my_envp,int *pipefd,int input_fd,char **current_command,int flag)
 {
     if(find_var_name_return((my_envp),"PATH"))
     {
         (void)my_envp;
              char   *path;
-            super_complicated_handle_dups(head,pipefd,input_fd);
+            super_complicated_handle_dups(head,pipefd,input_fd,flag);
             path = find_path_of_cmd(head->token, envp);
             if (execve(path, current_command, envp) == -1)
                 printf("execve failed");
             exit(EXIT_SUCCESS);
     }
 }
-void run_command_helper(t_token *head,char **envp, t_env **my_envp,int *pipefd,int input_fd,char **current_command)
+void run_command_helper(t_token *head,char **envp, t_env **my_envp,int *pipefd,int input_fd,char **current_command,int flag)
 {
         if ((strcmp(head->token, "env") == 0) || (strcmp(head -> token, "echo") == 0) || (strcmp(head -> token, "cd") == 0) || (strcmp(head -> token, "pwd") == 0))
-            run_built_ins(head,my_envp,pipefd,input_fd,1);
+            run_built_ins(head,my_envp,pipefd,input_fd,1,flag);
         else if((strcmp(head -> token, "export") == 0) || (strcmp(head -> token, "unset") == 0) || (strcmp(head -> token, "exit") == 0))
-            run_built_ins(head,my_envp,pipefd,input_fd,1);
+            run_built_ins(head,my_envp,pipefd,input_fd,1,flag);
         else
-            external_commands(head,envp,(*my_envp),pipefd,input_fd,current_command);
+            external_commands(head,envp,(*my_envp),pipefd,input_fd,current_command,flag);
 }
 void heredoc(char *str,int fd)
 {

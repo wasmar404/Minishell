@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:00:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/07 12:06:07 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/21 15:32:11 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,7 +242,8 @@ char	**token_split(char *str)
 	tokens = malloc(sizeof(char *) * (token_count(str) + 1));
 	if (!tokens) 
 		return (NULL);
-	while (str[i])
+	int lenn = strlen(str);
+	while (i < lenn)
 	{
 		while (str[i] && str[i] == ' ')
 			i++;
