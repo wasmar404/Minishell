@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 10:14:57 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/20 14:47:05 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/21 12:13:41 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,29 @@ int count_redirections(t_token *head)
     }
     return (redirections_count);
 }
+int check_if_file_exists(t_token *head)
+{
+    while(head)
+    {
+        if(head -> type == SINPUT_REDIRECTION)
+        {
+            if(head -> next && head -> next -> type != DIRECTORY)
+            {
+                printf("zsh: no such file or directory: %s\n",head -> next -> token);
+                return (0);
+            }
+            if(head -> next == NULL)
+            {
+                printf("Syntax error: expected file name after '<'\n");
+                return (0);
+            }        
+        }
+        head = head -> next;
+    }
+    return (1);
+
+}
+
 
 // int check_if_redirections_valid(t_token *head)
 // {
@@ -136,6 +159,10 @@ int input_check(t_token *head,char **array,char **envp)
     if(check_if_pipe_is_valid(head) == 0)
     {
         return(0);
+    }
+    if(check_if_file_exists(head) == 0)
+    {
+        return (0);
     }
     return(1);
 }

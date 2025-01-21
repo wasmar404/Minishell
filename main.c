@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/20 13:00:06 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/21 12:27:09 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,7 @@ int main(int ac, char **av, char **envp)
 
         input = readline(BOLD_CYAN "sw_shell> " RESET);
         if(input)
-        {
             add_history(input);
-        }
         main_helper(input, my_envp,&head);
         free(input);
     }
@@ -77,12 +75,16 @@ void    main_helper(char *input, char **envp,t_env **env_linked)
     t_token *head;
     if (check_if_null(input) == 0)
         return ;
+    if (strcmp(input, "history -c") == 0)
+    {
+            rl_clear_history(); 
+            return ;}
     splitted_input = token_split(input);
     head = input_to_linked_listt(*env_linked,splitted_input,envp);
     //  print_list(head);
     //(void)env_linked;
-    // if(input_check(head,splitted_input,envp) == 0)
-    //     return ;
+    if(input_check(head,splitted_input,envp) == 0)
+        return ;
     // main_error1(head);
     complicated_execute(env_linked, head, envp);
      free_doubly_linked_list(head);
@@ -326,18 +328,18 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
     int saved_stdout=dup(STDOUT_FILENO);
     int flag = 0;
 
+    if(check_check_if_there_is_a_cmd(head) == 0)
+    {
+        if(head ->type == HERE_DOC)
+            heredoc_dup(head);
+        if(head -> type == SOUTPUT_REDIRECTION)
+            s_out_redirection(head);
+         if(head -> type == AOUTPUT_REDIRECTION)
+            a_out_redirection(head);
+    }
     while (head != NULL)
     {
         envp = env_to_array(*my_envp);
-        if(check_check_if_there_is_a_cmd(head) == 0)
-        {
-            if(head ->type == HERE_DOC)
-                heredoc_dup(head);
-            if(head -> type == SOUTPUT_REDIRECTION)
-                s_out_redirection(head);
-            if(head -> type == AOUTPUT_REDIRECTION)
-                a_out_redirection(head);
-        }
         
         if (head->type == COMMAND)
          {
@@ -423,7 +425,7 @@ void run_built_ins(t_token *head, t_env **my_envp,int *pipefd,int input_fd,int f
     if(strcmp(head->token,"cd") == 0)
         main_cd(head,my_envp);
     if(strcmp(head->token,"export") == 0)
-        export_main(my_envp,head);
+        export_main(my_envp,head); 
     if(strcmp(head->token,"unset") == 0)
     {
         if (head->next == NULL || head->next->token == NULL || head->next->token[0] == '\0')
