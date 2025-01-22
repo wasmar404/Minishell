@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/22 14:54:25 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/22 15:08:38 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ typedef struct t_env
 
 }					t_env;
 // globals.h
-extern int global_variable;
+extern int exit_code;
 
 int main_error1(t_token *head);
 int					check_double_sep(char *input, int i);

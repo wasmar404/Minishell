@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:02:23 by wasmar            #+#    #+#             */
-/*   Updated: 2025/01/22 14:54:42 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/22 17:01:33 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ t_token	*input_to_linked_listt(t_env *envp_linked, char **splitted_input,
 }
 void add_type(t_token **head,char **envp)
 {
-	while((*head))
+	
+	while((*head) != NULL)
 	{
 		(*head)->type = check_input_type((*head)->token,envp,(*head));
 		(*head) = (*head) ->next ;
@@ -102,11 +103,18 @@ t_token	*generate_tokenn(t_env *envp_linked, char **splitted_input, char **envp,
 token_type	check_input_type(char *input, char **envp, t_token *head)
 {
 	if (check_if_heredoc_aoutput_minus_tilde(input) != 0)
+	{
 		return (check_if_heredoc_aoutput_minus_tilde(input));
+	}
 	else if (check_if_pipe_soutput_sinput(input) != 0)
+	{
+		
 		return (check_if_pipe_soutput_sinput(input));
+	}
 	else
+	{
 		return (check_if_twopoints_dir_cmd_word(input, envp, head));
+	}
 }
 
 token_type	check_if_heredoc_aoutput_minus_tilde(char *input)
@@ -152,6 +160,7 @@ int count_ttoken_nodes(t_token *head)
 	while(head)
 	{
 		i++;
+		head = head -> next;
 	}
 	return (i);
 }

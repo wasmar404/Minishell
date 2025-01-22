@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 10:14:57 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/22 14:58:09 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/22 15:36:25 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
  check if command is valid
  
  */
+int exit_code;
 int check_command(char *array,char **envp)
 {
     char *str;
@@ -35,7 +36,7 @@ int check_command(char *array,char **envp)
                        strcmp(array, "<<") == 0 || strcmp(array, ">>") == 0 || strcmp(array,"|") == 0))
     {
             ft_putendl_fd_two("zsh: command not found: ",array,2);
-            // ft_putendl_fd(array,2);
+            exit_code = 127;
             return(0);
     }
     return (1);
@@ -61,19 +62,20 @@ int check_if_pipe_is_valid(t_token *head)
             if(head -> next == NULL || head -> prev == NULL)
             {
                 ft_putendl_fd("bash: syntax error near unexpected token `|'",2);
+                exit_code = 2;
                 return(0);
             }
             if(head -> next && head -> next -> type != COMMAND)
             {
                 ft_putendl_fd_two(head-> next ->token,": command not found2",2);
-                // ft_putendl_fd(": command not found2",2);
+                exit_code = 127;
                 return (0);
             }
 
             if(flag == 0)
             {
                 ft_putendl_fd_two(head -> token,": command not found5848",2);
-                // ft_putendl_fd(": command not found5848",2);
+                exit_code = 127;
                 return(0);
             }
         }
@@ -119,13 +121,23 @@ int check_if_file_exists(t_token *head)
             {
                 // printf("bash: no such file or directory: %s\n",head -> next -> token);
                 ft_putendl_fd_two("bash: no such file or directory: ",head -> next -> token,2);
+                exit_code = 1;
                 count ++;
             }
             if(head -> next == NULL)
             {
-                // printf("Syntax error: expected file name after '<'\n");
-                ft_putendl_fd("Syntax error: expected file name after '<'",2);
+                ft_putendl_fd("bash: syntax error near unexpected token `newline'",2);
+                exit_code = 2;
                 return (0);
+            }
+            if(head -> next && head -> next -> type == DIRECTORY)
+            {
+                if(access(head->next->token,R_OK) == -1)
+                {
+                    ft_putendl_fd_two("bash: Permission denied: ",head -> next -> token,2);
+                    exit_code = 1;
+                    return (0);
+                }
             }
         }
         head = head -> next;
@@ -151,6 +163,7 @@ int  main_quote_check(char *str)
       if((inside_quote) > 0)
       {
         ft_putendl_fd("quote not closed",2);
+        exit_code = 1;
             return (0);
       }
       return (1);
