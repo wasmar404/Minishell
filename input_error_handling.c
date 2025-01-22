@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 10:14:57 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/22 15:36:25 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/22 18:02:39 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
  check if command is valid
  
  */
-int exit_code;
+int exit_code = 0;
 int check_command(char *array,char **envp)
 {
     char *str;

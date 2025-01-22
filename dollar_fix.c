@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 10:37:55 by wasmar            #+#    #+#             */
-/*   Updated: 2025/01/21 17:38:27 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/22 17:59:10 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -271,4 +271,16 @@ int is_num_or_char(char c)
         return(1);
     }
     return (0);
+}
+void replace_exit_code(t_token *head)
+{
+    char *str = ft_itoa(exit_code);
+    while(head)
+    {
+        if(strcmp(head -> token,"$?") == 0)
+        {
+            head -> token = ft_strdup(str);
+        }
+        head = head -> next;
+    }
 }

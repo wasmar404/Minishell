@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/22 15:08:38 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/22 17:57:03 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,4 +193,5 @@ int  main_quote_check(char *str);
 void check_quotes_status_and_update(int *inside_quote, int *d_start,int *d_end, int *s_start,int *s_end , char c);
 void	ft_putendl_fd_two(char *s,char *str, int fd);
 void add_type(t_token **head,char **envp);
+void replace_exit_code(t_token *head);
 #endif

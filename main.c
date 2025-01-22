@@ -6,11 +6,12 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/22 17:00:58 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/22 18:05:29 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
+
 int main(int ac, char **av, char **envp)
 {
     char    *input =NULL;
@@ -87,10 +88,12 @@ void    main_helper(char *input, char **envp,t_env **env_linked)
     //   print_list(head);
     //(void)env_linked;
     // printf("\n\n\n\n");
+    replace_exit_code(head);
     if(input_check(head,splitted_input,envp) == 0)
         return ;
     // main_error1(head);
      complicated_execute(env_linked, head, envp);
+
     //  free_doubly_linked_list(head);
     //  free_array(splitted_input);
 }
@@ -411,7 +414,8 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
          free_array(envp);
         head = head->next;
     }
-    while (wait(NULL) > 0);
+    while (wait(&status) > 0);
+    exit_code = status;
     // free_doubly_linked_list(head);
 }
 
