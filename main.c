@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/21 17:30:57 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/22 11:21:10 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,11 +78,15 @@ void    main_helper(char *input, char **envp,t_env **env_linked)
     if (strcmp(input, "history -c") == 0)
     {
             rl_clear_history(); 
-            return ;}
+            return ;
+    }
+    if(main_quote_check(input) == 0)
+        return ;
     splitted_input = token_split(input);
     head = input_to_linked_listt(*env_linked,splitted_input,envp);
-    //  print_list(head);
+     print_list(head);
     //(void)env_linked;
+    printf("\n\n\n\n");
     if(input_check(head,splitted_input,envp) == 0)
         return ;
     // main_error1(head);
@@ -103,8 +107,6 @@ void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd,int f
      check_back_and_front(current,&current_input,&current_output,current->next);
     dups1(current_input,current_output,pipefd);
     dups2(current,current_output,input_fd,head);
-    printf("flag 1: %d\n",flag);
-    fflush(stdout);
 if(flag == 1)
 {
     close(pipefd[0]);

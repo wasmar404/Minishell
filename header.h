@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/21 17:17:50 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/22 11:37:57 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,4 +194,7 @@ void remove_empty_nodes(t_token **head);
 char *check_access_for_files(t_token *head);
 char	*find_path_of_cmd(char *command, char **envp);
 int input_check(t_token *head,char **array,char **envp);
+int  main_quote_check(char *str);
+void check_quotes_status_and_update(int *inside_quote, int *d_start,int *d_end, int *s_start,int *s_end , char c);
+void	ft_putendl_fd_two(char *s,char *str, int fd);
 #endif
