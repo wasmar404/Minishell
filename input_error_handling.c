@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 10:14:57 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/22 11:48:35 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/22 14:58:09 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,18 +184,11 @@ int input_check(t_token *head,char **array,char **envp)
 {
     int i = 0;
 
-        if(check_command(array[i],envp) == 0)
-        {
-            return (0);
-        }
-
+    if(check_command(head -> token,envp) == 0)
+           return (0);
     if(check_if_pipe_is_valid(head) == 0)
-    {
         return(0);
-    }
-            if(check_if_file_exists(head) == 0)
-    {
+    if(check_if_file_exists(head) == 0)
         return (0);
-    }
     return(1);
 }

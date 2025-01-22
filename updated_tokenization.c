@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   updated_tokenization.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:02:23 by wasmar            #+#    #+#             */
-/*   Updated: 2025/01/15 14:38:12 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/01/22 14:54:42 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ t_token	*input_to_linked_listt(t_env *envp_linked, char **splitted_input,
 	t_token	*print;
 	t_token	*print1;
 	t_token *head3;
+	t_token *head1;
 
 	i = 0;
 	head = NULL;
@@ -46,6 +47,7 @@ t_token	*input_to_linked_listt(t_env *envp_linked, char **splitted_input,
 			print1 = head;
 			head3 = head;
 			return_head = head;
+			head1 = head;
 		}
 		else
 			input_to_linked_list_h(&head, new_node);
@@ -55,7 +57,17 @@ t_token	*input_to_linked_listt(t_env *envp_linked, char **splitted_input,
 	 main_dollar(&print,envp_linked);
 	  remove_quotes_main(&head3);
 	  remove_empty_nodes(&return_head);
+	  add_type(&head1,envp);
 	return (print1);
+}
+void add_type(t_token **head,char **envp)
+{
+	while((*head))
+	{
+		(*head)->type = check_input_type((*head)->token,envp,(*head));
+		(*head) = (*head) ->next ;
+		
+	}
 }
 char	*return_value_of_envp_type(t_env *envp_linked, char *search_for)
 {
@@ -76,28 +88,25 @@ char	*return_value_of_envp_type(t_env *envp_linked, char *search_for)
 t_token	*generate_tokenn(t_env *envp_linked, char **splitted_input, char **envp,
 		int i)
 {
-	int		type;
+	int		type = 6;
 	t_token	*new_node;
 
 	(void)envp_linked;
 	
-	 type = check_input_type(splitted_input[i], envp, splitted_input, i);
 	new_node = create_node_token(strdup(splitted_input[i]), type,
 			built_in_or_not(splitted_input[i]));
 			new_node ->node_count = i;
 	return (new_node);
 }
 
-token_type	check_input_type(char *input, char **envp, char **splitted_input,
-		int i)
+token_type	check_input_type(char *input, char **envp, t_token *head)
 {
 	if (check_if_heredoc_aoutput_minus_tilde(input) != 0)
 		return (check_if_heredoc_aoutput_minus_tilde(input));
 	else if (check_if_pipe_soutput_sinput(input) != 0)
 		return (check_if_pipe_soutput_sinput(input));
 	else
-		return (check_if_twopoints_dir_cmd_word(input, envp, splitted_input,
-				i));
+		return (check_if_twopoints_dir_cmd_word(input, envp, head));
 }
 
 token_type	check_if_heredoc_aoutput_minus_tilde(char *input)
@@ -126,31 +135,38 @@ token_type	check_if_pipe_soutput_sinput(char *input)
 		return (0);
 }
 
-token_type	check_if_twopoints_dir_cmd_word(char *input, char **envp,
-		char **splitted_input, int i)
+token_type	check_if_twopoints_dir_cmd_word(char *input, char **envp,t_token *head)
 {
 	if (ft_strcmp(input, "..") == 0)
 		return (TWO_POINTS);
-	else if (check_if_cmd(input, envp, splitted_input, i))
+	else if (check_if_cmd(input, envp, head))
 		return (COMMAND);
 	else if (access(input, F_OK) == 0)
 		return (DIRECTORY);
 	else
 		return (WORD);
 }
-
-int	check_if_cmd(char *input, char **envp, char **splitted_input, int i)
+int count_ttoken_nodes(t_token *head)
+{
+	int i = 0;
+	while(head)
+	{
+		i++;
+	}
+	return (i);
+}
+int	check_if_cmd(char *input, char **envp, t_token *head)
 {
 		if (find_path_of_cmd(input, envp))
 	{
-		if (i == 0 || strcmp(splitted_input[i - 1], "|") == 0 )
+		if (head->prev == NULL  || (head -> prev && (strcmp(head -> prev -> token, "|") == 0) ))
 		{
 			return(1);
 		}
-		else if(i >= 2)
+		else if(count_ttoken_nodes(head) >= 2)
 		{
 			
-			if(strcmp(splitted_input[i - 2], ">")==0 || strcmp(splitted_input[i - 2], "<")==0 || strcmp(splitted_input[i - 2], ">>")==0 || strcmp(splitted_input[i - 2], "<<")==0)
+			if(head->prev->prev  && (strcmp(head->prev->prev->token, ">")==0 || strcmp(head->prev->prev->token, "<")==0 || strcmp(head->prev->prev->token, ">>")==0 || strcmp(head->prev->prev->token, "<<")==0))
 			{
 				return(1);
 			}

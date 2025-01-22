@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/22 11:37:57 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/22 14:54:25 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,14 +153,9 @@ char				*return_value_of_envp_type(t_env *envp_linked,
 						char *search_for);
 token_type			check_if_heredoc_aoutput_minus_tilde(char *input);
 token_type			check_if_pipe_soutput_sinput(char *input);
-token_type			check_input_type(char *input, char **envp,
-						char **splitted_input, int i);
-int					check_if_cmd(char *input, char **envp,
-						char **splitted_input, int i);
-token_type			check_if_twopoints_dir_cmd_word(char *input, char **envp,
-						char **splitted_input, int i);
-token_type			check_input_type(char *input, char **envp,
-						char **splitted_input, int i);
+token_type			check_input_type(char *input, char **envp,t_token *head);
+int					check_if_cmd(char *input, char **envp,t_token *head);
+token_type			check_if_twopoints_dir_cmd_word(char *input, char **envp,t_token *head);
 void				run_built_ins(t_token *head, t_env **my_envp, int *pipefd,
 						int input_fd, int flag,int flag2);
 void				input_to_linked_list_h(t_token **head, t_token *new);
@@ -197,4 +192,5 @@ int input_check(t_token *head,char **array,char **envp);
 int  main_quote_check(char *str);
 void check_quotes_status_and_update(int *inside_quote, int *d_start,int *d_end, int *s_start,int *s_end , char c);
 void	ft_putendl_fd_two(char *s,char *str, int fd);
+void add_type(t_token **head,char **envp);
 #endif
