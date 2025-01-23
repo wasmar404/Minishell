@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:29:11 by wasmar            #+#    #+#             */
-/*   Updated: 2025/01/08 11:50:51 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/01/23 13:07:33 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void main_unset1(t_env **my_envp ,char *var_name)
     find_var_name(my_envp,var_name);
     if(*my_envp == NULL)
     {
-        printf("hellooo\n");
+        exit_code = 1;
         return;
     }
 
@@ -88,5 +88,6 @@ void main_unset1(t_env **my_envp ,char *var_name)
     {
         (*my_envp) = (*my_envp)->prev;
     }
+    exit_code = 0;
 }
 

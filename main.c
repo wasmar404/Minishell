@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/22 18:05:29 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/23 13:07:02 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -343,6 +343,7 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
     int saved_stdin=dup(STDIN_FILENO);
     int saved_stdout=dup(STDOUT_FILENO);
     int flag = 0;
+    int flag20 = 0;
 
     if(check_check_if_there_is_a_cmd(head) == 0)
     {
@@ -383,6 +384,7 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
             if(pipe_count(head1) == 0 && ((strcmp(head->token, "env") == 0) || (strcmp(head -> token, "echo") == 0) ||
                     (strcmp(head -> token, "cd") == 0) || (strcmp(head -> token, "pwd") == 0) || (strcmp(head -> token,"export") == 0) || (strcmp(head -> token,"unset") == 0) || (strcmp(head -> token,"exit") == 0)) )
             {
+                flag20 = 1;
                 run_built_ins(head,my_envp,pipefd,input_fd,0,flag);
                 dup2(saved_stdin,STDIN_FILENO);
                 dup2(saved_stdout,STDOUT_FILENO);
@@ -414,8 +416,11 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
          free_array(envp);
         head = head->next;
     }
-    while (wait(&status) > 0);
-    exit_code = status;
+    if(flag20 == 0)
+    {
+        while (wait(&status) > 0);
+        exit_code = status;
+    }
     // free_doubly_linked_list(head);
 }
 
@@ -433,29 +438,38 @@ int find_var_name_return(t_env *my_envp,char *var_name)
 }
 void run_built_ins(t_token *head, t_env **my_envp,int *pipefd,int input_fd,int flag,int flag2)
 {
+    t_env *env_copy = (*my_envp);//so the var  my_envp does not become null 
     super_complicated_handle_dups(head,pipefd,input_fd,flag2);
     if ((strcmp(head->token, "env") == 0) && (find_var_name_return((*my_envp),"PATH") == 1))
-         print_listt((*my_envp));
+        exit_code = print_listt((*my_envp));
     if(strcmp(head->token,"echo") == 0)
-        echo_main(head);
+        exit_code = echo_main(head);
     if(strcmp(head->token,"pwd") == 0)
-        main_pwd();
+        exit_code = main_pwd();
     if(strcmp(head->token,"cd") == 0)
-        main_cd(head,my_envp);
+        main_cd(head,&env_copy);
     if(strcmp(head->token,"export") == 0)
         export_main(my_envp,head); 
     if(strcmp(head->token,"unset") == 0)
     {
         if (head->next == NULL || head->next->token == NULL || head->next->token[0] == '\0')
+        {
+            exit_code = 1;
             return;
+
+        }
         if(invalid_option(head) == 0)
+        {
+            exit_code = 1;
             return ;
+        }
         main_unset1(my_envp,head -> next -> token);
     }
     if(strcmp(head -> token, "exit") == 0)
         exit(EXIT_SUCCESS);
     if(flag == 1)
         exit(EXIT_SUCCESS);
+
 }
 void external_commands(t_token *head,char **envp, t_env *my_envp,int *pipefd,int input_fd,char **current_command,int flag)
 {

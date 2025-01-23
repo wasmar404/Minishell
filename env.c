@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 21:54:01 by wasmar            #+#    #+#             */
-/*   Updated: 2025/01/13 15:42:11 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/23 11:31:04 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,11 @@ int	count_nodes(t_env *head)
 	}
 	return (i);
 }
-void print_listt(t_env *head)
+int print_listt(t_env *head)
 {
+	if(head == NULL)
+		return 1;
+
     while (head != NULL)
     {
         if (head->all && head -> equal == true)                        
@@ -49,6 +52,7 @@ void print_listt(t_env *head)
         }
         head = head->next;
     }
+	return 0;
 }
 
 int	check_equal(char *str)

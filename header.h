@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/22 17:57:03 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/23 11:45:55 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int					ft_strlenn(char *input);
 t_env				*create_node_tokenn(char *str, char *type, bool equal,
 						char *all_line);
 int					count_nodes(t_env *head);
-void				print_listt(t_env *head);
+int				print_listt(t_env *head);
 int					check_equal(char *str);
 t_env				*env_to_linked_list(char **envp);
 char				**env_to_array(t_env *head);
@@ -109,7 +109,7 @@ int					check_n(t_token *head);
 int					delimeter_check_echo(t_token *head);
 int					check_dollar(t_token *head);
 t_env				*check_in_envp(t_env *head, char *a);
-void				echo_main(t_token *head);
+int				echo_main(t_token *head);
 void				complicated_execute(t_env **my_env, t_token *head,
 						char **my_envp);
 int	check_dollar1(t_token *head);
@@ -139,7 +139,7 @@ void				dups1(t_token *current_input, t_token *current_output,
 void				dups2(t_token *current_input, t_token *current_output,
 						int input_fd,t_token *head);
 void				main_cd(t_token *head, t_env **my_envp);
-void				main_pwd(void);
+int				main_pwd(void);
 void				export_main(t_env **my_envp, t_token *head);
 int					check_equal(char *str);
 void				main_unset1(t_env **my_envp, char *var_name);

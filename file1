@@ -1,2 +1,0 @@
-//cat < input1.txt < input2.txt > output1.txt >> output2.txt | grep "error"
-//cat < file < file2 (3anna byaate output file1 w lezem yaate file2)

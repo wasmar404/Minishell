@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 21:04:03 by wasmar            #+#    #+#             */
-/*   Updated: 2025/01/13 13:25:56 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/23 13:06:00 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,12 +139,17 @@ else {
 void export_main(t_env **my_envp,t_token *head)
 {
     if(valid_identifier(head) == 0)
+    {
+        exit_code = 1;
         return ;
+    }
     if(head->next && head->next->type == 6)
             find_type(head,my_envp);
     else
     {
         print_env_sorted(*my_envp);
+
         reset_bool_printed(*my_envp);
     }
+    exit_code = 0;
 }

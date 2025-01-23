@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 11:27:21 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/07 15:11:42 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/23 11:31:33 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	check_n(t_token *head)
 	return (1);
 }
 
-void	echo_main(t_token *head)
+int	echo_main(t_token *head)
 {
 	int		flag;
 	int flag1 = 0;
@@ -42,7 +42,7 @@ void	echo_main(t_token *head)
 	if (!head->next)
 	{
 		printf("\n");
-		return ;
+		return 1;
 	}
 	head = head->next;
 	while (head != NULL && head->type == WORD)
@@ -64,4 +64,5 @@ void	echo_main(t_token *head)
 	}
 	if (flag == 0)
 		printf("\n");
+	return 0;
 }
