@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 10:14:57 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/23 11:16:42 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/23 17:26:31 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,50 @@ int check_if_file_exists(t_token *head)
     return (1);
 
 }
+int check_sout_redirection(t_token *head)
+{
+    while(head)
+    {
+        if(head -> type == SOUTPUT_REDIRECTION)
+        {
+            if(head -> next == NULL)
+            {
+                exit_code = 2;
+                ft_putendl_fd("bash: syntax error near unexpected token `newline'",2);
+                return (0);
+            }
+            if(head -> next && head -> next -> type == DIRECTORY)
+            {
+                if(access(head->next->token,R_OK) == -1)
+                {
+                    ft_putendl_fd_two("bash: Permission denied: ",head -> next -> token,2);
+                    exit_code = 1;
+                    return (0);
+                }
+            }
+        }
+        head = head -> next;
+    }
+    return (1);
+}
+int check_here_doc(t_token *head)
+{
+    while(head)
+    {
+        if(head -> type == HERE_DOC && head -> prev != NULL)
+        {
+            if(head -> next == NULL)
+            {
+                exit_code = 2;
+                ft_putendl_fd("bash: syntax error near unexpected token `newline'",2);
+                return (0);
+            }
+        }
+
+        head = head -> next;
+    }
+    return (1);
+}
 int  main_quote_check(char *str)
 {
     int inside_quote = 0;
@@ -202,6 +246,10 @@ int input_check(t_token *head,char **array,char **envp)
     if(check_if_pipe_is_valid(head) == 0)
         return(0);
     if(check_if_file_exists(head) == 0)
+        return (0);
+    if(check_sout_redirection(head) == 0)
+        return (0);
+    if(check_here_doc(head) == 0)
         return (0);
     return(1);
 }

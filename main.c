@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/23 13:07:02 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/23 17:46:51 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -295,18 +295,46 @@ int check_check_if_there_is_a_cmd(t_token *head)
     }
     return (0);
 }
+
+void here_doc_first(char *s,t_token *head,int fd)
+{
+    char *input;
+    int flag = 0;
+    while(1)
+    {
+        input = readline("> ");
+        if(strcmp(head -> token,input) == 0)
+        {
+            break;
+        }
+        if(head -> next -> next)
+        {
+            printf("%s : command not found\n",head -> next -> next -> token);
+            exit_code = 127;
+            flag = 1;
+            break;
+        }
+        if (flag == 0)
+        {
+        write(fd,input,ft_strlenn(input));
+         write(fd,"\n",1);
+        }
+    }
+    // printf("%s",head -> token);
+}
 void heredoc_dup(t_token *head)
 {
     int fd = 0;
     if(head && head->type == HERE_DOC)
     {
         fd = open("temp", O_WRONLY | O_CREAT | O_APPEND , 0644);
-        heredoc(head->next->token,fd);
+        // heredoc(head->next->token,fd);
+        here_doc_first(head -> next -> token,head,fd);
         close(fd);
         fd = open("temp",O_RDONLY);
         // dup2(fd,0);
-    //     close(fd);
-    //     unlink("temp");
+        close(fd);
+        unlink("temp");
     }
 }
 void s_out_redirection(t_token *head)
@@ -498,11 +526,12 @@ void heredoc(char *str,int fd)
     char *input;
     while(1)
     {
-        input = readline("heredoc ");
+        input = readline("> ");
         if(strcmp(str,input) == 0)
         {
             break;
         }
+
         write(fd,input,ft_strlenn(input));
          write(fd,"\n",1);
     }
