@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: samira <samira@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/24 16:09:48 by samira           ###   ########.fr       */
+/*   Updated: 2025/01/26 19:41:22 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,8 @@ void    main_helper(char *input, char **envp,t_env **env_linked)
     // main_error1(head);
      complicated_execute(env_linked, head, envp);
 
-    //  free_doubly_linked_list(head);
-    //  free_array(splitted_input);
+     free_doubly_linked_list(head);
+     free_array(splitted_input);
 }
 void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd,int flag)
 {
@@ -441,7 +441,7 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
     if(flag20 == 0)
     {
         while (wait(&status) > 0);
-        exit_code = status;
+        exit_code  = status;
     }
     // free_doubly_linked_list(head);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_error_handling.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 10:14:57 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/23 17:26:31 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/26 19:45:14 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,10 @@ int check_command(char *array,char **envp)
     {
             ft_putendl_fd_two("zsh: command not found: ",array,2);
             exit_code = 127;
+            free(str);
             return(0);
     }
+    free(str);
     return (1);
 }
 int check_if_pipe_is_valid(t_token *head)
