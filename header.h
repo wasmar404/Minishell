@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/23 11:45:55 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/27 14:56:22 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ typedef struct t_env
 
 }					t_env;
 // globals.h
-extern int exit_code;
+extern long long  exit_code;
 
 int main_error1(t_token *head);
 int					check_double_sep(char *input, int i);
@@ -194,4 +194,5 @@ void check_quotes_status_and_update(int *inside_quote, int *d_start,int *d_end, 
 void	ft_putendl_fd_two(char *s,char *str, int fd);
 void add_type(t_token **head,char **envp);
 void replace_exit_code(t_token *head);
+void exit_command(t_token *head);
 #endif

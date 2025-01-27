@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/27 11:11:50 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/27 18:15:42 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -376,6 +376,10 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
          if(head -> type == AOUTPUT_REDIRECTION)
             a_out_redirection(head);
     }
+    if(strcmp(head -> token, "exit") == 0)
+    {
+        exit_command(head);
+    }
     while (head != NULL)
     { 
         envp = env_to_array(*my_envp);
@@ -414,11 +418,13 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
                 close(saved_stdout);
             }
             else{
+                
             pid = fork();
             if (pid == 0)
             {
+                // flag20 = 1;
                 run_command_helper(head,envp,my_envp,pipefd,input_fd,array_complicated_execute(head),flag);
-                exit(EXIT_SUCCESS);
+                // exit(exit_code);
             }
             else if (pid > 0)
             {
@@ -431,17 +437,22 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
                 perror("fork failed");
                 exit(EXIT_FAILURE);
             }
+            printf("%lld\n",exit_code);
+
         }
          if(flag==  1)
          close(pipefd[1]);
          }
          free_array(envp);
         head = head->next;
+    
     }
+                    
+
     if(flag20 == 0)
     {
         while (wait(&status) > 0);
-        exit_code  = status;
+        //  exit_code  = status;
     }
     // free_doubly_linked_list(head);
 }
@@ -487,8 +498,6 @@ void run_built_ins(t_token *head, t_env **my_envp,int *pipefd,int input_fd,int f
         }
         main_unset1(my_envp,head -> next -> token);
     }
-    if(strcmp(head -> token, "exit") == 0)
-        exit(EXIT_SUCCESS);
     if(flag == 1)
         exit(EXIT_SUCCESS);
 
@@ -506,14 +515,34 @@ void external_commands(t_token *head,char **envp, t_env *my_envp,int *pipefd,int
             exit(EXIT_SUCCESS);
     }
 }
+int path_exists(char **envp)
+{
+    int i = 0;
+    while(envp[i])
+    {
+        if (strncmp(envp[i], "PATH=", 5) == 0)
+            return (1);
+        i ++;
+    }
+    return (0);
+}
 void run_command_helper(t_token *head,char **envp, t_env **my_envp,int *pipefd,int input_fd,char **current_command,int flag)
 {
-        if ((strcmp(head->token, "env") == 0) || (strcmp(head -> token, "echo") == 0) || (strcmp(head -> token, "cd") == 0) || (strcmp(head -> token, "pwd") == 0))
-            run_built_ins(head,my_envp,pipefd,input_fd,1,flag);
-        else if((strcmp(head -> token, "export") == 0) || (strcmp(head -> token, "unset") == 0) || (strcmp(head -> token, "exit") == 0))
-            run_built_ins(head,my_envp,pipefd,input_fd,1,flag);
+        if(path_exists(envp) == 1)
+        {
+            if ((strcmp(head->token, "env") == 0) || (strcmp(head -> token, "echo") == 0) || (strcmp(head -> token, "cd") == 0) || (strcmp(head -> token, "pwd") == 0))
+                run_built_ins(head,my_envp,pipefd,input_fd,1,flag);
+            else if((strcmp(head -> token, "export") == 0) || (strcmp(head -> token, "unset") == 0) || (strcmp(head -> token, "exit") == 0))
+                run_built_ins(head,my_envp,pipefd,input_fd,1,flag);
+            else
+                external_commands(head,envp,(*my_envp),pipefd,input_fd,current_command,flag);
+        }
         else
-            external_commands(head,envp,(*my_envp),pipefd,input_fd,current_command,flag);
+        {
+            exit_code = 127;
+            ft_putendl_fd("bash: No such file or directory",2);
+            // exit(exit_code);
+        }
 }
 void heredoc(char *str,int fd)
 {

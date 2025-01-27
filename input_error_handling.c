@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 10:14:57 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/27 11:12:46 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/27 14:58:17 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
  check if command is valid
  
  */
-int exit_code;
+long long exit_code;
 int check_command(char *array,char **envp)
 {
     char *str;
@@ -37,10 +37,10 @@ int check_command(char *array,char **envp)
     {
             ft_putendl_fd_two("zsh: command not found: ",array,2);
             exit_code = 127;
-            free(str);
+            // free(str);
             return(0);
     }
-    free(str);
+    // free(str);
     return (1);
 }
 int check_if_pipe_is_valid(t_token *head)
@@ -284,6 +284,25 @@ int check_if_dir_after_redirections(t_token *head)
     }
     return (1);
 }
+int check_cd_command(t_token *head)
+{
+    struct stat path_stat;
+    while (head)
+    {
+        if(head -> type == COMMAND)
+        {
+            if(strcmp(head -> token,"cd") == 0 && (head -> next -> type == WORD))
+            {
+                exit_code = 1;
+                ft_putendl_fd("bash: cd: No such file or directory",2);
+                return (0);
+            }
+        }
+        head = head -> next;
+    }
+    return (1);
+    
+}
 void    ft_putendl_fd_two(char *s,char *str, int fd)
 {
     write(fd, s, ft_strlen(s));
@@ -298,6 +317,8 @@ int input_check(t_token *head,char **array,char **envp)
            return (0);
     if(check_if_pipe_is_valid(head) == 0)
         return(0);
+    if(check_cd_command(head) == 0)
+        return (0);
     if(check_redirections_sequence(head) == 0)
         return (0);
     if(check_if_dir_after_redirections(head) == 0)
