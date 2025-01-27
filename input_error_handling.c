@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_error_handling.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 10:14:57 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/26 19:45:14 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/01/27 11:12:46 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,11 +175,53 @@ int check_sout_redirection(t_token *head)
     }
     return (1);
 }
+int check_aout_redirection(t_token *head)
+{
+    while(head)
+    {
+        if(head -> type == AOUTPUT_REDIRECTION && (head -> prev == NULL || head -> next == NULL))
+        {
+            ft_putendl_fd("bash: syntax error near unexpected token `newline'",2);
+            exit_code = 2;
+            return (0);
+        }
+        if(head -> next && head -> next -> type == DIRECTORY)
+        {
+            if(access(head->next->token,R_OK) == -1)
+            {
+                ft_putendl_fd_two("bash: Permission denied: ",head -> next -> token,2);
+                exit_code = 1;
+                return (0);
+            }
+        }
+        head = head -> next;
+    }
+    return (1);
+}
+int check_redirections_sequence(t_token *head)
+{
+    while(head)
+    {
+        if(head -> type == SOUTPUT_REDIRECTION || head -> type == AOUTPUT_REDIRECTION
+                || head -> type == SINPUT_REDIRECTION || head -> type == HERE_DOC)
+        {
+            if(head -> next && (head -> next -> type == SOUTPUT_REDIRECTION || head -> next -> type == AOUTPUT_REDIRECTION
+                || head -> next -> type == SINPUT_REDIRECTION || head -> next -> type == HERE_DOC || head -> next -> type == PIPE))
+            {
+                ft_putendl_fd_two("bash: syntax error near unexpected token ",head -> next -> token,2);
+                exit_code = 2;
+                return (0);
+            }
+        }
+        head = head -> next;
+    }
+    return (1);
+}
 int check_here_doc(t_token *head)
 {
     while(head)
     {
-        if(head -> type == HERE_DOC && head -> prev != NULL)
+        if(head -> type == HERE_DOC)
         {
             if(head -> next == NULL)
             {
@@ -215,24 +257,33 @@ int  main_quote_check(char *str)
       return (1);
 }
 
-// int check_if_redirections_valid(t_token *head)
-// {
-//     int redirections_count;
-//     int command_count;
-    
-//     while(head)
-//     {
-//         redirections_count = 0;
-//         command_count = 0;
-//         while(head -> type != PIPE)
-//         {
-//             redirections_count = count_redirections(head);
-//             command_count = count_commands(head);
-//             if()
-//         }
-        
-//     }
-// }
+int check_if_dir_after_redirections(t_token *head)
+{
+    struct stat path_stat;
+    while(head)
+    {
+        if(head -> type == SOUTPUT_REDIRECTION || head -> type == AOUTPUT_REDIRECTION
+                || head -> type == SINPUT_REDIRECTION)
+        {
+            if(head -> next -> type == DIRECTORY)
+            {
+                if (stat(head->next->token, &path_stat) == 0)
+                {
+                    // Check if it's a directory
+                    if (S_ISDIR(path_stat.st_mode))
+                    {
+                        // Handle the "Is a directory" error
+                        ft_putendl_fd("bash: Is a directory", 2);
+                        exit_code = 1; // Set exit_code if required globally
+                        return (0); // Return 0 to indicate an error
+                    }
+                }
+            }
+        }
+        head = head -> next;
+    }
+    return (1);
+}
 void    ft_putendl_fd_two(char *s,char *str, int fd)
 {
     write(fd, s, ft_strlen(s));
@@ -247,6 +298,12 @@ int input_check(t_token *head,char **array,char **envp)
            return (0);
     if(check_if_pipe_is_valid(head) == 0)
         return(0);
+    if(check_redirections_sequence(head) == 0)
+        return (0);
+    if(check_if_dir_after_redirections(head) == 0)
+        return (0);
+    if(check_aout_redirection(head) == 0)
+        return (0);
     if(check_if_file_exists(head) == 0)
         return (0);
     if(check_sout_redirection(head) == 0)
