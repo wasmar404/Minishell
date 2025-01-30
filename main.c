@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/27 18:15:42 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/29 16:29:54 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,19 @@ void free_doubly_linked_list(t_token *head) {
         free(temp);
     }
 }
+int pipe_count_array(char **str)
+{
+    int i;
+    int count = 0;
+    i = 0;
+    while(str[i])
+    {
+        if(strcmp(str[i],"|") == 0)
+            count ++;
+        i ++;  
+    }
+    return (count);
+}
 void    main_helper(char *input, char **envp,t_env **env_linked)
 {
     char    **splitted_input;
@@ -91,6 +104,13 @@ void    main_helper(char *input, char **envp,t_env **env_linked)
     replace_exit_code(head);
     if(input_check(head,splitted_input,envp) == 0)
         return ;
+    if(pipe_count_array(splitted_input) == 0)
+    {
+        if (check_command(head->token, envp) == 0)
+        {
+            return ;
+        }
+    }
     // main_error1(head);
      complicated_execute(env_linked, head, envp);
 
@@ -380,10 +400,11 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
     {
         exit_command(head);
     }
+
     while (head != NULL)
     { 
         envp = env_to_array(*my_envp);
-        
+
         if (head->type == COMMAND)
          {
             flag =0;
@@ -423,6 +444,11 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
             if (pid == 0)
             {
                 // flag20 = 1;
+                if (check_command(head->token, envp) == 0)
+                {
+                    ft_putendl_fd_two(head->token, ": command not found", 2);
+                    exit(127);
+                }
                 run_command_helper(head,envp,my_envp,pipefd,input_fd,array_complicated_execute(head),flag);
                 // exit(exit_code);
             }
@@ -437,8 +463,6 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
                 perror("fork failed");
                 exit(EXIT_FAILURE);
             }
-            printf("%lld\n",exit_code);
-
         }
          if(flag==  1)
          close(pipefd[1]);
@@ -447,12 +471,10 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
         head = head->next;
     
     }
-                    
-
     if(flag20 == 0)
     {
         while (wait(&status) > 0);
-        //  exit_code  = status;
+         exit_code  = status;
     }
     // free_doubly_linked_list(head);
 }

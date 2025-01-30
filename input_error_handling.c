@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 10:14:57 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/27 14:58:17 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/29 15:49:06 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,11 @@ int check_if_pipe_is_valid(t_token *head)
 
             if(flag == 0)
             {
-                ft_putendl_fd_two(head -> token,": command not found5848",2);
+                // ft_putendl_fd_two(head -> token,": command not found5848",2);
+                // exit_code = 127;
+                // return(0);
+                ft_putendl_fd("command not found5848", 2);
                 exit_code = 127;
-                return(0);
             }
         }
         head = head -> next;
@@ -313,8 +315,8 @@ int input_check(t_token *head,char **array,char **envp)
 {
     int i = 0;
 
-    if(check_command(head -> token,envp) == 0)
-           return (0);
+    // if(check_command(head -> token,envp) == 0)
+    //        return (0);
     if(check_if_pipe_is_valid(head) == 0)
         return(0);
     if(check_cd_command(head) == 0)

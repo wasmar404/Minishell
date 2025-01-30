@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/27 14:56:22 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/29 15:38:48 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,4 +195,5 @@ void	ft_putendl_fd_two(char *s,char *str, int fd);
 void add_type(t_token **head,char **envp);
 void replace_exit_code(t_token *head);
 void exit_command(t_token *head);
+int check_command(char *array,char **envp);
 #endif
