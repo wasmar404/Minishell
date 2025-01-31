@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 14:46:47 by wasmar            #+#    #+#             */
-/*   Updated: 2024/06/17 14:46:58 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/01/31 11:36:35 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,12 +78,14 @@ void	freeres(char ***res, int i)
 
 char	**ft_split(char const *s, char c)
 {
-	char	**res;
+	char	**res = NULL;
 	size_t	i;
 	size_t	k;
 
 	i = 0;
 	k = 0;
+	if (s == NULL)
+        return (NULL);
 	res = (char **)malloc(sizeof(char *) * (wordcount(s, c) + 1));
 	if (!res)
 		return (NULL);

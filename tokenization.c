@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:16:26 by wasmar            #+#    #+#             */
-/*   Updated: 2025/01/14 09:53:25 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/31 11:38:01 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,14 @@ char	*find_path_of_cmd(char *command, char **envp)
 	char	*temp;
 	int		i;
 
+	if (command == NULL || envp == NULL) // <-- Add NULL checks
+        return (NULL);
 	find_the_word_path_in_envp(&envp);
+	if (envp == NULL || *envp == NULL) // <-- Check if PATH is found
+        return (NULL);
 	all_path = ft_split(*envp + 5, ':');
+	if (all_path == NULL) // <-- Check if ft_split succeeded
+        return (NULL);
 	i = 0;
 	while (all_path[i] != NULL)
 	{

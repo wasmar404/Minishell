@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/29 16:29:54 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/31 11:47:39 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -446,7 +446,7 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
                 // flag20 = 1;
                 if (check_command(head->token, envp) == 0)
                 {
-                    ft_putendl_fd_two(head->token, ": command not found", 2);
+                    // ft_putendl_fd_two(head->token, ": command not found", 2);
                     exit(127);
                 }
                 run_command_helper(head,envp,my_envp,pipefd,input_fd,array_complicated_execute(head),flag);
@@ -471,10 +471,22 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
         head = head->next;
     
     }
-    if(flag20 == 0)
+    // if(flag20 == 0)
+    // {
+    //     while (wait(&status) > 0);
+    //      exit_code  = status;
+    // }
+    if (flag20 == 0)
     {
         while (wait(&status) > 0);
-         exit_code  = status;
+        if (WIFEXITED(status)) // Check if the child exited normally
+        {
+            exit_code = WEXITSTATUS(status); // Extract the exit code
+        }
+        else if (WIFSIGNALED(status)) // Check if the child was terminated by a signal
+        {
+            exit_code = 128 + WTERMSIG(status); // Set exit code to 128 + signal number
+        }
     }
     // free_doubly_linked_list(head);
 }
@@ -548,7 +560,7 @@ int path_exists(char **envp)
     }
     return (0);
 }
-void run_command_helper(t_token *head,char **envp, t_env **my_envp,int *pipefd,int input_fd,char **current_command,int flag)
+void  run_command_helper(t_token *head,char **envp, t_env **my_envp,int *pipefd,int input_fd,char **current_command,int flag)
 {
         if(path_exists(envp) == 1)
         {
@@ -562,7 +574,8 @@ void run_command_helper(t_token *head,char **envp, t_env **my_envp,int *pipefd,i
         else
         {
             exit_code = 127;
-            ft_putendl_fd("bash: No such file or directory",2);
+            // ft_putendl_fd("bash: No such file or directory",2);
+            // close(STDIN_FILENO);
             // exit(exit_code);
         }
 }
