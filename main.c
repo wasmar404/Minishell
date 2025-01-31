@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/31 11:47:39 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/01/31 17:21:38 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void print_list(t_token *head)
 {
     while(head)
     {
-        printf("%s%d\n",head->token,head->type);
+        printf("\"%s\"%d\n",head->token,head->type);
         // fflush(stdout);
         head = head ->next;
     }
@@ -69,6 +69,10 @@ void free_doubly_linked_list(t_token *head) {
         free(temp->token); 
         free(temp);
     }
+}
+void check_program()
+{
+    
 }
 int pipe_count_array(char **str)
 {
@@ -98,7 +102,7 @@ void    main_helper(char *input, char **envp,t_env **env_linked)
         return ;
     splitted_input = token_split(input);
     head = input_to_linked_listt(*env_linked,splitted_input,envp);
-    //   print_list(head);
+       print_list(head);
     //(void)env_linked;
     // printf("\n\n\n\n");
     replace_exit_code(head);
