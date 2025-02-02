@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/31 17:21:38 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/02/02 16:41:40 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,11 @@ int main(int ac, char **av, char **envp)
     {
 
         input = readline("sw_shell> ");
-        if(input)
+        if(*input)
+        {
             add_history(input);
         main_helper(input, my_envp,&head);
+        }
         free(input);
     }
     return (0);
@@ -102,7 +104,7 @@ void    main_helper(char *input, char **envp,t_env **env_linked)
         return ;
     splitted_input = token_split(input);
     head = input_to_linked_listt(*env_linked,splitted_input,envp);
-       print_list(head);
+    //   print_list(head);
     //(void)env_linked;
     // printf("\n\n\n\n");
     replace_exit_code(head);
@@ -239,7 +241,7 @@ void check_back_and_front(t_token *head_back,t_token **current_input,t_token **c
         if((current->type == AOUTPUT_REDIRECTION || current->type == SOUTPUT_REDIRECTION  )&& flag == 0)
 		{
             (*current_output)=current;
-			// break;
+			//  break;
 		}
         if (current->type == PIPE && ((!(*current_output) || ((*current_output)->type != AOUTPUT_REDIRECTION && (*current_output)->type != SOUTPUT_REDIRECTION))) && flag == 0)
         {
