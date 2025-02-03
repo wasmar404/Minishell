@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   updated_tokenization.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:02:23 by wasmar            #+#    #+#             */
-/*   Updated: 2025/01/27 14:57:56 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/02/03 02:01:55 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -487,7 +487,7 @@ void remove_quotes_main(t_token **head)
 							len = strlen((*head)->token);
 					end = find_end_of_quotes(copy,'\'',i);
 											// printf("end %d\n",end);
-					if(end-1 > len)
+					if(end-1 >= len)
 					{
 						break;
 					}
@@ -498,6 +498,8 @@ void remove_quotes_main(t_token **head)
 					single_quotes = 0;
 					double_quotes = 0;
 					}
+										single_quotes = 0;
+					double_quotes = 0;
 					continue;
 		 }
 		 i++;					

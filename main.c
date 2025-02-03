@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/02 16:41:40 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/02/03 02:02:23 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void    main_helper(char *input, char **envp,t_env **env_linked)
         return ;
     splitted_input = token_split(input);
     head = input_to_linked_listt(*env_linked,splitted_input,envp);
-    //   print_list(head);
+    //    print_list(head);
     //(void)env_linked;
     // printf("\n\n\n\n");
     replace_exit_code(head);
@@ -123,25 +123,25 @@ void    main_helper(char *input, char **envp,t_env **env_linked)
      free_doubly_linked_list(head);
      free_array(splitted_input);
 }
-void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd,int flag)
-{
-    t_token *current = head;
-    t_token *current_input =NULL;
-    t_token *current_output =NULL;
-        if (input_fd != STDIN_FILENO)
-        {
-        dup2(input_fd, STDIN_FILENO);
-        close(input_fd);
-        }
-     check_back_and_front(current,&current_input,&current_output,current->next);
-    dups1(current_input,current_output,pipefd);
-    dups2(current,current_output,input_fd,head);
-if(flag == 1)
-{
-    close(pipefd[0]);
-    close(pipefd[1]);
-}
-}
+// void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd,int flag)
+// {
+//     t_token *current = head;
+//     t_token *current_input =NULL;
+//     t_token *current_output =NULL;
+//         if (input_fd != STDIN_FILENO)
+//         {
+//         dup2(input_fd, STDIN_FILENO);
+//         close(input_fd);
+//         }
+//      check_back_and_front(current,&current_input,&current_output,current->next);
+//     dups1(current_input,current_output,pipefd);
+//     dups2(current,current_output,input_fd,head);
+//     if(flag == 1)
+//     {
+//         close(pipefd[0]);
+//         close(pipefd[1]);
+//     }
+// }
 void find_a_node_move_pointer(t_token **head,int i)
 {
     while(*head)
@@ -153,109 +153,101 @@ void find_a_node_move_pointer(t_token **head,int i)
         (*head) = (*head)->next;
     }
 }
-void dups2(t_token *current_input,t_token *current_output,int input_fd,t_token *head)
-{
-    int fd;
-    if(current_input && current_input->type == PIPE)
-    {
-        dup2(input_fd,0);
-        close(input_fd);
-    }
-    if(current_output && current_output->type == AOUTPUT_REDIRECTION)
-    {
-        fd = open(current_output->next->token, O_WRONLY | O_CREAT | O_APPEND, 0644);
-        dup2(fd,1);
-        close(fd);
-    }
-    if(current_output && current_output->type == SOUTPUT_REDIRECTION)
-    {
-
-		find_a_node_move_pointer(&head,current_output->node_count);
-        while(head)
-        {
-            if(head->type == SOUTPUT_REDIRECTION)
-            {
-                if(head->next->type == DIRECTORY)
-                {
-                    if (access(head->next->token, W_OK) == -1)
-                    {
-                        int dev_null = open("/dev/null", O_WRONLY);
-                        dup2(dev_null, STDOUT_FILENO);
-                        break;
-                    }
-                }
-                fd = open(head->next->token, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-                dup2(fd,1);
-                close(fd);
-            }
-            head = head -> next;
-        }
-    }
-}
-void dups1(t_token *current_input,t_token *current_output,int *pipefd)
-{
-    int fd;
-    if(current_input && current_input->type == HERE_DOC)
-    {
-        fd = open("temp", O_WRONLY | O_CREAT | O_APPEND , 0644);
-        heredoc(current_input->next->token,fd);
-        close(fd);
-        fd = open("temp",O_RDONLY);
-        dup2(fd,0);
-        close(fd);
-        unlink("temp");
-    }
-    if (current_input && current_input->type == SINPUT_REDIRECTION)
-    {
-        fd = open(current_input->next->token, O_RDONLY, 0644);
-        dup2(fd, 0);
-        close(fd);
-    }
-        if (current_output && current_output->type == PIPE)
-    {
-        dup2(pipefd[1],1);
-        close(pipefd[1]);
-    }
-}
-void check_back_and_front(t_token *head_back,t_token **current_input,t_token **current_output,t_token *current)
-{
-    int flag;
-    flag = 0;
-    while(head_back && head_back -> type != PIPE)
-    {
-        if(head_back ->type == SINPUT_REDIRECTION || head_back ->type == PIPE || head_back ->type ==HERE_DOC)
-        {
-            (*current_input) = head_back;
-            // break;
-        }
-        if(head_back->type == AOUTPUT_REDIRECTION || head_back ->type == SOUTPUT_REDIRECTION)
-        {
-            (*current_output) = head_back;
-            flag++;
-			// break;
-        }
-        head_back = head_back -> prev;
-    }
-    while(current != NULL && current->type != COMMAND )
-    {
-        if((current->type == AOUTPUT_REDIRECTION || current->type == SOUTPUT_REDIRECTION  )&& flag == 0)
-		{
-            (*current_output)=current;
-			//  break;
-		}
-        if (current->type == PIPE && ((!(*current_output) || ((*current_output)->type != AOUTPUT_REDIRECTION && (*current_output)->type != SOUTPUT_REDIRECTION))) && flag == 0)
-        {
-            (*current_output) = current;
-            break;
-        }
-        if((current->type == SINPUT_REDIRECTION || current->type == HERE_DOC))
-		{
-            (*current_input) = current;
-				// break;
-		}
-        current = current->next;
-    }
-}
+// void dups2(t_token *current_input,t_token *current_output,int input_fd,t_token *head)
+// {
+//     int fd;
+//     if(current_input && current_input->type == PIPE)
+//     {
+//         dup2(input_fd,0);
+//         close(input_fd);
+//     }
+// }
+// void dups1(t_token *current_input,t_token *current_output,int *pipefd)
+// {
+//     int fd;
+//     if(current_input && current_input->type == HERE_DOC)
+//     {
+//         fd = open("temp", O_WRONLY | O_CREAT | O_APPEND , 0644);
+//         heredoc(current_input->next->token,fd);
+//         close(fd);
+//         fd = open("temp",O_RDONLY);
+//         dup2(fd,0);
+//         close(fd);
+//         unlink("temp");
+//     }
+//     if (current_input && current_input->type == SINPUT_REDIRECTION)
+//     {
+//         fd = open(current_input->next->token, O_RDONLY, 0644);
+//         dup2(fd, 0);
+//         close(fd);
+//     }
+//         if (current_output && current_output->type == PIPE)
+//     {
+//         dup2(pipefd[1],1);
+//         close(pipefd[1]);
+//     }
+// }
+void heredoc_dup(t_token *head);
+// void check_back_and_front(t_token *head_back,t_token **current_input,t_token **current_output,t_token *current)
+// {
+//     int flag;
+//     flag = 0;
+//     while(head_back && head_back -> type != PIPE)
+//     {
+//         if(head_back ->type == SINPUT_REDIRECTION || head_back ->type == PIPE || head_back ->type ==HERE_DOC)
+//         {
+//             (*current_input) = head_back;
+//             // break;
+//         }
+//         if(head_back->type == AOUTPUT_REDIRECTION || head_back ->type == SOUTPUT_REDIRECTION)
+//         {
+//             (*current_output) = head_back;
+//             flag++;
+// 			// break;
+//         }
+//         head_back = head_back -> prev;
+//     }
+//     t_token *temp = current;
+//     int fd = 0;
+//     // while(temp != NULL && temp->type != COMMAND)
+//     // {
+//     //     if((temp->type == HERE_DOC))
+// 	// 	{
+//     //         heredoc_dup(temp);
+// 	// 			 break;
+// 	// 	}
+//     //     temp =temp ->next;
+//     // }
+//     // while(current != NULL && current->type != COMMAND )
+//     // {
+//     //     if((current->type == AOUTPUT_REDIRECTION || current->type == SOUTPUT_REDIRECTION  )&& flag == 0)
+// 	// 	{
+//     //         (*current_output)=current;
+//     //                             if (access(current->next->token, W_OK) == -1)
+//     //                     {
+//     //                         int dev_null = open("/dev/null", O_WRONLY);
+//     //                         dup2(dev_null, STDOUT_FILENO);
+//     //                         break;
+//     //                     }
+                    
+//     //                 fd = open(current->next->token, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+//     //                 dup2(fd,1);
+//     //                 close(fd);
+// 	// 		//  break;
+// 	// 	}
+//     //     if (current->type == PIPE && ((!(*current_output) || ((*current_output)->type != AOUTPUT_REDIRECTION && (*current_output)->type != SOUTPUT_REDIRECTION))) && flag == 0)
+//     //     {
+//     //         (*current_output) = current;
+//     //         break;
+//     //     }
+//     //     if((current->type == SINPUT_REDIRECTION))
+// 	// 	{
+//     //         (*current_input) = current;
+// 	// 			// break;
+// 	// 	}
+//     //     current = current->next;
+//     // }
+// }
 int pipe_count(t_token *head)
 {
     int pipes;

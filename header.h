@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   header.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/31 11:43:16 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/02/03 01:35:14 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ typedef struct t_env
 extern long long  exit_code;
 
 int main_error1(t_token *head);
+void heredoc_dup(t_token *head);
+void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd,int flag);
 int					check_double_sep(char *input, int i);
 int					check_single_sep(char input);
 char				*ft_strndup(char *str, int i);
