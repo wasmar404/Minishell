@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:02:23 by wasmar            #+#    #+#             */
-/*   Updated: 2025/02/03 02:01:55 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/02/03 03:05:01 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ t_token	*input_to_linked_listt(t_env *envp_linked, char **splitted_input,
 			input_to_linked_list_h(&head, new_node);
 		i++;
 	 }
-	// update_token_linked_list(&print, envp_linked);
+	//  update_token_linked_list(&print, envp_linked);
 	 main_dollar(&print,envp_linked);
 	  remove_quotes_main(&head3);
 	  remove_empty_nodes(&return_head);

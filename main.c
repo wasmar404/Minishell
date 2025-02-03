@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/03 02:02:23 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/02/03 02:50:36 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ void    main_helper(char *input, char **envp,t_env **env_linked)
     //    print_list(head);
     //(void)env_linked;
     // printf("\n\n\n\n");
-    replace_exit_code(head);
+    // replace_exit_code(head);
     if(input_check(head,splitted_input,envp) == 0)
         return ;
     if(pipe_count_array(splitted_input) == 0)

@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 10:37:55 by wasmar            #+#    #+#             */
-/*   Updated: 2025/01/26 19:41:05 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/02/03 02:57:26 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,7 @@ int find_end_variable(char *str,int j)
     int i = find_dollar_pos11(str,j);
     i++;
     // printf("start : %d\n",i);
-    if( str[i] == '\"' || str[i] == '\'')
+    if( str[i] == '\"' || str[i] == '\'' || str[i] == '?')
     {
         return(i+1);
     }
@@ -243,9 +243,11 @@ char *expand_dollar(char *str,t_env *envp)
 char *check_char_after_dollar(char *str, int inside_quote,t_env *envp)
 {
     char *new_string = NULL;
-    // printf("str: \"%s\" %d\n",str,inside_quote);
-    // printf("\n%c\n",str[0]);
-     if(str[0] == '$' && (str[1] == '"' || str[1] == '\'') && (inside_quote == 0))
+    if((str[0] == '$' && str[1] == '?')&& (inside_quote == 0 || inside_quote ==1))
+    {
+     new_string = ft_itoa(exit_code);
+    }
+     else if(str[0] == '$' && (str[1] == '"' || str[1] == '\'') && (inside_quote == 0))
     {
         new_string = strdup(str+1);
     }
@@ -272,16 +274,16 @@ int is_num_or_char(char c)
     }
     return (0);
 }
-void replace_exit_code(t_token *head)
-{
-    char *str = ft_itoa(exit_code);
-    while(head)
-    {
-        if(strcmp(head -> token,"$?") == 0)
-        {
-            head -> token = ft_strdup(str);
-        }
-        head = head -> next;
-    }
-    free(str);
-}
+// void replace_exit_code(t_token *head)
+// {
+//     char *str = ft_itoa(exit_code);
+//     while(head)
+//     {
+//         if(strcmp(head -> token,"$?") == 0)
+//         {
+//             head -> token = ft_strdup(str);
+//         }
+//         head = head -> next;
+//     }
+//     free(str);
+// }
