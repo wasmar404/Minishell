@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:02:23 by wasmar            #+#    #+#             */
-/*   Updated: 2025/02/03 03:05:01 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/02/03 03:39:20 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,14 +220,18 @@ char	*new_string(char *str, int i, int j)
 	int		y;
 
 	len = strlen(str);
-	len = len - 2;
+	while(len > 0 && (str[len-1] == ' '))
+	{
+		len--;
+	}
+	// len = len - 2;
 	// printf("\nlen %d\n",len);
 
 	new_str = malloc(len + 1);
 	x = 0;
 	y = 0;
 	// printf("testtt :%c %c\n",str[i],str[j]);
-	while (str[y])
+	while (y < len)
 	{
 		if (y != i && y != j)
 		{
