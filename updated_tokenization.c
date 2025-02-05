@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   updated_tokenization.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:02:23 by wasmar            #+#    #+#             */
-/*   Updated: 2025/02/03 03:39:20 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/02/05 12:02:38 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,10 @@ t_token	*input_to_linked_listt(t_env *envp_linked, char **splitted_input,
 }
 void add_type(t_token **head,char **envp)
 {
-	
+	t_token *temp = (*head);
 	while((*head) != NULL)
 	{
-		(*head)->type = check_input_type((*head)->token,envp,(*head));
+		(*head)->type = check_input_type((*head)->token,envp,temp);
 		(*head) = (*head) ->next ;
 		
 	}
