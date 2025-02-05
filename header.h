@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   header.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/03 01:35:14 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/02/05 12:46:49 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 #include <errno.h>
 # include <unistd.h>
 #include <sys/stat.h>
+#include <signal.h>
 
 # define RESET "\033[0m"
 # define BOLD_CYAN "\033[1;36m"
@@ -198,4 +199,6 @@ void add_type(t_token **head,char **envp);
 void replace_exit_code(t_token *head);
 void exit_command(t_token *head);
 int check_command(char *array,char **envp);
+void ctrl_c(int sig);
+void main_signal();
 #endif

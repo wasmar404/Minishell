@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:02:23 by wasmar            #+#    #+#             */
-/*   Updated: 2025/02/05 12:02:38 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/02/05 13:52:21 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,9 +164,32 @@ int count_ttoken_nodes(t_token *head)
 	}
 	return (i);
 }
+char * find_endd2(char *a)
+{
+	int i = 0;
+	while(a[i])
+	{
+		if(a[i] == '/')
+		{
+			break;
+		}
+		i++;
+	}
+	char * result = ft_strndup(a,i);
+	return result;
+}
 int	check_if_cmd(char *input, char **envp, t_token *head)
 {
-	// char *a = find_path_of_cmd(input, envp);
+	char *a = find_path_of_cmd(input, envp);
+	struct stat path_stat;
+
+	if( head->token[0] == '.' && head->token[1] == '/' && access(head -> token,X_OK) == 0 )
+	{
+		// if (S_ISREG(path_stat.st_mode))
+        // {
+            return (1);
+        // }
+	}
 		if (find_path_of_cmd(input, envp))
 	{
 		// free(a);
@@ -177,7 +200,7 @@ int	check_if_cmd(char *input, char **envp, t_token *head)
 		else if(count_ttoken_nodes(head) >= 2)
 		{
 			
-			if(head->prev->prev  && (strcmp(head->prev->prev->token, ">")==0 || strcmp(head->prev->prev->token, "<")==0 || strcmp(head->prev->prev->token, ">>")==0 || strcmp(head->prev->prev->token, "<<")==0))
+			if(head->prev->prev  && (strcmp(head->prev->prev->token, ">")==0 || strcmp(head->prev->prev->token, "<")==0 || strcmp(head->prev->prev->token, ">>")==0 || strcmp(head->prev->prev->token, "<<")==0 ))
 			{
 				return(1);
 			}

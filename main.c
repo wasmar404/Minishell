@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/03 02:50:36 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/02/05 13:53:22 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 int main(int ac, char **av, char **envp)
 {
+     main_signal();
     char    *input =NULL;
     t_env   *head;
     char    **my_envp;
@@ -25,11 +26,14 @@ int main(int ac, char **av, char **envp)
     {
 
         input = readline("sw_shell> ");
-        if(*input)
-        {
+     if (input == NULL) 
+            break;  
+            
+        if (*input) {
             add_history(input);
-        main_helper(input, my_envp,&head);
+            main_helper(input, my_envp, &head);
         }
+
         free(input);
     }
     return (0);
@@ -104,7 +108,7 @@ void    main_helper(char *input, char **envp,t_env **env_linked)
         return ;
     splitted_input = token_split(input);
     head = input_to_linked_listt(*env_linked,splitted_input,envp);
-    //    print_list(head);
+//    print_list(head);
     //(void)env_linked;
     // printf("\n\n\n\n");
     // replace_exit_code(head);
@@ -437,7 +441,6 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
                 close(saved_stdout);
             }
             else{
-                
             pid = fork();
             if (pid == 0)
             {

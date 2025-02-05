@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 10:14:57 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/31 11:38:25 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/02/05 13:53:05 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,12 @@ int check_command(char *array,char **envp)
     int flag = 0;
     if (array == NULL || envp == NULL) // <-- Add NULL checks
         return (0);
+    if(array[0] == '.' && array[1] == '/'  && access(array,X_OK) == 0)
+    {
+
+            return (1);
+    
+    }
     str = find_path_of_cmd(array,envp);
     if(str == NULL)
     {
