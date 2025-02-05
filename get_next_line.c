@@ -1,31 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals.c                                          :+:      :+:    :+:   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/31 15:53:50 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/05 14:54:05 by schaaban         ###   ########.fr       */
+/*   Created: 2024/06/25 14:55:28 by schaaban          #+#    #+#             */
+/*   Updated: 2024/07/01 10:44:59 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
-void ctrl_c(int sig)
+#include "get_next_line.h"
+
+char	*get_next_line(int fd)
 {
-	 (void)sig; 
-	printf("\n");
-	rl_on_new_line();
-	rl_replace_line("",0);
-	rl_redisplay();
-	exit_code = 148;
-}
-void ctrl_c_heredoc()
-{
-	
-}
-void main_signal()
-{
-	signal(SIGINT,ctrl_c);
-	signal(SIGQUIT,SIG_IGN);
+	static char	buffer[BUFFER_SIZE];
+	static int	position = 0;
+	static int	buf_size = 0;
+
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	return (read_line(fd, buffer, &position, &buf_size));
 }

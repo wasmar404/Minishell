@@ -6,13 +6,14 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/05 12:46:49 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/02/05 15:22:35 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef HEADER_H
 # define HEADER_H
 
+#include "get_next_line.h"
 # include "libft/libft.h"
 # include <fcntl.h>
 # include <readline/history.h>
@@ -76,7 +77,7 @@ typedef struct t_env
 }					t_env;
 // globals.h
 extern long long  exit_code;
-
+void heredoc_dup(t_token *head);
 int main_error1(t_token *head);
 void heredoc_dup(t_token *head);
 void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd,int flag);

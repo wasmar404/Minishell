@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/05 13:53:22 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/02/05 17:16:06 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ int main(int ac, char **av, char **envp)
     my_envp = env_to_array(head);
     while (1)
     {
-
+            signal(SIGINT, ctrl_c);
+    signal(SIGQUIT, SIG_IGN);
         input = readline("sw_shell> ");
      if (input == NULL) 
             break;  
@@ -406,11 +407,19 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
     while (head != NULL)
     { 
         envp = env_to_array(*my_envp);
-
+    // if(head->type == HERE_DOC)
+    // {
+    //                          int  fd = open("temp", O_WRONLY | O_CREAT | O_APPEND , 0644);
+    //     heredoc(head -> next -> token,fd);
+    //     close(fd);
+   
+    //     unlink("temp");
+    // }
         if (head->type == COMMAND)
          {
             flag =0;
             temp = head->next;
+        
             while(temp && temp->type != COMMAND)
             {
                 if(temp->type == PIPE)
@@ -434,7 +443,9 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
                     (strcmp(head -> token, "cd") == 0) || (strcmp(head -> token, "pwd") == 0) || (strcmp(head -> token,"export") == 0) || (strcmp(head -> token,"unset") == 0) || (strcmp(head -> token,"exit") == 0)) )
             {
                 flag20 = 1;
+                signal(SIGINT, SIG_IGN);
                 run_built_ins(head,my_envp,pipefd,input_fd,0,flag);
+                signal(SIGINT, ctrl_c);
                 dup2(saved_stdin,STDIN_FILENO);
                 dup2(saved_stdout,STDOUT_FILENO);
                 close(saved_stdin);
@@ -444,6 +455,8 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
             pid = fork();
             if (pid == 0)
             {
+                signal(SIGINT, SIG_DFL);
+                // signal(SIGQUIT, SIG_DFL);
                 // flag20 = 1;
                 if (check_command(head->token, envp) == 0)
                 {
@@ -455,9 +468,11 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
             }
             else if (pid > 0)
             {
+                signal(SIGINT, ctrl_c); 
                 if (input_fd != STDIN_FILENO)
                     close(input_fd);
                  input_fd = pipefd[0];
+                // signal(SIGINT, ctrl_c);
             }
             else
             {
@@ -583,6 +598,8 @@ void  run_command_helper(t_token *head,char **envp, t_env **my_envp,int *pipefd,
 void heredoc(char *str,int fd)
 {
     char *input;
+    printf("str %s",str);
+    fflush(stdout);
     while(1)
     {
         input = readline("> ");
