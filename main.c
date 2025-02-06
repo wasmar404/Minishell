@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/05 17:16:06 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/02/06 13:39:52 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -407,19 +407,11 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
     while (head != NULL)
     { 
         envp = env_to_array(*my_envp);
-    // if(head->type == HERE_DOC)
-    // {
-    //                          int  fd = open("temp", O_WRONLY | O_CREAT | O_APPEND , 0644);
-    //     heredoc(head -> next -> token,fd);
-    //     close(fd);
-   
-    //     unlink("temp");
-    // }
+
         if (head->type == COMMAND)
          {
             flag =0;
             temp = head->next;
-        
             while(temp && temp->type != COMMAND)
             {
                 if(temp->type == PIPE)
@@ -443,9 +435,7 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
                     (strcmp(head -> token, "cd") == 0) || (strcmp(head -> token, "pwd") == 0) || (strcmp(head -> token,"export") == 0) || (strcmp(head -> token,"unset") == 0) || (strcmp(head -> token,"exit") == 0)) )
             {
                 flag20 = 1;
-                signal(SIGINT, SIG_IGN);
                 run_built_ins(head,my_envp,pipefd,input_fd,0,flag);
-                signal(SIGINT, ctrl_c);
                 dup2(saved_stdin,STDIN_FILENO);
                 dup2(saved_stdout,STDOUT_FILENO);
                 close(saved_stdin);
@@ -455,24 +445,23 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
             pid = fork();
             if (pid == 0)
             {
-                signal(SIGINT, SIG_DFL);
-                // signal(SIGQUIT, SIG_DFL);
+           
                 // flag20 = 1;
                 if (check_command(head->token, envp) == 0)
                 {
                     // ft_putendl_fd_two(head->token, ": command not found", 2);
                     exit(127);
                 }
+                add_shell_level(my_envp,head,&envp);
                 run_command_helper(head,envp,my_envp,pipefd,input_fd,array_complicated_execute(head),flag);
+                
                 // exit(exit_code);
             }
             else if (pid > 0)
             {
-                signal(SIGINT, ctrl_c); 
                 if (input_fd != STDIN_FILENO)
                     close(input_fd);
                  input_fd = pipefd[0];
-                // signal(SIGINT, ctrl_c);
             }
             else
             {
@@ -505,6 +494,42 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
         }
     }
     // free_doubly_linked_list(head);
+}
+void change_value_in_envp(t_env *my_envp,char *new_value)
+{
+        char *new_all;
+          my_envp->enva = ft_strdup(new_value);
+          if(my_envp ->equal == true)
+          {
+            new_all = ft_strjoin(my_envp->type,"=");
+            my_envp->all = ft_strjoin(new_all,my_envp->enva);
+          }
+          else
+          {
+            my_envp->all = ft_strjoin(my_envp->type,my_envp->enva);
+          }
+
+}
+void add_shell_level(t_env **my_envp,t_token *head,char ***envp)
+{
+                  if (strcmp(head->token, "./minishell") == 0 || strcmp(head->token, "minishell")  == 0|| strcmp(head->token, "bash") == 0)
+                    {
+                         search_and_find_a_type_my_envp((my_envp), "SHLVL");
+                        
+                        if ( (*my_envp)->enva)
+                        {
+                            int shell = atoi((*my_envp)->enva);
+                            shell++;
+                            char *a = ft_itoa(shell);
+                            (*my_envp)->enva = ft_strdup(a);
+                            change_value_in_envp((*my_envp),a);
+                                     return_env_to_beginning(my_envp);
+                              
+                                    (*envp) = env_to_array(*my_envp);
+                            // print_array(envp);
+
+                        }
+                    }
 }
 
 int find_var_name_return(t_env *my_envp,char *var_name)

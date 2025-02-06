@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   header.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/05 15:22:35 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/02/06 13:42:07 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,4 +202,7 @@ void exit_command(t_token *head);
 int check_command(char *array,char **envp);
 void ctrl_c(int sig);
 void main_signal();
+void add_shell_level(t_env **my_envp,t_token *head,char ***envp);
+void change_value_in_envp(t_env *my_envp,char *new_value);
+void return_env_to_beginning(t_env **my_envp);
 #endif
