@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 00:55:44 by wasmar            #+#    #+#             */
-/*   Updated: 2025/02/05 15:33:41 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/02/06 16:21:01 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,19 +158,37 @@ void dups2(t_token *current_input,t_token *current_output,int input_fd,t_token *
         close(input_fd);
     }
 }
+// void heredoc(char *str,int fd)
+// {
+//     char *input;
+//     printf("str %s",str);
+//     fflush(stdout);
+//     while(1)
+//     {
+//         input = readline("> ");
+//         if(strcmp(str,input) == 0)
+//         {
+//             break;
+//         }
+
+//         write(fd,input,ft_strlenn(input));
+//          write(fd,"\n",1);
+//     }
+//     printf("%s",str);
+// }
 void dups1(t_token *current_input,t_token *current_output,int *pipefd)
 {
     int fd;
-    // if(current_input && current_input->type == HERE_DOC)
-    // {
-    //     fd = open("temp", O_WRONLY | O_CREAT | O_APPEND , 0644);
-    //      heredoc(current_input->next->token,fd);
-    //     close(fd);
-    //     fd = open("temp",O_RDONLY);
-    //     dup2(fd,0);
-    //     close(fd);
-    //     unlink("temp");
-    // }
+    if(current_input && current_input->type == HERE_DOC)
+    {
+        fd = open("temp", O_WRONLY | O_CREAT | O_APPEND , 0644);
+         heredoc(current_input->next->token,fd);
+        close(fd);
+        fd = open("temp",O_RDONLY);
+        dup2(fd,0);
+        close(fd);
+        unlink("temp");
+    }
     if (current_input && current_input->type == SINPUT_REDIRECTION)
     {
         fd = open(current_input->next->token, O_RDONLY, 0644);

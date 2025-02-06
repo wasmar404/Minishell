@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 14:58:23 by schaaban          #+#    #+#             */
-/*   Updated: 2024/07/01 10:51:24 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/02/06 16:33:19 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,3 +67,20 @@ char	*read_line(int fd, char *buffer, int *position, int *buf_size)
 	}
 	return (line);
 }
+// int main()
+// {
+//     int fd = open("test.txt", O_RDONLY);
+//     if (fd < 0)
+//         return 1;
+//     char *line = get_next_line(fd);
+//     while (line)
+//     {
+//         printf("Line: %s", line);
+//         free (line);
+//         line = get_next_line(fd);
+//         if (line == NULL)
+//             break;
+//     }
+//     close(fd);
+//     return (0);
+// }
