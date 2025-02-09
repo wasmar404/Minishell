@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 11:27:21 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/03 03:41:04 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/02/09 11:35:23 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	echo_main(t_token *head)
 	if (!head->next)
 	{
 		printf("\n");
-		return 1;
+		return 0;
 	}
 	head = head->next;
 	while (head != NULL && (head->type == WORD || head->type == DIRECTORY))

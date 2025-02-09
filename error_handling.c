@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 09:48:15 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/09 10:48:48 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/02/09 11:40:39 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int valid_identifier(t_token *head)
     {
         // printf("`%s':not a valid identifier\n",head -> token);
         ft_putendl_fd_two(head->token,"not a valid identifier",2);
+        // ft_putendl_fd("not a valid identifier",2);
         count ++;
     }
             i = 1;
@@ -32,6 +33,7 @@ int valid_identifier(t_token *head)
         if(!((head -> token[i] >= 'a' && head -> token[i] <= 'z') || (head -> token[i] >= 'A' && head -> token[i] <= 'Z') || (head -> token[i] == '_') || (head -> token[i] >= '0' && head -> token[i] <='9')))
         {
             ft_putendl_fd_two(head->token,"not a valid identifier",2);
+            // ft_putendl_fd("not a valid identifier",2);
             count ++;
         }
         i ++;

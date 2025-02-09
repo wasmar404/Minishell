@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/09 10:42:27 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/02/09 11:32:56 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -447,7 +447,7 @@ void run_built_ins(t_token *head, t_env **my_envp,int *pipefd,int input_fd,int f
     {
         if (head->next == NULL || head->next->token == NULL || head->next->token[0] == '\0')
         {
-            exit_code = 1;
+            exit_code = 0;
             return;
 
         }

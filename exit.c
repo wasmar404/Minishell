@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 12:57:39 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/09 09:27:56 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/02/09 11:30:48 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,10 @@ int is_digit_string(char *str)
     i = 0;
     while(str[i] != '\0')
     {
+        if(str[i] == '-')
+            return(-1);
+        if(str[i] == '+')
+            return(2);
 		if (!ft_isdigit(str[i]))
 			return (0);
 		i++;
@@ -72,16 +76,30 @@ void exit_command(t_token *head)
     {
         exit_code = 1;
         printf("exit\n");
-        ft_putendl_fd("bash: exit: too many arguments",1);
+        ft_putendl_fd("bash: exit: too many arguments",2);
         // exit(exit_code);
     }
-    if(head -> next)
+    else if(head -> next)
     {
         if(is_digit_string(head -> next -> token) == 0)
         {
             exit_code = 2;
             printf("exit\n");
             ft_putendl_fd("bash: numeric argument required",2);
+            exit(exit_code);
+        }
+        if(is_digit_string(head -> next -> token) == -1)
+        {
+            exit_code = 156;
+            printf("exit\n");
+            // ft_putendl_fd("bash: numeric argument required",2);
+            exit(exit_code);
+        }
+        if(is_digit_string(head -> next -> token) == 2)
+        {
+            exit_code = 100;
+            printf("exit\n");
+            // ft_putendl_fd("bash: numeric argument required",2);
             exit(exit_code);
         }
         else
