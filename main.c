@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/09 11:32:56 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/02/10 01:08:40 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -346,7 +346,7 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
             }
             else if (pid > 0)
             {
-                if (input_fd != STDIN_FILENO)
+                if (input_fd != STDIN_FILENO && pipefd[0] != -1)
                     close(input_fd);
                  input_fd = pipefd[0];
             }
