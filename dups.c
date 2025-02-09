@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dups.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 00:55:44 by wasmar            #+#    #+#             */
-/*   Updated: 2025/02/06 16:21:01 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/02/09 10:23:07 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,22 +95,33 @@ void fixed_heredoc(char *str)
 }
 void check_front(t_token *head,t_token **current_input,t_token **current_output ,int *flag)
 {
-   t_token *temp = head->next;
-    // while(temp != NULL && temp->type != COMMAND)
-    // {
-    //         if((temp->type == HERE_DOC))
-    //         {
-    //            int  fd = open("temp", O_WRONLY | O_CREAT | O_APPEND , 0644);
-    //      heredoc(temp->next->token,fd);
-    //     close(fd);
-    //     fd = open("temp",O_RDONLY);
-    //     dup2(fd,0);
-    //     close(fd);
-    //     unlink("temp");
-    //             // break;
-    //                         }
-    //         temp =temp ->next;
-    // }
+    t_token *temp = head->next;
+    int fd;
+
+
+    while (temp != NULL && temp->type != COMMAND)
+    {
+
+        if (temp->type == HERE_DOC)
+        {
+            fd = open("temp", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+            if (fd < 0)
+            {
+                perror("open");
+                return;
+            }
+            heredoc(temp->next->token, fd);
+            close(fd);
+        }
+        temp = temp->next;
+    }
+
+    fd = open("temp", O_RDONLY);
+    dup2(fd, 0);
+    close(fd);
+    unlink("temp");
+
+
     head = head ->next;
     while(head != NULL  && head -> type != COMMAND)
     {

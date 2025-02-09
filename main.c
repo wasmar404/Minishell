@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/06 13:39:52 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/02/09 10:42:27 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int main(int ac, char **av, char **envp)
 {
-     main_signal();
     char    *input =NULL;
     t_env   *head;
     char    **my_envp;
@@ -22,10 +21,10 @@ int main(int ac, char **av, char **envp)
     (void)av;
     head = env_to_linked_list(envp);
     my_envp = env_to_array(head);
+    main_signal();
+
     while (1)
     {
-            signal(SIGINT, ctrl_c);
-    signal(SIGQUIT, SIG_IGN);
         input = readline("sw_shell> ");
      if (input == NULL) 
             break;  
@@ -128,25 +127,7 @@ void    main_helper(char *input, char **envp,t_env **env_linked)
      free_doubly_linked_list(head);
      free_array(splitted_input);
 }
-// void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd,int flag)
-// {
-//     t_token *current = head;
-//     t_token *current_input =NULL;
-//     t_token *current_output =NULL;
-//         if (input_fd != STDIN_FILENO)
-//         {
-//         dup2(input_fd, STDIN_FILENO);
-//         close(input_fd);
-//         }
-//      check_back_and_front(current,&current_input,&current_output,current->next);
-//     dups1(current_input,current_output,pipefd);
-//     dups2(current,current_output,input_fd,head);
-//     if(flag == 1)
-//     {
-//         close(pipefd[0]);
-//         close(pipefd[1]);
-//     }
-// }
+
 void find_a_node_move_pointer(t_token **head,int i)
 {
     while(*head)
@@ -158,101 +139,7 @@ void find_a_node_move_pointer(t_token **head,int i)
         (*head) = (*head)->next;
     }
 }
-// void dups2(t_token *current_input,t_token *current_output,int input_fd,t_token *head)
-// {
-//     int fd;
-//     if(current_input && current_input->type == PIPE)
-//     {
-//         dup2(input_fd,0);
-//         close(input_fd);
-//     }
-// }
-// void dups1(t_token *current_input,t_token *current_output,int *pipefd)
-// {
-//     int fd;
-//     if(current_input && current_input->type == HERE_DOC)
-//     {
-//         fd = open("temp", O_WRONLY | O_CREAT | O_APPEND , 0644);
-//         heredoc(current_input->next->token,fd);
-//         close(fd);
-//         fd = open("temp",O_RDONLY);
-//         dup2(fd,0);
-//         close(fd);
-//         unlink("temp");
-//     }
-//     if (current_input && current_input->type == SINPUT_REDIRECTION)
-//     {
-//         fd = open(current_input->next->token, O_RDONLY, 0644);
-//         dup2(fd, 0);
-//         close(fd);
-//     }
-//         if (current_output && current_output->type == PIPE)
-//     {
-//         dup2(pipefd[1],1);
-//         close(pipefd[1]);
-//     }
-// }
-void heredoc_dup(t_token *head);
-// void check_back_and_front(t_token *head_back,t_token **current_input,t_token **current_output,t_token *current)
-// {
-//     int flag;
-//     flag = 0;
-//     while(head_back && head_back -> type != PIPE)
-//     {
-//         if(head_back ->type == SINPUT_REDIRECTION || head_back ->type == PIPE || head_back ->type ==HERE_DOC)
-//         {
-//             (*current_input) = head_back;
-//             // break;
-//         }
-//         if(head_back->type == AOUTPUT_REDIRECTION || head_back ->type == SOUTPUT_REDIRECTION)
-//         {
-//             (*current_output) = head_back;
-//             flag++;
-// 			// break;
-//         }
-//         head_back = head_back -> prev;
-//     }
-//     t_token *temp = current;
-//     int fd = 0;
-//     // while(temp != NULL && temp->type != COMMAND)
-//     // {
-//     //     if((temp->type == HERE_DOC))
-// 	// 	{
-//     //         heredoc_dup(temp);
-// 	// 			 break;
-// 	// 	}
-//     //     temp =temp ->next;
-//     // }
-//     // while(current != NULL && current->type != COMMAND )
-//     // {
-//     //     if((current->type == AOUTPUT_REDIRECTION || current->type == SOUTPUT_REDIRECTION  )&& flag == 0)
-// 	// 	{
-//     //         (*current_output)=current;
-//     //                             if (access(current->next->token, W_OK) == -1)
-//     //                     {
-//     //                         int dev_null = open("/dev/null", O_WRONLY);
-//     //                         dup2(dev_null, STDOUT_FILENO);
-//     //                         break;
-//     //                     }
-                    
-//     //                 fd = open(current->next->token, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-//     //                 dup2(fd,1);
-//     //                 close(fd);
-// 	// 		//  break;
-// 	// 	}
-//     //     if (current->type == PIPE && ((!(*current_output) || ((*current_output)->type != AOUTPUT_REDIRECTION && (*current_output)->type != SOUTPUT_REDIRECTION))) && flag == 0)
-//     //     {
-//     //         (*current_output) = current;
-//     //         break;
-//     //     }
-//     //     if((current->type == SINPUT_REDIRECTION))
-// 	// 	{
-//     //         (*current_input) = current;
-// 	// 			// break;
-// 	// 	}
-//     //     current = current->next;
-//     // }
-// }
+
 int pipe_count(t_token *head)
 {
     int pipes;
@@ -306,18 +193,7 @@ char **array_complicated_execute(t_token *head)
     current_command[i]= NULL;
     return(current_command);
 }
-int check_check_if_there_is_a_cmd(t_token *head)
-{
-    while(head)
-    {
-        if(head->type == COMMAND)
-        {
-            return (1);
-        }
-        head = head->next;
-    }
-    return (0);
-}
+
 
 void here_doc_first(char *s,t_token *head,int fd)
 {
@@ -333,11 +209,11 @@ void here_doc_first(char *s,t_token *head,int fd)
         write(fd,input,ft_strlenn(input));
          write(fd,"\n",1);
     }
-    if(head -> next -> next)
-    {
-        printf("%s : command not found\n",head -> next -> next -> token);
-        exit_code = 127;
-    }
+    // if(head -> next -> next)
+    // {
+    //     printf("%s : command not found\n",head -> next -> next -> token);
+    //     exit_code = 127;
+    // }
 }
 void heredoc_dup(t_token *head)
 {
@@ -374,6 +250,16 @@ void a_out_redirection(t_token *head)
         close (fd);
     }
 }
+int command_exists(t_token *head)
+{
+    while(head)
+    {
+        if(head -> type == COMMAND)
+            return(1);
+        head = head ->next;
+    }
+    return(0);
+}
 void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
 {
     int     pipefd[2];
@@ -384,34 +270,35 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
     input_fd = STDIN_FILENO;
     t_token *temp;
     pid_t pid ;
-    t_token *head1 = head;
+    t_token *current = head;
     int saved_stdin=dup(STDIN_FILENO);
     int saved_stdout=dup(STDOUT_FILENO);
     int flag = 0;
     int flag20 = 0;
 
-    if(check_check_if_there_is_a_cmd(head) == 0)
+    if(strcmp(current -> token, "exit") == 0)
     {
-        if(head ->type == HERE_DOC)
-            heredoc_dup(head);
-        if(head -> type == SOUTPUT_REDIRECTION)
-            s_out_redirection(head);
-         if(head -> type == AOUTPUT_REDIRECTION)
-            a_out_redirection(head);
-    }
-    if(strcmp(head -> token, "exit") == 0)
-    {
-        exit_command(head);
+        exit_command(current);
     }
 
-    while (head != NULL)
+    while (current != NULL)
     { 
         envp = env_to_array(*my_envp);
+        if(command_exists(head) == 0)
+        {
+            if(current ->type == HERE_DOC)
+            heredoc_dup(current);
+        else if(current -> type == SOUTPUT_REDIRECTION)
+            s_out_redirection(current);
+         else if(current -> type == AOUTPUT_REDIRECTION)
+            a_out_redirection(current);
+        }
 
-        if (head->type == COMMAND)
+        
+        if (current->type == COMMAND)
          {
             flag =0;
-            temp = head->next;
+            temp = current->next;
             while(temp && temp->type != COMMAND)
             {
                 if(temp->type == PIPE)
@@ -431,11 +318,11 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
                 temp = temp -> next;
             }
             
-            if(pipe_count(head1) == 0 && ((strcmp(head->token, "env") == 0) || (strcmp(head -> token, "echo") == 0) ||
-                    (strcmp(head -> token, "cd") == 0) || (strcmp(head -> token, "pwd") == 0) || (strcmp(head -> token,"export") == 0) || (strcmp(head -> token,"unset") == 0) || (strcmp(head -> token,"exit") == 0)) )
+            if(pipe_count(head) == 0 && ((strcmp(current->token, "env") == 0) || (strcmp(current -> token, "echo") == 0) ||
+                    (strcmp(current -> token, "cd") == 0) || (strcmp(current -> token, "pwd") == 0) || (strcmp(current -> token,"export") == 0) || (strcmp(current -> token,"unset") == 0) || (strcmp(current -> token,"exit") == 0)) )
             {
                 flag20 = 1;
-                run_built_ins(head,my_envp,pipefd,input_fd,0,flag);
+                run_built_ins(current,my_envp,pipefd,input_fd,0,flag);
                 dup2(saved_stdin,STDIN_FILENO);
                 dup2(saved_stdout,STDOUT_FILENO);
                 close(saved_stdin);
@@ -447,13 +334,13 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
             {
            
                 // flag20 = 1;
-                if (check_command(head->token, envp) == 0)
+                if (check_command(current->token, envp) == 0)
                 {
-                    // ft_putendl_fd_two(head->token, ": command not found", 2);
+                    // ft_putendl_fd_two(current->token, ": command not found", 2);
                     exit(127);
                 }
-                add_shell_level(my_envp,head,&envp);
-                run_command_helper(head,envp,my_envp,pipefd,input_fd,array_complicated_execute(head),flag);
+                add_shell_level(my_envp,current,&envp);
+                run_command_helper(current,envp,my_envp,pipefd,input_fd,array_complicated_execute(current),flag);
                 
                 // exit(exit_code);
             }
@@ -473,7 +360,7 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
          close(pipefd[1]);
          }
          free_array(envp);
-        head = head->next;
+        current = current->next;
     
     }
     // if(flag20 == 0)
@@ -493,7 +380,7 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
             exit_code = 128 + WTERMSIG(status); // Set exit code to 128 + signal number
         }
     }
-    // free_doubly_linked_list(head);
+    // free_doubly_linked_list(current);
 }
 void change_value_in_envp(t_env *my_envp,char *new_value)
 {
@@ -526,8 +413,6 @@ void add_shell_level(t_env **my_envp,t_token *head,char ***envp)
                                      return_env_to_beginning(my_envp);
                               
                                     (*envp) = env_to_array(*my_envp);
-                            // print_array(envp);
-
                         }
                     }
 }
@@ -620,21 +505,20 @@ void  run_command_helper(t_token *head,char **envp, t_env **my_envp,int *pipefd,
             // exit(exit_code);
         }
 }
-void heredoc(char *str,int fd)
+void heredoc(char *str, int fd)
 {
     char *input;
-    printf("str %s",str);
-    fflush(stdout);
-    while(1)
+    while (1)
     {
         input = readline("> ");
-        if(strcmp(str,input) == 0)
+        if (strcmp(str, input) == 0)
         {
+            free(input);
             break;
         }
-
-        write(fd,input,ft_strlenn(input));
-         write(fd,"\n",1);
+        write(fd, input, strlen(input));
+        write(fd, "\n", 1);
+        free(input);
     }
-    printf("%s",str);
 }
+

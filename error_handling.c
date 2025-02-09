@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 09:48:15 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/18 12:54:45 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/02/09 10:48:48 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ int valid_identifier(t_token *head)
     {
     if(head -> token[0] && !((head -> token[0] >= 'a' && head -> token[0] <= 'z') || (head -> token[0] >= 'A' && head -> token[0] <= 'Z') || (head -> token[0] == '_')))
     {
-        printf("`%s':not a valid identifier\n",head -> token);
+        // printf("`%s':not a valid identifier\n",head -> token);
+        ft_putendl_fd_two(head->token,"not a valid identifier",2);
         count ++;
     }
             i = 1;
@@ -30,7 +31,7 @@ int valid_identifier(t_token *head)
     {
         if(!((head -> token[i] >= 'a' && head -> token[i] <= 'z') || (head -> token[i] >= 'A' && head -> token[i] <= 'Z') || (head -> token[i] == '_') || (head -> token[i] >= '0' && head -> token[i] <='9')))
         {
-            printf("`%s':not a valid identifier\n",head -> token);
+            ft_putendl_fd_two(head->token,"not a valid identifier",2);
             count ++;
         }
         i ++;
