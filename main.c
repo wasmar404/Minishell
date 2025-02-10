@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/10 14:27:30 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/02/11 01:20:27 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,7 @@ void free_doubly_linked_list(t_token *head) {
         free(temp);
     }
 }
-void check_program()
-{
-    
-}
+
 int pipe_count_array(char **str)
 {
     int i;
@@ -124,7 +121,7 @@ void    main_helper(char *input, char **envp,t_env **env_linked)
     // main_error1(head);
      complicated_execute(env_linked, head, envp);
 
-     free_doubly_linked_list(head);
+    //  free_doubly_linked_list(head);
      free_array(splitted_input);
 }
 
@@ -331,8 +328,6 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
             pid = fork();
             if (pid == 0)
             {
-                printf("pid %d\n",pid);
-                fflush(stdout);
                 if(exit_code == 127)
                 {
                     int fd = open("/dev/null", O_RDONLY);
@@ -439,8 +434,13 @@ void run_built_ins(t_token *head, t_env **my_envp,int *pipefd,int input_fd,int f
 {
     t_env *env_copy = (*my_envp);//so the var  my_envp does not become null 
     super_complicated_handle_dups(head,pipefd,input_fd,flag2,(*my_envp));
-    if ((strcmp(head->token, "env") == 0) && (find_var_name_return((*my_envp),"PATH") == 1))
-        exit_code = print_listt((*my_envp));
+    if ((strcmp(head->token, "env") == 0))
+    {
+        if(find_var_name_return((*my_envp),"PATH") == 1)
+            exit_code = print_listt((*my_envp));
+        else 
+            exit_code = 1;
+    }
     if(strcmp(head->token,"echo") == 0)
         exit_code = echo_main(head);
     if(strcmp(head->token,"pwd") == 0)
@@ -465,7 +465,7 @@ void run_built_ins(t_token *head, t_env **my_envp,int *pipefd,int input_fd,int f
         main_unset1(my_envp,head -> next -> token);
     }
     if(flag == 1)
-        exit(EXIT_SUCCESS);
+        exit(exit_code);
 
 }
 void external_commands(t_token *head,char **envp, t_env *my_envp,int *pipefd,int input_fd,char **current_command,int flag)

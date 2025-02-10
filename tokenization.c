@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:16:26 by wasmar            #+#    #+#             */
-/*   Updated: 2025/02/05 13:52:43 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/02/11 00:29:08 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,7 +251,7 @@ void remove_empty_nodes(t_token **head)
 				 temp = (*head)->prev;
             	temp1=(*head);
 				temp -> next = NULL;
-				free(temp1);
+				// free(temp1);
 			}
 			else if(((*head) -> next != NULL) && ((*head) -> prev != NULL))
 			{
@@ -260,20 +260,21 @@ void remove_empty_nodes(t_token **head)
             (*head) = (*head)->next;
             temp ->next = (*head);
             (*head)->prev = temp;
-			free(temp1);
+			// free(temp1);
 			}
 			else if((*head) -> prev == NULL) 
 			{
 				temp = (*head) ->next;
 				temp1 = (*head);
 				temp -> prev = NULL;
-				free(temp1);
+				// free(temp1);
 			}
 			
         }
         (*head) = (*head)->next;
     }
 }
+
 t_token	*input_to_linked_list(char **input, char **envp)
 {
 	int		i;

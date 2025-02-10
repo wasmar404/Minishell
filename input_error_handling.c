@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_error_handling.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 10:14:57 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/10 07:36:51 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/02/11 00:18:51 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,23 @@ int check_command(char *array,char **envp)
         return (0);
     if(array[0] == '.' && array[1] == '/'  && access(array,X_OK) == 0)
     {
-
+            exit_code = 0;
             return (1);
     
     }
+    else if(array[0] == '.' && array[1] == '/'  && access(array,X_OK) != 0)
+    {
+        exit_code = 127;
+        ft_putendl_fd("bash: ./test: No such file or directory",2);
+        return (0);
+        
+    }
+    // if(array[0] == '$' && array[1])
+    // {
+    //     printf("hvcddhblkgjl");
+    //     exit_code = 126;
+    //     return (0);
+    // }
     str = find_path_of_cmd(array,envp);
     if(str == NULL)
     {
