@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_error_handling.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 10:14:57 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/05 13:53:05 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/02/10 07:36:51 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,28 +129,28 @@ int check_if_file_exists(t_token *head)
     {
         if(head -> type == SINPUT_REDIRECTION)
         {
-            if(head -> next && head -> next -> type != DIRECTORY)
-            {
-                // printf("bash: no such file or directory: %s\n",head -> next -> token);
-                ft_putendl_fd_two("bash: no such file or directory: ",head -> next -> token,2);
-                exit_code = 1;
-                count ++;
-            }
+            // if(head -> next && head -> next -> type != DIRECTORY)
+            // {
+            //     // printf("bash: no such file or directory: %s\n",head -> next -> token);
+            //     ft_putendl_fd_two("bash: no such file or directory: ",head -> next -> token,2);
+            //     exit_code = 1;
+            //     count ++;
+            // }
             if(head -> next == NULL)
             {
                 ft_putendl_fd("bash: syntax error near unexpected token `newline'",2);
                 exit_code = 2;
                 return (0);
             }
-            if(head -> next && head -> next -> type == DIRECTORY)
-            {
-                if(access(head->next->token,R_OK) == -1)
-                {
-                    ft_putendl_fd_two("bash: Permission denied: ",head -> next -> token,2);
-                    exit_code = 1;
-                    return (0);
-                }
-            }
+            // if(head -> next && head -> next -> type == DIRECTORY)
+            // {
+            //     if(access(head->next->token,R_OK) == -1)
+            //     {
+            //         ft_putendl_fd_two("bash: Permission denied: ",head -> next -> token,2);
+            //         exit_code = 1;
+            //         return (0);
+            //     }
+            // }
         }
         head = head -> next;
     }
@@ -189,6 +189,8 @@ int check_aout_redirection(t_token *head)
 {
     while(head)
     {
+        if(head -> type == AOUTPUT_REDIRECTION)
+        {
         if(head -> type == AOUTPUT_REDIRECTION && (head -> prev == NULL || head -> next == NULL))
         {
             ft_putendl_fd("bash: syntax error near unexpected token `newline'",2);
@@ -204,6 +206,7 @@ int check_aout_redirection(t_token *head)
                 return (0);
             }
         }
+    }
         head = head -> next;
     }
     return (1);

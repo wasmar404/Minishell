@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/10 01:08:40 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/02/10 09:15:03 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -275,7 +275,6 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
     int saved_stdout=dup(STDOUT_FILENO);
     int flag = 0;
     int flag20 = 0;
-
     if(strcmp(current -> token, "exit") == 0)
     {
         exit_command(current);
@@ -317,7 +316,7 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
                 }
                 temp = temp -> next;
             }
-            
+      
             if(pipe_count(head) == 0 && ((strcmp(current->token, "env") == 0) || (strcmp(current -> token, "echo") == 0) ||
                     (strcmp(current -> token, "cd") == 0) || (strcmp(current -> token, "pwd") == 0) || (strcmp(current -> token,"export") == 0) || (strcmp(current -> token,"unset") == 0) || (strcmp(current -> token,"exit") == 0)) )
             {
@@ -332,13 +331,19 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
             pid = fork();
             if (pid == 0)
             {
-           
-                // flag20 = 1;
-                if (check_command(current->token, envp) == 0)
+                printf("pid %d\n",pid);
+                fflush(stdout);
+                if(exit_code == 127)
                 {
-                    // ft_putendl_fd_two(current->token, ": command not found", 2);
-                    exit(127);
+                    int fd = open("/dev/null", O_RDONLY);
+                    dup2(fd,STDIN_FILENO);
                 }
+                // flag20 = 1;
+                // if (check_command(current->token, envp) == 0)
+                // {
+                //     // ft_putendl_fd_two(current->token, ": command not found", 2);
+                //     exit(127);
+                // }
                 add_shell_level(my_envp,current,&envp);
                 run_command_helper(current,envp,my_envp,pipefd,input_fd,array_complicated_execute(current),flag);
                 
@@ -346,6 +351,7 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
             }
             else if (pid > 0)
             {
+                
                 if (input_fd != STDIN_FILENO && pipefd[0] != -1)
                     close(input_fd);
                  input_fd = pipefd[0];
@@ -488,6 +494,7 @@ int path_exists(char **envp)
 }
 void  run_command_helper(t_token *head,char **envp, t_env **my_envp,int *pipefd,int input_fd,char **current_command,int flag)
 {
+  
         if(path_exists(envp) == 1)
         {
             if ((strcmp(head->token, "env") == 0) || (strcmp(head -> token, "echo") == 0) || (strcmp(head -> token, "cd") == 0) || (strcmp(head -> token, "pwd") == 0))

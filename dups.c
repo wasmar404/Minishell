@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 00:55:44 by wasmar            #+#    #+#             */
-/*   Updated: 2025/02/09 10:23:07 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/02/10 07:59:38 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,25 +74,7 @@ void check_and_create_file(t_token *head)
         close(fd);
     }
 }
-void fixed_heredoc(char *str)
-{
-    char *input;
-            printf("%s",str);
-            fflush(stdout);
 
-    while (1)
-    {
-        input = readline(">");
-        printf("%s",input);
-        if(strcmp(str,input) == 0)
-        {
-            printf("hhhhhhhhhhhhhhh");
-            fflush(stdout);
-            break;
-        }
-    }
-    
-}
 void check_front(t_token *head,t_token **current_input,t_token **current_output ,int *flag)
 {
     t_token *temp = head->next;
@@ -112,6 +94,7 @@ void check_front(t_token *head,t_token **current_input,t_token **current_output 
             }
             heredoc(temp->next->token, fd);
             close(fd);
+
         }
         temp = temp->next;
     }
@@ -169,24 +152,7 @@ void dups2(t_token *current_input,t_token *current_output,int input_fd,t_token *
         close(input_fd);
     }
 }
-// void heredoc(char *str,int fd)
-// {
-//     char *input;
-//     printf("str %s",str);
-//     fflush(stdout);
-//     while(1)
-//     {
-//         input = readline("> ");
-//         if(strcmp(str,input) == 0)
-//         {
-//             break;
-//         }
 
-//         write(fd,input,ft_strlenn(input));
-//          write(fd,"\n",1);
-//     }
-//     printf("%s",str);
-// }
 void dups1(t_token *current_input,t_token *current_output,int *pipefd)
 {
     int fd;
@@ -202,6 +168,18 @@ void dups1(t_token *current_input,t_token *current_output,int *pipefd)
     }
     if (current_input && current_input->type == SINPUT_REDIRECTION)
     {
+        if(current_input -> next && current_input -> next -> type != DIRECTORY)
+        {
+            ft_putendl_fd_two("bash: no such file or directory: ",current_input -> next -> token,2);
+            exit_code = 1;
+            exit(0);
+        }
+       else if(access(current_input->next->token,R_OK) == -1)
+        {
+            ft_putendl_fd_two("bash: Permission denied: ",current_input -> next -> token,2);
+            exit_code = 1;
+            exit(0);
+        }
         fd = open(current_input->next->token, O_RDONLY, 0644);
         dup2(fd, 0);
         close(fd);
