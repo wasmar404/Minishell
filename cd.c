@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/05 12:28:27 by wasmar            #+#    #+#             */
-/*   Updated: 2025/02/09 11:29:37 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/02/10 12:07:39 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -304,9 +304,6 @@ void main_cd(t_token *head, t_env **my_envp)
         ft_putendl_fd("cd: too many arguments",2);
         exit_code = 1;
         return ;
-    }
-    {
-        return;
     }
     cd(head,my_envp);
     cd_DIRECTORY(head,my_envp);

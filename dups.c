@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dups.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 00:55:44 by wasmar            #+#    #+#             */
-/*   Updated: 2025/02/10 07:59:38 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/02/10 12:49:57 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@
 void handle_dups(t_token *head,int *pipefd, int input_fd,int flag);
 void check_and_create_file(t_token *head);
 void check_back(t_token *head,t_token **current_input,t_token **current_output ,int *flag);
-void dups1(t_token *current_input,t_token *current_output,int *pipefd);
+void dups1(t_token *current_input,t_token *current_output,int *pipefd,t_env *envp);
 void dups2(t_token *current_input,t_token *current_output,int input_fd,t_token *head);
-void check_front(t_token *head,t_token **current_input,t_token **current_output ,int *flag);
+void check_front(t_token *head,t_token **current_input,t_token **current_output ,int *flag,t_env *envp);
 
-void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd,int flag)
+void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd,int flag,t_env *envp)
 {
     t_token *current = head;
     t_token *current1 = head;
@@ -33,8 +33,8 @@ void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd,int f
         close(input_fd);
     }
     check_back(head,&current_input,&current_output,&flag1);
-    check_front(current,&current_input,&current_output,&flag1);
-    dups1(current_input,current_output,pipefd);
+    check_front(current,&current_input,&current_output,&flag1,envp);
+    dups1(current_input,current_output,pipefd,envp);
     dups2(current1,current_output,input_fd,head);
     if(flag == 1)
     {
@@ -75,7 +75,7 @@ void check_and_create_file(t_token *head)
     }
 }
 
-void check_front(t_token *head,t_token **current_input,t_token **current_output ,int *flag)
+void check_front(t_token *head,t_token **current_input,t_token **current_output ,int *flag,t_env *envp)
 {
     t_token *temp = head->next;
     int fd;
@@ -92,7 +92,7 @@ void check_front(t_token *head,t_token **current_input,t_token **current_output 
                 perror("open");
                 return;
             }
-            heredoc(temp->next->token, fd);
+            heredoc(temp->next->token, fd,envp);
             close(fd);
 
         }
@@ -153,13 +153,13 @@ void dups2(t_token *current_input,t_token *current_output,int input_fd,t_token *
     }
 }
 
-void dups1(t_token *current_input,t_token *current_output,int *pipefd)
+void dups1(t_token *current_input,t_token *current_output,int *pipefd,t_env *envp)
 {
     int fd;
     if(current_input && current_input->type == HERE_DOC)
     {
         fd = open("temp", O_WRONLY | O_CREAT | O_APPEND , 0644);
-         heredoc(current_input->next->token,fd);
+         heredoc(current_input->next->token,fd,envp);
         close(fd);
         fd = open("temp",O_RDONLY);
         dup2(fd,0);

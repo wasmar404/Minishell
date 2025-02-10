@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/10 09:15:03 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/02/10 14:27:30 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ void    main_helper(char *input, char **envp,t_env **env_linked)
         return ;
     splitted_input = token_split(input);
     head = input_to_linked_listt(*env_linked,splitted_input,envp);
-//    print_list(head);
+    // print_list(head);
     //(void)env_linked;
     // printf("\n\n\n\n");
     // replace_exit_code(head);
@@ -438,7 +438,7 @@ int find_var_name_return(t_env *my_envp,char *var_name)
 void run_built_ins(t_token *head, t_env **my_envp,int *pipefd,int input_fd,int flag,int flag2)
 {
     t_env *env_copy = (*my_envp);//so the var  my_envp does not become null 
-    super_complicated_handle_dups(head,pipefd,input_fd,flag2);
+    super_complicated_handle_dups(head,pipefd,input_fd,flag2,(*my_envp));
     if ((strcmp(head->token, "env") == 0) && (find_var_name_return((*my_envp),"PATH") == 1))
         exit_code = print_listt((*my_envp));
     if(strcmp(head->token,"echo") == 0)
@@ -474,7 +474,7 @@ void external_commands(t_token *head,char **envp, t_env *my_envp,int *pipefd,int
     {
         (void)my_envp;
              char   *path;
-            super_complicated_handle_dups(head,pipefd,input_fd,flag);
+            super_complicated_handle_dups(head,pipefd,input_fd,flag,my_envp);
             path = find_path_of_cmd(head->token, envp);
             if (execve(path, current_command, envp) == -1)
                 printf("execve failed");
@@ -512,9 +512,17 @@ void  run_command_helper(t_token *head,char **envp, t_env **my_envp,int *pipefd,
             // exit(exit_code);
         }
 }
-void heredoc(char *str, int fd)
+void heredoc(char *str, int fd,t_env *envp)
 {
     char *input;
+    int flag = 0;
+    if(check_if_quotes_exit(str) == 0)
+    {
+        // printf("lkaheofoidosdgisdbfisblohbsllhdsidpiaiofodfgordgiblbibhgilsgfbilr,sfgbxidlsrgifogblfis");
+        flag = 1;
+    }
+    remove_quotes_main_heredoc(&str);
+
     while (1)
     {
         input = readline("> ");
@@ -523,6 +531,10 @@ void heredoc(char *str, int fd)
             free(input);
             break;
         }
+        if(flag == 1)
+            main_dollar_heredoc(&input,envp);
+        // remove_quotes_main()
+        // remove_quotes_main_h(input);
         write(fd, input, strlen(input));
         write(fd, "\n", 1);
         free(input);

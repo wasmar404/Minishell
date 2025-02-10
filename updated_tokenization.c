@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:02:23 by wasmar            #+#    #+#             */
-/*   Updated: 2025/02/05 13:52:21 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/02/10 13:17:21 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ t_token	*input_to_linked_listt(t_env *envp_linked, char **splitted_input,
 	 }
 	//  update_token_linked_list(&print, envp_linked);
 	 main_dollar(&print,envp_linked);
+	 
 	  remove_quotes_main(&head3);
 	  remove_empty_nodes(&return_head);
 	  add_type(&head1,envp);
@@ -480,6 +481,14 @@ void remove_quotes_main(t_token **head)
 	 char *copy;
 	while((*head))
 	{
+		if(strcmp((*head)->token,"<<") == 0)
+		{
+			if((*head) -> next -> next)
+				(*head) = (*head) -> next -> next;
+			else
+				break;
+			continue;
+		}
 		i = 0;
 		while((*head)->token && (*head)->token[i])
 		{

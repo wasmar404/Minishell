@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   header.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/06 13:42:07 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/02/10 14:12:25 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,14 @@ typedef struct t_env
 }					t_env;
 // globals.h
 extern long long  exit_code;
+int is_num_or_char(char c);
+void main_dollar_heredoc(char **input, t_env *env);
+char *expand_dollar(char *str,t_env *envp);
 void heredoc_dup(t_token *head);
 int main_error1(t_token *head);
 void heredoc_dup(t_token *head);
-void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd,int flag);
+int check_if_quotes_exit(char *input);
+void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd,int flag,t_env *envp);
 int					check_double_sep(char *input, int i);
 int					check_single_sep(char input);
 char				*ft_strndup(char *str, int i);
@@ -130,7 +134,7 @@ t_token				*input_to_linked_list(char **input, char **envp);
 void				run_command(t_token *head, char **current_command,
 						char **envp, t_env *my_envp, int *pipefd, int input_fd);
 int					pipe_count(t_token *head);
-void				heredoc(char *str, int fd);
+void				heredoc(char *str, int fd,t_env *envp);
 void				run_command_helper(t_token *head, char **envp,
 						t_env **my_envp, int *pipefd, int input_fd,
 						char **current_command,int flag);
@@ -139,7 +143,7 @@ void				check_back_and_front(t_token *head_back,
 						t_token **current_input, t_token **current_output,
 						t_token *current);
 void				dups1(t_token *current_input, t_token *current_output,
-						int *pipefd);
+						int *pipefd,t_env *envp);
 void				dups2(t_token *current_input, t_token *current_output,
 						int input_fd,t_token *head);
 void				main_cd(t_token *head, t_env **my_envp);
@@ -180,11 +184,15 @@ char				*fill_array(int len, int start, int end, t_token **head,
 int					process_token(t_token **head, t_env *envp_linked);
 void				update_token_linked_list(t_token **head,
 						t_env *envp_linked);
+						int find_end_variable(char *str,int j);
 int find_end_of_quotes(char *str, char quote,int i);
 void remove_quotes_and_replace(t_token **head,int i);
 void remove_quotes_main(t_token **head);
+void remove_quotes_main_h(char *input);
+int find_end_of_quotes_h(char *str, char quote,int start);
 void main_dollar(t_token **head,t_env *envp);
 char * check_dollar_plus1_char(char **str);
+void remove_quotes_main_heredoc(char **str);
 char *dollar_main_char(char *str);
 t_env	*search_and_find_a_type_my_envpp(t_env *envp, char *to_find);
 void expand_dollar1(t_token **head,t_env *envp_linked);
