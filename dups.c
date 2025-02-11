@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 00:55:44 by wasmar            #+#    #+#             */
-/*   Updated: 2025/02/11 01:23:21 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/02/11 02:07:25 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 void handle_dups(t_token *head,int *pipefd, int input_fd,int flag);
 void check_and_create_file(t_token *head);
 void check_back(t_token *head,t_token **current_input,t_token **current_output ,int *flag);
-void dups1(t_token *current_input,t_token *current_output,int *pipefd,t_env *envp);
+int dups1(t_token *current_input,t_token *current_output,int *pipefd,t_env *envp);
 void dups2(t_token *current_input,t_token *current_output,int input_fd,t_token *head);
 void check_front(t_token *head,t_token **current_input,t_token **current_output ,int *flag,t_env *envp);
 
@@ -34,7 +34,9 @@ void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd,int f
     }
     check_back(head,&current_input,&current_output,&flag1);
     check_front(current,&current_input,&current_output,&flag1,envp);
-    dups1(current_input,current_output,pipefd,envp);
+    exit_code = dups1(current_input,current_output,pipefd,envp);
+    printf("%lld",exit_code);
+    fflush(stdout);
     dups2(current1,current_output,input_fd,head);
     if(flag == 1)
     {
@@ -153,7 +155,7 @@ void dups2(t_token *current_input,t_token *current_output,int input_fd,t_token *
     }
 }
 
-void dups1(t_token *current_input,t_token *current_output,int *pipefd,t_env *envp)
+int dups1(t_token *current_input,t_token *current_output,int *pipefd,t_env *envp)
 {
     int fd;
     if(current_input && current_input->type == HERE_DOC)
@@ -172,13 +174,13 @@ void dups1(t_token *current_input,t_token *current_output,int *pipefd,t_env *env
         {
             ft_putendl_fd_two("bash: no such file or directory: ",current_input -> next -> token,2);
             exit_code = 1;
-            exit(1);
+            return(1);
         }
        else if(access(current_input->next->token,R_OK) == -1)
         {
             ft_putendl_fd_two("bash: Permission denied: ",current_input -> next -> token,2);
             exit_code = 1;
-            exit(1);
+            return(1);
         }
         fd = open(current_input->next->token, O_RDONLY, 0644);
         dup2(fd, 0);
@@ -189,4 +191,5 @@ void dups1(t_token *current_input,t_token *current_output,int *pipefd,t_env *env
         dup2(pipefd[1],1);
         close(pipefd[1]);
     }
+    return(0);
 }
