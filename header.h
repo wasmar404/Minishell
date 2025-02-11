@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/11 02:07:01 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/02/11 06:48:18 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ void				main_helper(char *input, char **envp, t_env **env_linked);
 void				check_back_and_front(t_token *head_back,
 						t_token **current_input, t_token **current_output,
 						t_token *current);
-int				dups1(t_token *current_input, t_token *current_output,
+void				dups1(t_token *current_input, t_token *current_output,
 						int *pipefd,t_env *envp);
 void				dups2(t_token *current_input, t_token *current_output,
 						int input_fd,t_token *head);
