@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/11 02:10:45 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/02/11 06:38:06 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -319,8 +319,8 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
             {
                 flag20 = 1;
                 run_built_ins(current,my_envp,pipefd,input_fd,0,flag);
-                printf("%lld",exit_code);
-                fflush(stdout);
+                // printf("%lld",exit_code);
+                // fflush(stdout);
                 dup2(saved_stdin,STDIN_FILENO);
                 dup2(saved_stdout,STDOUT_FILENO);
                 close(saved_stdin);
@@ -436,8 +436,8 @@ void run_built_ins(t_token *head, t_env **my_envp,int *pipefd,int input_fd,int f
 {
     t_env *env_copy = (*my_envp);//so the var  my_envp does not become null 
     super_complicated_handle_dups(head,pipefd,input_fd,flag2,(*my_envp));
-    printf("%lld",exit_code);
-    fflush(stdout);
+    // printf("%lld",exit_code);
+    // fflush(stdout);
     if ((strcmp(head->token, "env") == 0))
     {
         if(find_var_name_return((*my_envp),"PATH") == 1)

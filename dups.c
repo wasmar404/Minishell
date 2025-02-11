@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 00:55:44 by wasmar            #+#    #+#             */
-/*   Updated: 2025/02/11 02:07:25 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/02/11 06:37:41 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd,int f
     check_back(head,&current_input,&current_output,&flag1);
     check_front(current,&current_input,&current_output,&flag1,envp);
     exit_code = dups1(current_input,current_output,pipefd,envp);
-    printf("%lld",exit_code);
-    fflush(stdout);
+    // printf("%lld",exit_code);
+    // fflush(stdout);
     dups2(current1,current_output,input_fd,head);
     if(flag == 1)
     {
