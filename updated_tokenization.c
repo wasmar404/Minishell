@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:02:23 by wasmar            #+#    #+#             */
-/*   Updated: 2025/02/10 13:17:21 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/02/11 11:08:41 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -525,6 +525,8 @@ void remove_quotes_main(t_token **head)
 											// printf("end %d\n",end);
 					if(end-1 >= len)
 					{
+						single_quotes = 0;
+						double_quotes = 0;
 						break;
 					}
 					if((*head)->token[end-1])

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 11:27:21 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/10 01:20:31 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/02/11 14:12:50 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	check_n(t_token *head)
 	return (1);
 }
 
-int	echo_main(t_token *head)
+void	echo_main(t_token *head)
 {
 	int		flag;
 	int flag1 = 0;
@@ -42,7 +42,8 @@ int	echo_main(t_token *head)
 	if (!head->next)
 	{
 		printf("\n");
-		return 0;
+		exit_code= 0;
+		return ;
 	}
 	head = head->next;
 	while (head != NULL && (head->type == WORD || head->type == DIRECTORY || head->type == SINPUT_REDIRECTION))
@@ -75,8 +76,8 @@ int	echo_main(t_token *head)
 			printf(" ");
 		head = head->next;
 		}
+		exit_code = 0;
 	}
 	if (flag == 0)
 		printf("\n");
-	return 0;
 }

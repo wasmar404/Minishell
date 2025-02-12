@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/11 06:48:18 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/02/12 09:55:47 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,14 @@ typedef struct t_env
 	struct t_env	*prev;
 
 }					t_env;
+typedef struct t_exit_code
+{
+	long long exit_code;
+	t_env *env;
+	char **env_array;
+
+}	t_exit_code;
+
 // globals.h
 extern long long  exit_code;
 int is_num_or_char(char c);
@@ -117,7 +125,7 @@ int					check_n(t_token *head);
 int					delimeter_check_echo(t_token *head);
 int					check_dollar(t_token *head);
 t_env				*check_in_envp(t_env *head, char *a);
-int				echo_main(t_token *head);
+void				echo_main(t_token *head);
 void				complicated_execute(t_env **my_env, t_token *head,
 						char **my_envp);
 int	check_dollar1(t_token *head);

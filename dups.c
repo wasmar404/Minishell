@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 00:55:44 by wasmar            #+#    #+#             */
-/*   Updated: 2025/02/11 06:46:07 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/02/11 14:05:17 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,7 +172,7 @@ void dups1(t_token *current_input,t_token *current_output,int *pipefd,t_env *env
         {
             ft_putendl_fd_two("bash: no such file or directory: ",current_input -> next -> token,2);
             exit_code = 1;
-            exit(1);
+            // exit(1);
         }
        else if(access(current_input->next->token,R_OK) == -1)
         {

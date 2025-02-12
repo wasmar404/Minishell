@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/11 06:46:31 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/02/11 14:11:00 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -442,7 +442,7 @@ void run_built_ins(t_token *head, t_env **my_envp,int *pipefd,int input_fd,int f
             exit_code = 1;
     }
     if(strcmp(head->token,"echo") == 0)
-        exit_code = echo_main(head);
+         echo_main(head);
     if(strcmp(head->token,"pwd") == 0)
         exit_code = main_pwd();
     if(strcmp(head->token,"cd") == 0)
