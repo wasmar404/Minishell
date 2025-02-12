@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 11:27:21 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/11 14:12:50 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/02/12 13:04:49 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,21 @@ int	check_n(t_token *head)
 	return (1);
 }
 
-void	echo_main(t_token *head)
+void	echo_main(t_token *head,t_exit_code *exitcode)
 {
 	int		flag;
 	int flag1 = 0;
 	flag = 0;
-
+	if(exitcode -> input_file_flag == 1)
+	{
+		exitcode -> input_file_flag = 0;
+		return ;
+	}
+// exitcode = malloc(sizeof(t_exit_code));
 	if (!head->next)
 	{
 		printf("\n");
-		exit_code= 0;
+		exitcode -> exit_code= 0;
 		return ;
 	}
 	head = head->next;
@@ -76,7 +81,8 @@ void	echo_main(t_token *head)
 			printf(" ");
 		head = head->next;
 		}
-		exit_code = 0;
+		exitcode -> exit_code = 0;
+
 	}
 	if (flag == 0)
 		printf("\n");

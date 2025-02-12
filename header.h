@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/12 09:55:47 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/02/12 13:03:20 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,21 +78,23 @@ typedef struct t_env
 typedef struct t_exit_code
 {
 	long long exit_code;
-	t_env *env;
-	char **env_array;
+	pid_t pid;
+	int input_file_flag;
+	// t_env *env;
+	// char **env_array;
 
 }	t_exit_code;
 
 // globals.h
-extern long long  exit_code;
+// extern long long  exit_code;
 int is_num_or_char(char c);
-void main_dollar_heredoc(char **input, t_env *env);
+void main_dollar_heredoc(char **input, t_env *env,t_exit_code *exitcode);
 char *expand_dollar(char *str,t_env *envp);
 void heredoc_dup(t_token *head);
 int main_error1(t_token *head);
 void heredoc_dup(t_token *head);
 int check_if_quotes_exit(char *input);
-void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd,int flag,t_env *envp);
+void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd,int flag,t_env *envp,t_exit_code *exitcode);
 int					check_double_sep(char *input, int i);
 int					check_single_sep(char input);
 char				*ft_strndup(char *str, int i);
@@ -125,9 +127,9 @@ int					check_n(t_token *head);
 int					delimeter_check_echo(t_token *head);
 int					check_dollar(t_token *head);
 t_env				*check_in_envp(t_env *head, char *a);
-void				echo_main(t_token *head);
+void				echo_main(t_token *head,t_exit_code *exitcode);
 void				complicated_execute(t_env **my_env, t_token *head,
-						char **my_envp);
+						char **my_envp,t_exit_code *exitcode);
 int	check_dollar1(t_token *head);
 t_token				*create_node_token(char *str, int i, bool built_in_or_not);
 bool				built_in_or_not(char *cmd);
@@ -142,23 +144,23 @@ t_token				*input_to_linked_list(char **input, char **envp);
 void				run_command(t_token *head, char **current_command,
 						char **envp, t_env *my_envp, int *pipefd, int input_fd);
 int					pipe_count(t_token *head);
-void				heredoc(char *str, int fd,t_env *envp);
+void				heredoc(char *str, int fd,t_env *envp,t_exit_code *exitcode);
 void				run_command_helper(t_token *head, char **envp,
 						t_env **my_envp, int *pipefd, int input_fd,
-						char **current_command,int flag);
-void				main_helper(char *input, char **envp, t_env **env_linked);
+						char **current_command,int flag,t_exit_code *exitcode);
+void				main_helper(char *input, char **envp, t_env **env_linked,t_exit_code *exitcode);
 void				check_back_and_front(t_token *head_back,
 						t_token **current_input, t_token **current_output,
 						t_token *current);
 void				dups1(t_token *current_input, t_token *current_output,
-						int *pipefd,t_env *envp);
+						int *pipefd,t_env *envp,t_exit_code *exitcode);
 void				dups2(t_token *current_input, t_token *current_output,
 						int input_fd,t_token *head);
-void				main_cd(t_token *head, t_env **my_envp);
+void				main_cd(t_token *head, t_env **my_envp,t_exit_code *exitcode);
 int				main_pwd(void);
-void				export_main(t_env **my_envp, t_token *head);
+void				export_main(t_env **my_envp, t_token *head,t_exit_code *exitcode);
 int					check_equal(char *str);
-void				main_unset1(t_env **my_envp, char *var_name);
+void				main_unset1(t_env **my_envp, char *var_name,t_exit_code *exitcode);
 void				find_var_name(t_env **my_envp, char *var_name);
 int					valid_identifier(t_token *head);
 int					invalid_option(t_token *head);
@@ -173,14 +175,14 @@ token_type			check_input_type(char *input, char **envp,t_token *head);
 int					check_if_cmd(char *input, char **envp,t_token *head);
 token_type			check_if_twopoints_dir_cmd_word(char *input, char **envp,t_token *head);
 void				run_built_ins(t_token *head, t_env **my_envp, int *pipefd,
-						int input_fd, int flag,int flag2);
+						int input_fd, int flag,int flag2,t_exit_code *exitcode);
 void				input_to_linked_list_h(t_token **head, t_token *new);
 t_token				*create_node_token(char *str, int i, bool built_in_or_not);
 bool				built_in_or_not(char *cmd);
 t_token				*generate_tokenn(t_env *envp_linked, char **splitted_input,
 						char **envp, int i);
 t_token				*input_to_linked_listt(t_env *envp_linked,
-						char **splitted_input, char **envp);
+						char **splitted_input, char **envp,t_exit_code *exitcode);
 int					find_quotes_end(char *str, int i, int flag);
 char				*new_string(char *str, int i, int j);
 void				quotes_check_remove(t_token **head, t_env *envp);
@@ -198,7 +200,7 @@ void remove_quotes_and_replace(t_token **head,int i);
 void remove_quotes_main(t_token **head);
 void remove_quotes_main_h(char *input);
 int find_end_of_quotes_h(char *str, char quote,int start);
-void main_dollar(t_token **head,t_env *envp);
+void main_dollar(t_token **head,t_env *envp,t_exit_code *exitcode);
 char * check_dollar_plus1_char(char **str);
 void remove_quotes_main_heredoc(char **str);
 char *dollar_main_char(char *str);
@@ -208,14 +210,14 @@ int check_if_null(char *input);
 void remove_empty_nodes(t_token **head);
 char *check_access_for_files(t_token *head);
 char	*find_path_of_cmd(char *command, char **envp);
-int input_check(t_token *head,char **array,char **envp);
-int  main_quote_check(char *str);
+int input_check(t_token *head,char **array,char **envp,t_exit_code *exitcode);
+int  main_quote_check(char *str,t_exit_code *exitcode);
 void check_quotes_status_and_update(int *inside_quote, int *d_start,int *d_end, int *s_start,int *s_end , char c);
 void	ft_putendl_fd_two(char *s,char *str, int fd);
 void add_type(t_token **head,char **envp);
 void replace_exit_code(t_token *head);
-void exit_command(t_token *head);
-int check_command(char *array,char **envp);
+void exit_command(t_token *head,t_exit_code *exitcode);
+int check_command(char *array,char **envp,t_exit_code *exitcode);
 void ctrl_c(int sig);
 void main_signal();
 void add_shell_level(t_env **my_envp,t_token *head,char ***envp);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 12:57:39 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/09 11:30:48 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/02/12 10:10:54 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ long long	ft_atoll(const char *nptr)
 	return (sum * sign);
 }
 
-void exit_command(t_token *head)
+void exit_command(t_token *head,t_exit_code *exitcode)
 {
     long long num;
     num = 0;
@@ -67,14 +67,14 @@ void exit_command(t_token *head)
     // }
     if (!head->next) 
     {
-        exit_code = 0;
+        exitcode -> exit_code = 0;
         printf("exit\n");
-        exit(exit_code);
+        exit(exitcode -> exit_code);
     }
 
     if(head -> next -> next)
     {
-        exit_code = 1;
+        exitcode -> exit_code = 1;
         printf("exit\n");
         ft_putendl_fd("bash: exit: too many arguments",2);
         // exit(exit_code);
@@ -83,31 +83,31 @@ void exit_command(t_token *head)
     {
         if(is_digit_string(head -> next -> token) == 0)
         {
-            exit_code = 2;
+            exitcode -> exit_code = 2;
             printf("exit\n");
             ft_putendl_fd("bash: numeric argument required",2);
-            exit(exit_code);
+            exit(exitcode -> exit_code);
         }
         if(is_digit_string(head -> next -> token) == -1)
         {
-            exit_code = 156;
+            exitcode -> exit_code = 156;
             printf("exit\n");
             // ft_putendl_fd("bash: numeric argument required",2);
-            exit(exit_code);
+            exit(exitcode -> exit_code);
         }
         if(is_digit_string(head -> next -> token) == 2)
         {
-            exit_code = 100;
+            exitcode -> exit_code = 100;
             printf("exit\n");
             // ft_putendl_fd("bash: numeric argument required",2);
-            exit(exit_code);
+            exit(exitcode -> exit_code);
         }
         else
         {
             num = ft_atoll(head -> next -> token);
             printf("exit\n");
-            exit_code = num;
-            exit(exit_code);
+            exitcode -> exit_code = num;
+            exit(exitcode -> exit_code);
         }
     }
 }

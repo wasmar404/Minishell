@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 21:04:03 by wasmar            #+#    #+#             */
-/*   Updated: 2025/01/23 13:06:00 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/02/12 10:11:30 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,11 +136,11 @@ else {
 }
 
 }
-void export_main(t_env **my_envp,t_token *head)
+void export_main(t_env **my_envp,t_token *head,t_exit_code *exitcode)
 {
     if(valid_identifier(head) == 0)
     {
-        exit_code = 1;
+        exitcode -> exit_code = 1;
         return ;
     }
     if(head->next && head->next->type == 6)
@@ -151,5 +151,5 @@ void export_main(t_env **my_envp,t_token *head)
 
         reset_bool_printed(*my_envp);
     }
-    exit_code = 0;
+    exitcode -> exit_code = 0;
 }

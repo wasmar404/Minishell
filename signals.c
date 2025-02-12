@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:53:50 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/05 14:54:05 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/02/12 10:43:41 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void ctrl_c(int sig)
 	rl_on_new_line();
 	rl_replace_line("",0);
 	rl_redisplay();
-	exit_code = 148;
+	// exitcode -> exit_code = 148;
 }
 void ctrl_c_heredoc()
 {

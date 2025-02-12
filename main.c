@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/11 14:11:00 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/02/12 12:37:14 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,10 @@ int main(int ac, char **av, char **envp)
     char    *input =NULL;
     t_env   *head;
     char    **my_envp;
+    t_exit_code exitcode;
+    // exitcode = malloc(sizeof(t_exit_code));
+    exitcode.exit_code = 0;
+    // printf("hi\n");
     (void)ac;
     (void)av;
     head = env_to_linked_list(envp);
@@ -31,7 +35,7 @@ int main(int ac, char **av, char **envp)
             
         if (*input) {
             add_history(input);
-            main_helper(input, my_envp, &head);
+            main_helper(input, my_envp, &head,&exitcode);
         }
 
         free(input);
@@ -90,7 +94,7 @@ int pipe_count_array(char **str)
     }
     return (count);
 }
-void    main_helper(char *input, char **envp,t_env **env_linked)
+void    main_helper(char *input, char **envp,t_env **env_linked,t_exit_code *exitcode)
 {
     char    **splitted_input;
     t_token *head;
@@ -101,28 +105,28 @@ void    main_helper(char *input, char **envp,t_env **env_linked)
             rl_clear_history(); 
             return ;
     }
-    if(main_quote_check(input) == 0)
+    if(main_quote_check(input,exitcode) == 0)
         return ;
-    splitted_input = token_split(input);
-    head = input_to_linked_listt(*env_linked,splitted_input,envp);
-    // print_list(head);
-    //(void)env_linked;
-    // printf("\n\n\n\n");
-    // replace_exit_code(head);
-    if(input_check(head,splitted_input,envp) == 0)
+     splitted_input = token_split(input);
+     head = input_to_linked_listt(*env_linked,splitted_input,envp,exitcode);
+    // // print_list(head);
+    // //(void)env_linked;
+    // // printf("\n\n\n\n");
+    // // replace_exit_code(head);
+    if(input_check(head,splitted_input,envp,exitcode) == 0)
         return ;
     if(pipe_count_array(splitted_input) == 0)
     {
-        if (check_command(head->token, envp) == 0)
+        if (check_command(head->token, envp,exitcode) == 0)
         {
             return ;
         }
     }
-    // main_error1(head);
-     complicated_execute(env_linked, head, envp);
+    // // main_error1(head);
+     complicated_execute(env_linked, head, envp,exitcode);
 
-    //  free_doubly_linked_list(head);
-     free_array(splitted_input);
+    // //  free_doubly_linked_list(head);
+    //  free_array(splitted_input);
 }
 
 void find_a_node_move_pointer(t_token **head,int i)
@@ -257,7 +261,7 @@ int command_exists(t_token *head)
     }
     return(0);
 }
-void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
+void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[],t_exit_code *exitcode)
 {
     int     pipefd[2];
     int status;
@@ -266,7 +270,8 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
     (void)envp1;
     input_fd = STDIN_FILENO;
     t_token *temp;
-    pid_t pid ;
+    // pid_t pid = -1;
+    exitcode -> pid = -1;
     t_token *current = head;
     int saved_stdin=dup(STDIN_FILENO);
     int saved_stdout=dup(STDOUT_FILENO);
@@ -274,7 +279,7 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
     int flag20 = 0;
     if(strcmp(current -> token, "exit") == 0)
     {
-        exit_command(current);
+        exit_command(current,exitcode);
     }
 
     while (current != NULL)
@@ -318,17 +323,17 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
                     (strcmp(current -> token, "cd") == 0) || (strcmp(current -> token, "pwd") == 0) || (strcmp(current -> token,"export") == 0) || (strcmp(current -> token,"unset") == 0) || (strcmp(current -> token,"exit") == 0)) )
             {
                 flag20 = 1;
-                run_built_ins(current,my_envp,pipefd,input_fd,0,flag);
+                 run_built_ins(current,my_envp,pipefd,input_fd,0,flag,exitcode);
                 dup2(saved_stdin,STDIN_FILENO);
                 dup2(saved_stdout,STDOUT_FILENO);
                 close(saved_stdin);
                 close(saved_stdout);
             }
             else{
-            pid = fork();
-            if (pid == 0)
+            exitcode -> pid = fork();
+            if (exitcode -> pid == 0)
             {
-                if(exit_code == 127)
+                if(exitcode -> exit_code == 127)
                 {
                     int fd = open("/dev/null", O_RDONLY);
                     dup2(fd,STDIN_FILENO);
@@ -340,11 +345,11 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
                 //     exit(127);
                 // }
                 add_shell_level(my_envp,current,&envp);
-                run_command_helper(current,envp,my_envp,pipefd,input_fd,array_complicated_execute(current),flag);
+                run_command_helper(current,envp,my_envp,pipefd,input_fd,array_complicated_execute(current),flag,exitcode);
                 
                 // exit(exit_code);
             }
-            else if (pid > 0)
+            else if (exitcode -> pid > 0)
             {
                 
                 if (input_fd != STDIN_FILENO && pipefd[0] != -1)
@@ -374,11 +379,11 @@ void    complicated_execute(t_env **my_envp, t_token *head, char *envp1[])
         while (wait(&status) > 0);
         if (WIFEXITED(status)) // Check if the child exited normally
         {
-            exit_code = WEXITSTATUS(status); // Extract the exit code
+            exitcode -> exit_code = WEXITSTATUS(status); // Extract the exit code
         }
         else if (WIFSIGNALED(status)) // Check if the child was terminated by a signal
         {
-            exit_code = 128 + WTERMSIG(status); // Set exit code to 128 + signal number
+            exitcode -> exit_code = 128 + WTERMSIG(status); // Set exit code to 128 + signal number
         }
     }
     // free_doubly_linked_list(current);
@@ -430,51 +435,51 @@ int find_var_name_return(t_env *my_envp,char *var_name)
     }
     return(0);
 }
-void run_built_ins(t_token *head, t_env **my_envp,int *pipefd,int input_fd,int flag,int flag2)
+void run_built_ins(t_token *head, t_env **my_envp,int *pipefd,int input_fd,int flag,int flag2,t_exit_code *exitcode)
 {
     t_env *env_copy = (*my_envp);//so the var  my_envp does not become null 
-    super_complicated_handle_dups(head,pipefd,input_fd,flag2,(*my_envp));
+    super_complicated_handle_dups(head,pipefd,input_fd,flag2,(*my_envp),exitcode);
     if ((strcmp(head->token, "env") == 0))
     {
         if(find_var_name_return((*my_envp),"PATH") == 1)
-            exit_code = print_listt((*my_envp));
+            exitcode -> exit_code = print_listt((*my_envp));
         else 
-            exit_code = 1;
+            exitcode -> exit_code = 1;
     }
     if(strcmp(head->token,"echo") == 0)
-         echo_main(head);
+         echo_main(head,exitcode);
     if(strcmp(head->token,"pwd") == 0)
-        exit_code = main_pwd();
+        exitcode -> exit_code = main_pwd();
     if(strcmp(head->token,"cd") == 0)
-        main_cd(head,&env_copy);
+        main_cd(head,&env_copy,exitcode);
     if(strcmp(head->token,"export") == 0)
-        export_main(my_envp,head); 
+        export_main(my_envp,head,exitcode); 
     if(strcmp(head->token,"unset") == 0)
     {
         if (head->next == NULL || head->next->token == NULL || head->next->token[0] == '\0')
         {
-            exit_code = 0;
+            exitcode -> exit_code = 0;
             return;
 
         }
         if(invalid_option(head) == 0)
         {
-            exit_code = 1;
+            exitcode -> exit_code = 1;
             return ;
         }
-        main_unset1(my_envp,head -> next -> token);
+        main_unset1(my_envp,head -> next -> token,exitcode);
     }
     if(flag == 1)
-        exit(exit_code);
+        exit(exitcode -> exit_code);
 
 }
-void external_commands(t_token *head,char **envp, t_env *my_envp,int *pipefd,int input_fd,char **current_command,int flag)
+void external_commands(t_token *head,char **envp, t_env *my_envp,int *pipefd,int input_fd,char **current_command,int flag,t_exit_code *exitcode)
 {
     if(find_var_name_return((my_envp),"PATH"))
     {
         (void)my_envp;
              char   *path;
-            super_complicated_handle_dups(head,pipefd,input_fd,flag,my_envp);
+            super_complicated_handle_dups(head,pipefd,input_fd,flag,my_envp,exitcode);
             path = find_path_of_cmd(head->token, envp);
             if (execve(path, current_command, envp) == -1)
                 printf("execve failed");
@@ -492,33 +497,32 @@ int path_exists(char **envp)
     }
     return (0);
 }
-void  run_command_helper(t_token *head,char **envp, t_env **my_envp,int *pipefd,int input_fd,char **current_command,int flag)
+void  run_command_helper(t_token *head,char **envp, t_env **my_envp,int *pipefd,int input_fd,char **current_command,int flag,t_exit_code *exitcode)
 {
   
         if(path_exists(envp) == 1)
         {
             if ((strcmp(head->token, "env") == 0) || (strcmp(head -> token, "echo") == 0) || (strcmp(head -> token, "cd") == 0) || (strcmp(head -> token, "pwd") == 0))
-                run_built_ins(head,my_envp,pipefd,input_fd,1,flag);
+                run_built_ins(head,my_envp,pipefd,input_fd,1,flag,exitcode);
             else if((strcmp(head -> token, "export") == 0) || (strcmp(head -> token, "unset") == 0) || (strcmp(head -> token, "exit") == 0))
-                run_built_ins(head,my_envp,pipefd,input_fd,1,flag);
+                run_built_ins(head,my_envp,pipefd,input_fd,1,flag,exitcode);
             else
-                external_commands(head,envp,(*my_envp),pipefd,input_fd,current_command,flag);
+                external_commands(head,envp,(*my_envp),pipefd,input_fd,current_command,flag,exitcode);
         }
         else
         {
-            exit_code = 127;
+            exitcode -> exit_code = 127;
             // ft_putendl_fd("bash: No such file or directory",2);
             // close(STDIN_FILENO);
             // exit(exit_code);
         }
 }
-void heredoc(char *str, int fd,t_env *envp)
+void heredoc(char *str, int fd,t_env *envp,t_exit_code *exitcode)
 {
     char *input;
     int flag = 0;
     if(check_if_quotes_exit(str) == 0)
     {
-        // printf("lkaheofoidosdgisdbfisblohbsllhdsidpiaiofodfgordgiblbibhgilsgfbilr,sfgbxidlsrgifogblfis");
         flag = 1;
     }
     remove_quotes_main_heredoc(&str);
@@ -532,7 +536,7 @@ void heredoc(char *str, int fd,t_env *envp)
             break;
         }
         if(flag == 1)
-            main_dollar_heredoc(&input,envp);
+            main_dollar_heredoc(&input,envp,exitcode);
         // remove_quotes_main()
         // remove_quotes_main_h(input);
         write(fd, input, strlen(input));

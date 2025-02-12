@@ -143,12 +143,12 @@ char *create_array_till_dollar_h(char *input,int index)
     new_string[i] = '\0';
     return(new_string);
 }
-char *check_char_after_dollar1(char *str,t_env *envp)
+char *check_char_after_dollar1(char *str,t_env *envp,t_exit_code *exitcode)
 {
     char *new_string = NULL;
     if((str[0] == '$' && str[1] == '?'))
     {
-     new_string = ft_itoa(exit_code);
+     new_string = ft_itoa(exitcode -> exit_code);
     }
      else if(str[0] == '$' && (str[1] == '"' || str[1] == '\'') )
     {
@@ -183,7 +183,7 @@ int check_if_quotes_exit(char *input)
     }
     return (count);
 }
-void  main_dollar_helper_h(int *i,char **input,char **str,t_env *env)
+void  main_dollar_helper_h(int *i,char **input,char **str,t_env *env,t_exit_code *exitcode)
 {
     int start = 0;
     char *expanded;
@@ -195,7 +195,7 @@ void  main_dollar_helper_h(int *i,char **input,char **str,t_env *env)
                start = (*i);
                end = find_end_variable((*input),(*i));
                to_expand = strndup((*input)+start,end -start);
-                expanded = check_char_after_dollar1(to_expand,env);
+                expanded = check_char_after_dollar1(to_expand,env,exitcode);
                 if(expanded == NULL)
                 {
                     expand_and_replace_heredoc(input,(*str),end);
@@ -219,7 +219,7 @@ void  main_dollar_helper_h(int *i,char **input,char **str,t_env *env)
 
             }
 }
-void main_dollar_heredoc(char **input, t_env *env)
+void main_dollar_heredoc(char **input, t_env *env,t_exit_code *exitcode)
 {
     int i = 0;
     char *str = NULL;
@@ -230,7 +230,7 @@ void main_dollar_heredoc(char **input, t_env *env)
     int len = 0;
         while(input[i])
         {
-            main_dollar_helper_h(&i, input, &str, env);
+            main_dollar_helper_h(&i, input, &str, env,exitcode);
             i++;
         }
     

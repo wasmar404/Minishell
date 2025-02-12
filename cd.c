@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/05 12:28:27 by wasmar            #+#    #+#             */
-/*   Updated: 2025/02/12 09:58:22 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/02/12 10:07:13 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void return_env_to_beginning(t_env **my_envp)
     }
 }
 
-void cd(t_token *head, t_env **my_envp)
+void cd(t_token *head, t_env **my_envp,t_exit_code *exitcode)
 {
         char *a;
     char *new_oldpwd;
@@ -48,7 +48,7 @@ void cd(t_token *head, t_env **my_envp)
                 a = strdup((*my_envp)->enva);
             if(chdir(a) == -1)
             {
-                exit_code = 1;
+                exitcode -> exit_code = 1;
                 free (a);
                 return ;
             }
@@ -83,7 +83,7 @@ void cd(t_token *head, t_env **my_envp)
         if (!(*my_envp)) 
         {
             ft_putendl_fd("cd: HOME not set\n",2);
-            exit_code = 1;
+            exitcode -> exit_code = 1;
             return ;
         }
         else
@@ -91,10 +91,10 @@ void cd(t_token *head, t_env **my_envp)
             return;
         }
         free(a);
-    exit_code = 0;
+    exitcode -> exit_code = 0;
  }
 }
-void cd_TILDE(t_token *head, t_env **my_envp)
+void cd_TILDE(t_token *head, t_env **my_envp,t_exit_code *exitcode)
 {
     char *a;
     char *new_oldpwd;
@@ -107,7 +107,7 @@ void cd_TILDE(t_token *head, t_env **my_envp)
             a = strdup((*my_envp)->enva);
         if(chdir(a) == -1)
         {
-            exit_code = 1;
+            exitcode -> exit_code = 1;
             free (a);
             return ;
         }
@@ -141,7 +141,7 @@ void cd_TILDE(t_token *head, t_env **my_envp)
         if (!(*my_envp)) 
         {
             ft_putendl_fd("cd: HOME not set\n",2);
-            exit_code = 1;
+            exitcode -> exit_code = 1;
             return ;
         }
         else
@@ -150,11 +150,11 @@ void cd_TILDE(t_token *head, t_env **my_envp)
         }
         free(a);
     //go back to the home dic 
-     exit_code = 0;
+     exitcode -> exit_code = 0;
     } 
 
 }
-void cd_DIRECTORY(t_token *head, t_env **my_envp)
+void cd_DIRECTORY(t_token *head, t_env **my_envp, t_exit_code *exitcode)
 {
     char *old_pwd;
     char *new_pwd; 
@@ -184,7 +184,7 @@ void cd_DIRECTORY(t_token *head, t_env **my_envp)
         }
         if(chdir(new_pwd) == -1)
         {
-            exit_code = 1;
+            exitcode -> exit_code = 1;
             return ;
         }
         search_and_find_a_type_my_envp(my_envp,"PWD");
@@ -199,11 +199,11 @@ void cd_DIRECTORY(t_token *head, t_env **my_envp)
         {
             return;
         }
-    exit_code = 0;
+    exitcode -> exit_code = 0;
 } 
  
 }
-void cd_MINUS(t_token *head, t_env **my_envp)
+void cd_MINUS(t_token *head, t_env **my_envp, t_exit_code *exitcode)
 {
     char *oldpwd ;
     char *new_oldpwd;
@@ -243,9 +243,9 @@ void cd_MINUS(t_token *head, t_env **my_envp)
         return;
     }
 } 
-exit_code = 0;
+exitcode -> exit_code = 0;
 }
-void cd_TWO_POINTS(t_token *head, t_env **my_envp)
+void cd_TWO_POINTS(t_token *head, t_env **my_envp,t_exit_code *exitcode)
 {
     char cwd[1000];
     char *current_path;
@@ -289,25 +289,25 @@ void cd_TWO_POINTS(t_token *head, t_env **my_envp)
         return;
     }
     //go back one dir
-exit_code = 0;
+exitcode -> exit_code = 0;
 }  
 }
-void main_cd(t_token *head, t_env **my_envp)
+void main_cd(t_token *head, t_env **my_envp, t_exit_code *exitcode)
 {
     if(!my_envp || !head)
     {
-        exit_code = 1;
+        exitcode -> exit_code = 1;
         return ;
     }
     if(head ->next->next && head -> next -> next -> type == WORD)
     {
         ft_putendl_fd("cd: too many arguments",2);
-        exit_code = 1;
+        exitcode -> exit_code = 1;
         return ;
     }
-    cd(head,my_envp);
-    cd_DIRECTORY(head,my_envp);
-    cd_MINUS(head,my_envp);
-    cd_TILDE(head,my_envp);
-    cd_TWO_POINTS(head,my_envp);
+    cd(head,my_envp,exitcode);
+    cd_DIRECTORY(head,my_envp,exitcode);
+    cd_MINUS(head,my_envp,exitcode);
+    cd_TILDE(head,my_envp,exitcode);
+    cd_TWO_POINTS(head,my_envp,exitcode);
 }
