@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/05 12:28:27 by wasmar            #+#    #+#             */
-/*   Updated: 2025/02/12 10:07:13 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/02/12 13:28:18 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void return_env_to_beginning(t_env **my_envp)
     }
 }
 
-void cd(t_token *head, t_env **my_envp,t_exit_code *exitcode)
+void cd(t_token *head, t_env **my_envp,t_shell *exitcode)
 {
         char *a;
     char *new_oldpwd;
@@ -94,7 +94,7 @@ void cd(t_token *head, t_env **my_envp,t_exit_code *exitcode)
     exitcode -> exit_code = 0;
  }
 }
-void cd_TILDE(t_token *head, t_env **my_envp,t_exit_code *exitcode)
+void cd_TILDE(t_token *head, t_env **my_envp,t_shell *exitcode)
 {
     char *a;
     char *new_oldpwd;
@@ -154,7 +154,7 @@ void cd_TILDE(t_token *head, t_env **my_envp,t_exit_code *exitcode)
     } 
 
 }
-void cd_DIRECTORY(t_token *head, t_env **my_envp, t_exit_code *exitcode)
+void cd_DIRECTORY(t_token *head, t_env **my_envp, t_shell *exitcode)
 {
     char *old_pwd;
     char *new_pwd; 
@@ -203,7 +203,7 @@ void cd_DIRECTORY(t_token *head, t_env **my_envp, t_exit_code *exitcode)
 } 
  
 }
-void cd_MINUS(t_token *head, t_env **my_envp, t_exit_code *exitcode)
+void cd_MINUS(t_token *head, t_env **my_envp, t_shell *exitcode)
 {
     char *oldpwd ;
     char *new_oldpwd;
@@ -245,7 +245,7 @@ void cd_MINUS(t_token *head, t_env **my_envp, t_exit_code *exitcode)
 } 
 exitcode -> exit_code = 0;
 }
-void cd_TWO_POINTS(t_token *head, t_env **my_envp,t_exit_code *exitcode)
+void cd_TWO_POINTS(t_token *head, t_env **my_envp,t_shell *exitcode)
 {
     char cwd[1000];
     char *current_path;
@@ -292,7 +292,7 @@ void cd_TWO_POINTS(t_token *head, t_env **my_envp,t_exit_code *exitcode)
 exitcode -> exit_code = 0;
 }  
 }
-void main_cd(t_token *head, t_env **my_envp, t_exit_code *exitcode)
+void main_cd(t_token *head, t_env **my_envp, t_shell *exitcode)
 {
     if(!my_envp || !head)
     {

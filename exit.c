@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 12:57:39 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/12 10:10:54 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/02/12 13:28:18 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ long long	ft_atoll(const char *nptr)
 	return (sum * sign);
 }
 
-void exit_command(t_token *head,t_exit_code *exitcode)
+void exit_command(t_token *head,t_shell *exitcode)
 {
     long long num;
     num = 0;

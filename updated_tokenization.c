@@ -3,71 +3,59 @@
 /*                                                        :::      ::::::::   */
 /*   updated_tokenization.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:02:23 by wasmar            #+#    #+#             */
-/*   Updated: 2025/02/12 10:45:23 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/02/12 15:43:56 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
-
-void	return_head_to_beginning(t_token **head)
+void return_head_to_beginning(t_token **head)
 {
-	while ((*head)->prev)
-	{
-		(*head) = (*head)->prev;
-	}
+    if (!head || !(*head))
+        return;
+
+    while ((*head)->prev)
+        *head = (*head)->prev;
 }
 
-t_token	*input_to_linked_listt(t_env *envp_linked, char **splitted_input,
-		char **envp,t_exit_code *exitcode)
+
+t_token	*input_to_linked_listt( char **splitted_input,t_shell *shell)
 {
 	int		i;
-	t_token *return_head;
 	t_token	*head;
 	t_token	*new_node;
-	t_token	*print;
-	t_token	*print1;
-	t_token *head3;
 	t_token *head1;
 
 	i = 0;
 	head = NULL;
 	new_node = NULL;
-	print = NULL;
-	print1 = NULL;
 	while (splitted_input[i])
 	{
-		new_node = generate_tokenn(envp_linked, splitted_input, envp, i);
+		new_node = generate_tokenn( splitted_input, i);
 		if (head == NULL)
 		{
 			head = new_node;
-			print = head;
-			print1 = head;
-			head3 = head;
-			return_head = head;
 			head1 = head;
 		}
 		else
 			input_to_linked_list_h(&head, new_node);
 		i++;
 	 }
-	//  update_token_linked_list(&print, envp_linked);
-	 main_dollar(&print,envp_linked,exitcode);
-	 
-	  remove_quotes_main(&head3);
-	  remove_empty_nodes(&return_head);
-	  add_type(&head1,envp);
-	return (print1);
+	main_dollar(head1,shell); 
+	  remove_quotes_main(head1);
+	  remove_empty_nodes(&head1);
+	  add_type(head1,shell->env_array);
+	return (head1);
 }
-void add_type(t_token **head,char **envp)
+void add_type(t_token *head,char **envp)
 {
-	t_token *temp = (*head);
-	while((*head) != NULL)
+	t_token *temp = (head);
+	while((head) != NULL)
 	{
-		(*head)->type = check_input_type((*head)->token,envp,temp);
-		(*head) = (*head) ->next ;
+		(head)->type = check_input_type((head)->token,envp,temp);
+		(head) = (head) ->next ;
 		
 	}
 }
@@ -87,13 +75,12 @@ char	*return_value_of_envp_type(t_env *envp_linked, char *search_for)
 	return (NULL);
 }
 
-t_token	*generate_tokenn(t_env *envp_linked, char **splitted_input, char **envp,
+t_token	*generate_tokenn( char **splitted_input,
 		int i)
 {
 	int		type = 6;
 	t_token	*new_node;
 
-	(void)envp_linked;
 	
 	new_node = create_node_token(strdup(splitted_input[i]), type,
 			built_in_or_not(splitted_input[i]));
@@ -471,7 +458,7 @@ int	calculate_len(t_env *enva, t_token **head, char *find)
 // 	return (1);
 // }
 
-void remove_quotes_main(t_token **head)
+void remove_quotes_main(t_token *head)
 {
 	int i = 0;
 	int end = 0;
@@ -479,25 +466,25 @@ void remove_quotes_main(t_token **head)
 	int double_quotes = 0;
 	 int len = 0;
 	 char *copy;
-	while((*head))
+	while((head))
 	{
-		if(strcmp((*head)->token,"<<") == 0)
+		if(strcmp((head)->token,"<<") == 0)
 		{
-			if((*head) -> next -> next)
-				(*head) = (*head) -> next -> next;
+			if((head) -> next -> next)
+				(head) = (head) -> next -> next;
 			else
 				break;
 			continue;
 		}
 		i = 0;
-		while((*head)->token && (*head)->token[i])
+		while((head)->token && (head)->token[i])
 		{
-			if((*head)->token[i] == '"' && single_quotes == 0)
+			if((head)->token[i] == '"' && single_quotes == 0)
 			{
-				copy=ft_strdup((*head)->token);
-				remove_quotes_and_replace(head,i);
+				copy=ft_strdup((head)->token);
+				remove_quotes_and_replace(&head,i);
 			 	double_quotes++;
-			len = strlen((*head)->token);
+			len = strlen((head)->token);
 			end = find_end_of_quotes(copy,'"',i);
             // break;
 			// printf("end1 %d\n",end);
@@ -506,7 +493,7 @@ void remove_quotes_main(t_token **head)
 			{
 				break;
 			}
-			if((*head)->token[end-1])
+			if((head)->token[end-1])
 			{
 			i = end -1;
 		    // printf("i :%d\n",i);
@@ -515,12 +502,12 @@ void remove_quotes_main(t_token **head)
 			}
 			 continue;
 			}
-			if((*head)->token[i] == '\'' && double_quotes == 0)
+			if((head)->token[i] == '\'' && double_quotes == 0)
 			{
-								copy=ft_strdup((*head)->token);
-				remove_quotes_and_replace(head,i);
+								copy=ft_strdup((head)->token);
+				remove_quotes_and_replace(&head,i);
 				single_quotes++;
-							len = strlen((*head)->token);
+							len = strlen((head)->token);
 					end = find_end_of_quotes(copy,'\'',i);
 											// printf("end %d\n",end);
 					if(end-1 >= len)
@@ -529,7 +516,7 @@ void remove_quotes_main(t_token **head)
 						double_quotes = 0;
 						break;
 					}
-					if((*head)->token[end-1])
+					if((head)->token[end-1])
 					{
 					i = end -1;
 						// printf("%d\n",i);
@@ -542,7 +529,7 @@ void remove_quotes_main(t_token **head)
 		 }
 		 i++;					
 		}
-		(*head) = (*head) -> next;
+		(head) = (head) -> next;
 	}
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dups.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 00:55:44 by wasmar            #+#    #+#             */
-/*   Updated: 2025/02/12 13:03:49 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/02/12 13:28:18 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@
 void handle_dups(t_token *head,int *pipefd, int input_fd,int flag);
 void check_and_create_file(t_token *head);
 void check_back(t_token *head,t_token **current_input,t_token **current_output ,int *flag);
-void dups1(t_token *current_input,t_token *current_output,int *pipefd,t_env *envp,t_exit_code *exitcode);
+void dups1(t_token *current_input,t_token *current_output,int *pipefd,t_env *envp,t_shell *exitcode);
 void dups2(t_token *current_input,t_token *current_output,int input_fd,t_token *head);
-void check_front(t_token *head,t_token **current_input,t_token **current_output ,int *flag,t_env *envp,t_exit_code *exitcode);
+void check_front(t_token *head,t_token **current_input,t_token **current_output ,int *flag,t_env *envp,t_shell *exitcode);
 
-void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd,int flag,t_env *envp,t_exit_code *exitcode)
+void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd,int flag,t_env *envp,t_shell *exitcode)
 {
     t_token *current = head;
     t_token *current1 = head;
@@ -75,7 +75,7 @@ void check_and_create_file(t_token *head)
     }
 }
 
-void check_front(t_token *head,t_token **current_input,t_token **current_output ,int *flag,t_env *envp,t_exit_code *exitcode)
+void check_front(t_token *head,t_token **current_input,t_token **current_output ,int *flag,t_env *envp,t_shell *exitcode)
 {
     t_token *temp = head->next;
     int fd;
@@ -153,7 +153,7 @@ void dups2(t_token *current_input,t_token *current_output,int input_fd,t_token *
     }
 }
 
-void dups1(t_token *current_input,t_token *current_output,int *pipefd,t_env *envp,t_exit_code *exitcode)
+void dups1(t_token *current_input,t_token *current_output,int *pipefd,t_env *envp,t_shell *exitcode)
 {
     int fd;
     if(current_input && current_input->type == HERE_DOC)

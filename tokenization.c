@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenization.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:16:26 by wasmar            #+#    #+#             */
-/*   Updated: 2025/02/11 00:29:08 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/02/12 15:32:01 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -243,35 +243,36 @@ void remove_empty_nodes(t_token **head)
 {
     t_token *temp;
     t_token *temp1;
-    while ((*head))
+	t_token *current = (*head);
+    while (current)
     {
-        if(check_if_null((*head)->token) == 0)
+        if(check_if_null(current->token) == 0)
         {
-			if((*head) -> next == NULL){
-				 temp = (*head)->prev;
-            	temp1=(*head);
+			if(current -> next == NULL){
+				 temp = current->prev;
+            	temp1=current;
 				temp -> next = NULL;
 				// free(temp1);
 			}
-			else if(((*head) -> next != NULL) && ((*head) -> prev != NULL))
+			else if((current -> next != NULL) && (current -> prev != NULL))
 			{
-            temp = (*head)->prev;
-            temp1=(*head);
-            (*head) = (*head)->next;
-            temp ->next = (*head);
-            (*head)->prev = temp;
+            temp = current->prev;
+            temp1=current;
+            current = current->next;
+            temp ->next = current;
+            current->prev = temp;
 			// free(temp1);
 			}
-			else if((*head) -> prev == NULL) 
+			else if(current -> prev == NULL) 
 			{
-				temp = (*head) ->next;
-				temp1 = (*head);
+				temp = current ->next;
+				temp1 = current;
 				temp -> prev = NULL;
 				// free(temp1);
 			}
 			
         }
-        (*head) = (*head)->next;
+        current = current->next;
     }
 }
 

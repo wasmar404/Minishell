@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:29:11 by wasmar            #+#    #+#             */
-/*   Updated: 2025/02/12 10:25:22 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/02/12 13:28:18 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void delete_middle_node(t_env **my_envp)
     }
     free(node_to_delete);
 }
-void main_unset1(t_env **my_envp ,char *var_name,t_exit_code *exitcode)
+void main_unset1(t_env **my_envp ,char *var_name,t_shell *exitcode)
 {
     find_var_name(my_envp,var_name);
     if(*my_envp == NULL)

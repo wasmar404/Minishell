@@ -143,7 +143,7 @@ char *create_array_till_dollar_h(char *input,int index)
     new_string[i] = '\0';
     return(new_string);
 }
-char *check_char_after_dollar1(char *str,t_env *envp,t_exit_code *exitcode)
+char *check_char_after_dollar1(char *str,t_env *envp,t_shell *exitcode)
 {
     char *new_string = NULL;
     if((str[0] == '$' && str[1] == '?'))
@@ -183,7 +183,7 @@ int check_if_quotes_exit(char *input)
     }
     return (count);
 }
-void  main_dollar_helper_h(int *i,char **input,char **str,t_env *env,t_exit_code *exitcode)
+void  main_dollar_helper_h(int *i,char **input,char **str,t_env *env,t_shell *exitcode)
 {
     int start = 0;
     char *expanded;
@@ -219,7 +219,7 @@ void  main_dollar_helper_h(int *i,char **input,char **str,t_env *env,t_exit_code
 
             }
 }
-void main_dollar_heredoc(char **input, t_env *env,t_exit_code *exitcode)
+void main_dollar_heredoc(char **input, t_env *env,t_shell *exitcode)
 {
     int i = 0;
     char *str = NULL;

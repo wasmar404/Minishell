@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dollar_fix.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 10:37:55 by wasmar            #+#    #+#             */
-/*   Updated: 2025/02/12 10:28:23 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/02/12 15:46:00 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,41 +14,32 @@
 char *create_array_till_dollar(t_token *head,int index);
 int find_dollar_pos1(char *str);
 int find_end_variable(char *str,int j);
-void check_quotes_status_and_update(int *inside_quote, int *d_start,int *d_end, int *s_start,int *s_end , char c);
 int is_num_or_char(char c);
-void check_quotes_till_end(char *str,int *inside_quote, int *d_start,int *d_end, int *s_start,int *s_end,int start,int end);
-char *check_char_after_dollar(char *str, int inside_quote,t_env *envp,t_exit_code *exitcode);
+void check_quotes_till_end(char *str,int *inside_quote, int *d_start, int *s_start,int start,int end);
+char *check_char_after_dollar(char *str, int inside_quote,t_shell *shell);
 void expand_and_replace(t_token **head,char *str, int end);
-void  main_dollar_helper(int *i,t_token **head,char **str,int *inside_quote,t_env *env,int *d_start,int *d_end,int *s_start,int *s_end,t_exit_code *exitcode);
-void main_dollar(t_token **head,t_env *env,t_exit_code *exitcode)
+void  main_dollar_helper(int *i,t_token **head,char **str,int *inside_quote,int *d_start,int *s_start,t_shell *shell);
+void main_dollar(t_token *head,t_shell *shell)
 {
     int i = 0;
     char *str = NULL;
-    int end = 0;
-    char *to_expand = NULL;
-    int start = 0;
-    char *expanded;
-    int len = 0;
     int inside_quote = 0; // 1 for "" and 2 for ' and 0 i am outside
     int d_start = 0;
-    int d_end = 0;
     int s_start = 0;
-    int s_end = 0;
-    while((*head))
+    while((head))
     {
         i = 0;
         str = NULL;
-        while((*head)->token[i])
+        while((head)->token[i])
         {
-            check_quotes_status_and_update(&inside_quote,&d_start,&d_end,&s_start,&s_end,(*head)->token[i]);
-            main_dollar_helper(&i, head, &str, &inside_quote, env, &d_start, &d_end, &s_start, &s_end,exitcode);
+            check_quotes_status_and_update(&inside_quote,&d_start,&s_start,(head)->token[i]);
+            main_dollar_helper(&i, &head, &str, &inside_quote, &d_start, &s_start,shell);
             i++;
         }
-        (*head) = (*head) ->next;
+        (head) = (head) ->next;
     }
-    
 }
-void  main_dollar_helper(int *i,t_token **head,char **str,int *inside_quote,t_env *env,int *d_start,int *d_end,int *s_start,int *s_end,t_exit_code *exitcode)
+void  main_dollar_helper(int *i,t_token **head,char **str,int *inside_quote,int *d_start,int *s_start,t_shell *shell)
 {
     int start = 0;
     char *expanded;
@@ -60,7 +51,7 @@ void  main_dollar_helper(int *i,t_token **head,char **str,int *inside_quote,t_en
                start = (*i);
                end = find_end_variable((*head)->token,(*i));
                to_expand = strndup((*head)->token+start,end -start);
-                expanded = check_char_after_dollar(to_expand,(*inside_quote),env,exitcode);
+                expanded = check_char_after_dollar(to_expand,(*inside_quote),shell);
                 if(expanded == NULL&& ((*inside_quote) == 0 || (*inside_quote) == 1))
                 {
                     expand_and_replace(head,(*str),end);
@@ -81,7 +72,7 @@ void  main_dollar_helper(int *i,t_token **head,char **str,int *inside_quote,t_en
                 {
                     (*i)= end;
                 }
-             check_quotes_till_end((*head)->token,inside_quote,d_start,d_end,s_start,s_end,start,end);
+             check_quotes_till_end((*head)->token,inside_quote,d_start,s_start,start,end);
 
             }
 }
@@ -114,12 +105,12 @@ void expand_and_replace(t_token **head,char *str, int end)
     (*head)->token[x] = '\0';
 
 }
-void check_quotes_till_end(char *str,int *inside_quote, int *d_start,int *d_end, int *s_start,int *s_end,int start,int end)
+void check_quotes_till_end(char *str,int *inside_quote, int *d_start, int *s_start,int start,int end)
 {
     int i = start;
     while(i <= end)
     {
-        check_quotes_status_and_update(inside_quote,d_start,d_end,s_start,s_end,str[i]); 
+        check_quotes_status_and_update(inside_quote,d_start,s_start,str[i]); 
         i++;
     }
 }
@@ -182,7 +173,7 @@ int find_dollar_pos1(char *str)
     return(-42);
 }
 
-void check_quotes_status_and_update(int *inside_quote, int *d_start,int *d_end, int *s_start,int *s_end , char c)
+void check_quotes_status_and_update(int *inside_quote, int *d_start, int *s_start , char c)
 {
      if ((c == '"' || c == '\'') && (*inside_quote) == 0)
             {
@@ -200,16 +191,9 @@ void check_quotes_status_and_update(int *inside_quote, int *d_start,int *d_end, 
             else if  ((c == '"' || c == '\'') && ((*inside_quote) == 1 || (*inside_quote) == 2))
             {
                  if(c == '"' && (*d_start) == 1)
-               {
                     (*inside_quote) = 0;
-                    (*d_end) = 1;
-               }
-            
                if(c == '\'' && (*s_start) == 1)
-               {
                     (*inside_quote) = 0;
-                    (*s_end) = 1;
-               }
             }
 }
 t_env	*search_and_find_a_type_my_envpp(t_env *envp, char *to_find)
@@ -240,12 +224,12 @@ char *expand_dollar(char *str,t_env *envp)
     return(new_string);
     
 }
-char *check_char_after_dollar(char *str, int inside_quote,t_env *envp,t_exit_code *exitcode)
+char *check_char_after_dollar(char *str, int inside_quote,t_shell *shell)
 {
     char *new_string = NULL;
     if((str[0] == '$' && str[1] == '?')&& (inside_quote == 0 || inside_quote ==1))
     {
-     new_string = ft_itoa(exitcode -> exit_code);
+     new_string = ft_itoa(shell -> exit_code);
     }
      else if(str[0] == '$' && (str[1] == '"' || str[1] == '\'') && (inside_quote == 0))
     {
@@ -261,7 +245,7 @@ char *check_char_after_dollar(char *str, int inside_quote,t_env *envp,t_exit_cod
     }
     else if((is_num_or_char(str[1]) == 1 || (str[1] == '_')) && str[0] == '$' && (inside_quote == 0 || inside_quote ==1))
      {//check ffirst charr
-        new_string = expand_dollar(str,envp);
+        new_string = expand_dollar(str,shell->env);
      }
     //  printf("null1");
     return (new_string);

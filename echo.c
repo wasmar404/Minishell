@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 11:27:21 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/12 13:04:49 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/02/12 13:28:18 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	check_n(t_token *head)
 	return (1);
 }
 
-void	echo_main(t_token *head,t_exit_code *exitcode)
+void	echo_main(t_token *head,t_shell *exitcode)
 {
 	int		flag;
 	int flag1 = 0;
@@ -43,7 +43,7 @@ void	echo_main(t_token *head,t_exit_code *exitcode)
 		exitcode -> input_file_flag = 0;
 		return ;
 	}
-// exitcode = malloc(sizeof(t_exit_code));
+// exitcode = malloc(sizeof(t_shell));
 	if (!head->next)
 	{
 		printf("\n");

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_error_handling.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 10:14:57 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/12 11:03:08 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/02/12 14:43:28 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
  
  */
 // long long exit_code;
-int check_command(char *array,char **envp,t_exit_code *exitcode)
+int check_command(char *array,char **envp,t_shell *exitcode)
 {
     char *str;
     str = NULL;
@@ -64,7 +64,7 @@ int check_command(char *array,char **envp,t_exit_code *exitcode)
     // free(str);
     return (1);
 }
-int check_if_pipe_is_valid(t_token *head,t_exit_code *exitcode)
+int check_if_pipe_is_valid(t_token *head,t_shell *exitcode)
 {
     int flag =0;
     t_token *temp = head;
@@ -133,7 +133,7 @@ int count_redirections(t_token *head)
     }
     return (redirections_count);
 }
-int check_if_file_exists(t_token *head,t_exit_code *exitcode)
+int check_if_file_exists(t_token *head,t_shell *exitcode)
 {
     t_token *temp;
     temp = head;
@@ -172,7 +172,7 @@ int check_if_file_exists(t_token *head,t_exit_code *exitcode)
     return (1);
 
 }
-int check_sout_redirection(t_token *head,t_exit_code *exitcode)
+int check_sout_redirection(t_token *head,t_shell *exitcode)
 {
     while(head)
     {
@@ -198,7 +198,7 @@ int check_sout_redirection(t_token *head,t_exit_code *exitcode)
     }
     return (1);
 }
-int check_aout_redirection(t_token *head,t_exit_code *exitcode)
+int check_aout_redirection(t_token *head,t_shell *exitcode)
 {
     while(head)
     {
@@ -224,7 +224,7 @@ int check_aout_redirection(t_token *head,t_exit_code *exitcode)
     }
     return (1);
 }
-int check_redirections_sequence(t_token *head,t_exit_code *exitcode)
+int check_redirections_sequence(t_token *head,t_shell *exitcode)
 {
     while(head)
     {
@@ -243,7 +243,7 @@ int check_redirections_sequence(t_token *head,t_exit_code *exitcode)
     }
     return (1);
 }
-int check_here_doc(t_token *head,t_exit_code *exitcode)
+int check_here_doc(t_token *head,t_shell *exitcode)
 {
     while(head)
     {
@@ -261,17 +261,15 @@ int check_here_doc(t_token *head,t_exit_code *exitcode)
     }
     return (1);
 }
-int  main_quote_check(char *str,t_exit_code *exitcode)
+int  main_quote_check(char *str,t_shell *exitcode)
 {
     int inside_quote = 0;
-     int d_start = 0 ;
-     int d_end =0;
-      int s_start =0;
-      int s_end = 0;
-      int i = 0;
+    int d_start = 0 ;
+    int s_start =0;
+    int i = 0;
       while(str[i])
       {
-         check_quotes_status_and_update(&inside_quote,&d_start,&d_end,&s_start,&s_end,str[i]);
+         check_quotes_status_and_update(&inside_quote,&d_start,&s_start,str[i]);
         i++;
       }
       if((inside_quote) > 0)
@@ -283,7 +281,7 @@ int  main_quote_check(char *str,t_exit_code *exitcode)
       return (1);
 }
 
-int check_if_dir_after_redirections(t_token *head,t_exit_code *exitcode)
+int check_if_dir_after_redirections(t_token *head,t_shell *exitcode)
 {
     struct stat path_stat;
     while(head)
@@ -310,7 +308,7 @@ int check_if_dir_after_redirections(t_token *head,t_exit_code *exitcode)
     }
     return (1);
 }
-int check_cd_command(t_token *head,t_exit_code *exitcode)
+int check_cd_command(t_token *head,t_shell *exitcode)
 {
     struct stat path_stat;
     while (head)
@@ -335,7 +333,7 @@ void    ft_putendl_fd_two(char *s,char *str, int fd)
     write(fd, str, ft_strlen(str));
     write(fd, "\n", 1);
 }
-int input_check(t_token *head,char **array,char **envp,t_exit_code *exitcode)
+int input_check(t_token *head,char **array,char **envp,t_shell *exitcode)
 {
     int i = 0;
 
