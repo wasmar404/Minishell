@@ -45,7 +45,7 @@
 // }
 // void	parse_input_to_tokens_helper(t_shell *shell, t_token *head)
 // {
-// 	process_dollar(head, shell);
+// 	process_dolloris(head, shell);
 // 	remove_quotes_main(head);
 // 	remove_empty_nodes(&head);
 // 	add_type(head, shell->env_array);

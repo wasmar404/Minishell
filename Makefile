@@ -4,7 +4,7 @@ CFLAGS =  -g
 LIBS = -lreadline -Llibft -lft  # Link to the libft library (-lft) and readline
 #-Wall -Wextra -Werror
 # Files
-SRC = $(wildcard *.c)  # Wildcard to include all .c files in the current directory
+SRC = $(wildcard *.c) $(wildcard expand_dollar/*.c)
 OBJ = $(SRC:.c=.o)
 EXEC = minishell
 

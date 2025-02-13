@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/13 11:59:12 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/02/13 13:32:40 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -579,7 +579,7 @@ void	heredoc(char *str, int fd, t_env *envp, t_shell *exitcode)
 			break ;
 		}
 		if (flag == 1)
-			process_dollar_heredoc(&input, envp, exitcode);
+			process_dolloris_heredoc(&input, envp, exitcode);
 		// remove_quotes_main()
 		// remove_quotes_main_h(input);
 		write(fd, input, strlen(input));

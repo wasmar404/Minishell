@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   header.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/13 13:15:09 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/02/13 15:04:29 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include "get_next_line.h"
 # include "libft/libft.h"
+#include "expand_dollar/dollar.h"
 # include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
@@ -97,14 +98,26 @@ typedef struct t_variables
 	int j;
     char *primary;
     char *secondary;
+	char *tertiary;
     char **array;
 } t_variables;
 
 // globals.h
 // extern long long  exit_code;
+
+
+// utils_1
+t_env	*search_and_find_a_type_my_envpp(t_env *envp, char *to_find);
+int		is_alphanumeric(char c);
+
+
+
+
+char *check_char_after_dollar_and_expand1(char *str,t_env *envp,t_shell *exitcode);
+
 char *ft_strndup(char *s, int n);
 int is_alphanumeric(char c);
-void process_dollar_heredoc(char **input, t_env *env,t_shell *exitcode);
+void process_dolloris_heredoc(char **input, t_env *env,t_shell *exitcode);
 char *expand_dollar(char *str,t_env *envp);
 void heredoc_dup(t_token *head);
 int main_error1(t_token *head);
@@ -216,7 +229,7 @@ void remove_quotes_and_replace(t_token **head,int i);
 void remove_quotes_main(t_token *head);
 void remove_quotes_main_h(char *input);
 int find_end_of_quotes_h(char *str, char quote,int start);
-void process_dollar(t_token *head,t_shell *shell);
+void process_dolloris(t_token *head,t_shell *shell);
 char * check_dollar_plus1_char(char **str);
 void remove_quotes_main_heredoc(char **str);
 char *dollar_main_char(char *str);

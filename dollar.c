@@ -18,16 +18,16 @@
 // int		find_end_variable(char *str, int j);
 // int		is_alphanumeric(char c);
 // void	update_quote_status(t_quotes *quotes, char c);
-// char	*check_char_after_dollar(char *str, int inside_quote, t_shell *shell);
+// char	*check_char_after_dollar_and_expand(char *str, int inside_quote, t_shell *shell);
 // void	expand_variable(t_token **head, char *str, int end);
-// void	process_dollar_helper(int *i, t_token **head, char **str, t_quotes *quotes,
+// void	process_dolloris_helper(int *i, t_token **head, char **str, t_quotes *quotes,
 // 			t_shell *shell);
 // void	if_expanded(t_variables *var, char **str, int *i, t_token **head);
 // void initialize_variable(t_variables	*var);
 
 
 
-// void	process_dollar(t_token *head, t_shell *shell)
+// void	process_dolloris(t_token *head, t_shell *shell)
 // {
 // 	int			i;
 // 	char		*str;
@@ -45,7 +45,7 @@
 // 		while ((head)->token[i])
 // 		{
 // 			update_quote_status(&quotes, (head)->token[i]);
-// 			process_dollar_helper(&i, &head, &str, &quotes, shell);
+// 			process_dolloris_helper(&i, &head, &str, &quotes, shell);
 // 			i++;
 // 		}
 // 		(head) = (head)->next;
@@ -56,7 +56,7 @@
 // 	// var.secondary = NULL; // to expand
 // 	// var.i = 0;            // end
 // */
-// void	process_dollar_helper(int *i, t_token **head, char **str, t_quotes *quotes,
+// void	process_dolloris_helper(int *i, t_token **head, char **str, t_quotes *quotes,
 // 		t_shell *shell)
 // {
 // 	int			start;
@@ -70,7 +70,7 @@
 // 	start = (*i);
 // 	var.i = find_end_variable((*head)->token, (*i));
 // 	var.secondary = ft_strndup((*head)->token + start, var.i - start);
-// 	var.primary = check_char_after_dollar(var.secondary, (quotes->inside_quote),
+// 	var.primary = check_char_after_dollar_and_expand(var.secondary, (quotes->inside_quote),
 // 			shell);
 // 	if (var.primary == NULL && ((quotes->inside_quote) == 0
 // 			|| (quotes->inside_quote) == 1))
@@ -252,7 +252,7 @@
 // 		new_string = ft_strdup(to_replace->enva);
 // 	return (new_string);
 // }
-// char	*check_char_after_dollar(char *str, int inside_quote, t_shell *shell) 
+// char	*check_char_after_dollar_and_expand(char *str, int inside_quote, t_shell *shell) 
 // {
 // 	char	*new_string;
 
