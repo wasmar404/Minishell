@@ -17,7 +17,7 @@
 // void	main_helper(char *input, t_shell *shell);
 // int		main(int ac, char **av, char **envp);
 
-// // unitlsdsgiug.c
+// // utils.c
 // int		check_if_null(char *input);
 // int	ft_strcmp(char *str1, char *str2);
 

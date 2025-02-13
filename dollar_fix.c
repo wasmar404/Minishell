@@ -6,40 +6,45 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 10:37:55 by wasmar            #+#    #+#             */
-/*   Updated: 2025/02/12 15:46:00 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/02/13 08:48:23 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 char *create_array_till_dollar(t_token *head,int index);
 int find_dollar_pos1(char *str);
+void check_quotes_till_end(char *str,t_quotes *quotes,int start,int end);
 int find_end_variable(char *str,int j);
 int is_num_or_char(char c);
-void check_quotes_till_end(char *str,int *inside_quote, int *d_start, int *s_start,int start,int end);
+void check_quotes_status_and_update(t_quotes *quotes, char c);
 char *check_char_after_dollar(char *str, int inside_quote,t_shell *shell);
 void expand_and_replace(t_token **head,char *str, int end);
-void  main_dollar_helper(int *i,t_token **head,char **str,int *inside_quote,int *d_start,int *s_start,t_shell *shell);
+void  main_dollar_helper(int *i,t_token **head,char **str,t_quotes *quotes,t_shell *shell);
 void main_dollar(t_token *head,t_shell *shell)
 {
     int i = 0;
     char *str = NULL;
-    int inside_quote = 0; // 1 for "" and 2 for ' and 0 i am outside
-    int d_start = 0;
-    int s_start = 0;
+    // int inside_quote = 0; // 1 for "" and 2 for ' and 0 i am outside
+    // int d_start = 0;
+    // int s_start = 0;
+       t_quotes quotes;
+    quotes.d_start =0;
+    quotes.s_start =0;
+    quotes.inside_quote=0;
     while((head))
     {
         i = 0;
         str = NULL;
         while((head)->token[i])
         {
-            check_quotes_status_and_update(&inside_quote,&d_start,&s_start,(head)->token[i]);
-            main_dollar_helper(&i, &head, &str, &inside_quote, &d_start, &s_start,shell);
+            check_quotes_status_and_update(&quotes,(head)->token[i]);
+            main_dollar_helper(&i, &head, &str, &quotes,shell);
             i++;
         }
         (head) = (head) ->next;
     }
 }
-void  main_dollar_helper(int *i,t_token **head,char **str,int *inside_quote,int *d_start,int *s_start,t_shell *shell)
+void  main_dollar_helper(int *i,t_token **head,char **str,t_quotes *quotes,t_shell *shell)
 {
     int start = 0;
     char *expanded;
@@ -51,8 +56,8 @@ void  main_dollar_helper(int *i,t_token **head,char **str,int *inside_quote,int 
                start = (*i);
                end = find_end_variable((*head)->token,(*i));
                to_expand = strndup((*head)->token+start,end -start);
-                expanded = check_char_after_dollar(to_expand,(*inside_quote),shell);
-                if(expanded == NULL&& ((*inside_quote) == 0 || (*inside_quote) == 1))
+                expanded = check_char_after_dollar(to_expand,(quotes->inside_quote),shell);
+                if(expanded == NULL&& ((quotes->inside_quote) == 0 || (quotes->inside_quote) == 1))
                 {
                     expand_and_replace(head,(*str),end);
                     (*i) = strlen((*str)) -1;
@@ -72,7 +77,7 @@ void  main_dollar_helper(int *i,t_token **head,char **str,int *inside_quote,int 
                 {
                     (*i)= end;
                 }
-             check_quotes_till_end((*head)->token,inside_quote,d_start,s_start,start,end);
+             check_quotes_till_end((*head)->token,quotes,start,end);
 
             }
 }
@@ -105,12 +110,12 @@ void expand_and_replace(t_token **head,char *str, int end)
     (*head)->token[x] = '\0';
 
 }
-void check_quotes_till_end(char *str,int *inside_quote, int *d_start, int *s_start,int start,int end)
+void check_quotes_till_end(char *str,t_quotes *quotes,int start,int end)
 {
     int i = start;
     while(i <= end)
     {
-        check_quotes_status_and_update(inside_quote,d_start,s_start,str[i]); 
+        check_quotes_status_and_update(quotes,str[i]); 
         i++;
     }
 }
@@ -173,27 +178,27 @@ int find_dollar_pos1(char *str)
     return(-42);
 }
 
-void check_quotes_status_and_update(int *inside_quote, int *d_start, int *s_start , char c)
+void check_quotes_status_and_update(t_quotes *quotes, char c)
 {
-     if ((c == '"' || c == '\'') && (*inside_quote) == 0)
+     if ((c == '"' || c == '\'') && (quotes->inside_quote) == 0)
             {
                if(c == '"')
                {
-                    (*inside_quote) = 1;
-                    (*d_start) = 1;
+                    (quotes->inside_quote) = 1;
+                    (quotes->d_start) = 1;
                }
                if(c == '\'')
                {
-                    (*inside_quote) = 2;
-                    (*s_start) = 1;
+                    (quotes->inside_quote) = 2;
+                    (quotes->s_start) = 1;
                }
             }
-            else if  ((c == '"' || c == '\'') && ((*inside_quote) == 1 || (*inside_quote) == 2))
+            else if  ((c == '"' || c == '\'') && ((quotes->inside_quote) == 1 || (quotes->inside_quote) == 2))
             {
-                 if(c == '"' && (*d_start) == 1)
-                    (*inside_quote) = 0;
-               if(c == '\'' && (*s_start) == 1)
-                    (*inside_quote) = 0;
+                 if(c == '"' && (quotes->d_start) == 1)
+                    (quotes->inside_quote) = 0;
+               if(c == '\'' && (quotes->s_start) == 1)
+                    (quotes->inside_quote) = 0;
             }
 }
 t_env	*search_and_find_a_type_my_envpp(t_env *envp, char *to_find)

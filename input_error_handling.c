@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 10:14:57 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/12 14:43:28 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/02/13 08:44:15 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -263,16 +263,20 @@ int check_here_doc(t_token *head,t_shell *exitcode)
 }
 int  main_quote_check(char *str,t_shell *exitcode)
 {
-    int inside_quote = 0;
-    int d_start = 0 ;
-    int s_start =0;
+    // int inside_quote = 0;
+    // int d_start = 0 ;
+    // int s_start =0;
+    t_quotes quotes;
+    quotes.d_start =0;
+    quotes.s_start =0;
+    quotes.inside_quote=0;
     int i = 0;
       while(str[i])
       {
-         check_quotes_status_and_update(&inside_quote,&d_start,&s_start,str[i]);
+         check_quotes_status_and_update(&quotes,str[i]);
         i++;
       }
-      if((inside_quote) > 0)
+      if((quotes.inside_quote) > 0)
       {
         ft_putendl_fd("quote not closed",2);
         exitcode -> exit_code = 1;

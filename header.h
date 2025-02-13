@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/12 15:43:38 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/02/13 08:39:35 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,12 @@ typedef struct t_shell
 	 char **env_array;
 
 }	t_shell;
-
+typedef struct t_quotes
+{
+    int inside_quote;
+    int d_start;
+    int s_start;
+}t_quotes;
 // globals.h
 // extern long long  exit_code;
 int is_num_or_char(char c);
@@ -220,7 +225,7 @@ int check_command(char *array,char **envp,t_shell *exitcode);
 void ctrl_c(int sig);
 void main_signal();
 void add_shell_level(t_env **my_envp,t_token *head,char ***envp);
-void check_quotes_status_and_update(int *inside_quote, int *d_start, int *s_start , char c);
+void check_quotes_status_and_update(t_quotes *quotes, char c);
 void change_value_in_envp(t_env *my_envp,char *new_value);
 void return_env_to_beginning(t_env **my_envp);
 #endif
