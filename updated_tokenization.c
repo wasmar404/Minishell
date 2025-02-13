@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:02:23 by wasmar            #+#    #+#             */
-/*   Updated: 2025/02/12 15:43:56 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/02/13 11:59:12 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void return_head_to_beginning(t_token **head)
 }
 
 
-t_token	*input_to_linked_listt( char **splitted_input,t_shell *shell)
+t_token	*parse_input_to_tokens( char **splitted_input,t_shell *shell)
 {
 	int		i;
 	t_token	*head;
@@ -33,20 +33,20 @@ t_token	*input_to_linked_listt( char **splitted_input,t_shell *shell)
 	new_node = NULL;
 	while (splitted_input[i])
 	{
-		new_node = generate_tokenn( splitted_input, i);
+		new_node = generate_token( splitted_input, i);
 		if (head == NULL)
 		{
 			head = new_node;
 			head1 = head;
 		}
 		else
-			input_to_linked_list_h(&head, new_node);
+			append_token_node(&head, new_node);
 		i++;
 	 }
-	main_dollar(head1,shell); 
-	  remove_quotes_main(head1);
-	  remove_empty_nodes(&head1);
-	  add_type(head1,shell->env_array);
+	process_dollar(head1,shell); 
+	remove_quotes_main(head1);
+	remove_empty_nodes(&head1);
+	add_type(head1,shell->env_array);
 	return (head1);
 }
 void add_type(t_token *head,char **envp)
@@ -75,8 +75,7 @@ char	*return_value_of_envp_type(t_env *envp_linked, char *search_for)
 	return (NULL);
 }
 
-t_token	*generate_tokenn( char **splitted_input,
-		int i)
+t_token	*generate_token( char **splitted_input,int i)
 {
 	int		type = 6;
 	t_token	*new_node;

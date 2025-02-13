@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:16:26 by wasmar            #+#    #+#             */
-/*   Updated: 2025/02/12 15:32:01 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/02/13 10:59:21 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,7 +233,7 @@ token_type	check_delimeter(char *splitted_token, char **envp)
 	}
 }
 
-void input_to_linked_list_h(t_token **head,t_token *new)
+void append_token_node(t_token **head,t_token *new)
 {
 	(*head)->next = new;
 	new->prev = (*head);
@@ -298,7 +298,7 @@ t_token	*input_to_linked_list(char **input, char **envp)
 			print = head;
 		}
 		else
-			input_to_linked_list_h(&head,new);
+			append_token_node(&head,new);
 		i++;
 	}
 	return (print);

@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/13 08:39:35 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/02/13 13:15:09 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,10 +90,21 @@ typedef struct t_quotes
     int d_start;
     int s_start;
 }t_quotes;
+
+typedef struct t_variables
+{
+	int i;
+	int j;
+    char *primary;
+    char *secondary;
+    char **array;
+} t_variables;
+
 // globals.h
 // extern long long  exit_code;
-int is_num_or_char(char c);
-void main_dollar_heredoc(char **input, t_env *env,t_shell *exitcode);
+char *ft_strndup(char *s, int n);
+int is_alphanumeric(char c);
+void process_dollar_heredoc(char **input, t_env *env,t_shell *exitcode);
 char *expand_dollar(char *str,t_env *envp);
 void heredoc_dup(t_token *head);
 int main_error1(t_token *head);
@@ -183,11 +194,11 @@ int					check_if_cmd(char *input, char **envp,t_token *head);
 token_type			check_if_twopoints_dir_cmd_word(char *input, char **envp,t_token *head);
 void				run_built_ins(t_token *head, t_env **my_envp, int *pipefd,
 						int input_fd, int flag,int flag2,t_shell *exitcode);
-void				input_to_linked_list_h(t_token **head, t_token *new);
+void				append_token_node(t_token **head, t_token *new);
 t_token				*create_node_token(char *str, int i, bool built_in_or_not);
 bool				built_in_or_not(char *cmd);
-t_token				*generate_tokenn( char **splitted_input, int i);
-t_token				*input_to_linked_listt(
+t_token				*generate_token( char **splitted_input, int i);
+t_token				*parse_input_to_tokens(
 						char **splitted_input,t_shell *shell);
 int					find_quotes_end(char *str, int i, int flag);
 char				*new_string(char *str, int i, int j);
@@ -205,7 +216,7 @@ void remove_quotes_and_replace(t_token **head,int i);
 void remove_quotes_main(t_token *head);
 void remove_quotes_main_h(char *input);
 int find_end_of_quotes_h(char *str, char quote,int start);
-void main_dollar(t_token *head,t_shell *shell);
+void process_dollar(t_token *head,t_shell *shell);
 char * check_dollar_plus1_char(char **str);
 void remove_quotes_main_heredoc(char **str);
 char *dollar_main_char(char *str);
@@ -225,7 +236,8 @@ int check_command(char *array,char **envp,t_shell *exitcode);
 void ctrl_c(int sig);
 void main_signal();
 void add_shell_level(t_env **my_envp,t_token *head,char ***envp);
-void check_quotes_status_and_update(t_quotes *quotes, char c);
+void update_quote_status(t_quotes *quotes, char c);
 void change_value_in_envp(t_env *my_envp,char *new_value);
 void return_env_to_beginning(t_env **my_envp);
+void free_2_variables(char *str1,char* str2);
 #endif

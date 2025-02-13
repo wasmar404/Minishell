@@ -66,7 +66,7 @@
 // 	if (main_quote_check(input, shell) == 0)
 // 		return ;
 // 	splitted_input = token_split(input);
-// 	head = input_to_linked_listt((shell->env), splitted_input, shell->env_array,
+// 	head = parse_input_to_tokens((shell->env), splitted_input, shell->env_array,
 // 			shell);
 // 	// print_list(head);
 // 	if (input_check(head, splitted_input, shell->env_array, shell) == 0)
@@ -124,7 +124,7 @@
 //     int i = 0;
 //       while(str[i])
 //       {
-//         check_quotes_status_and_update(&inside_quote,&d_start,&s_start,str[i]);
+//         update_quote_status(&inside_quote,&d_start,&s_start,str[i]);
 //         i++;
 //       }
 //       if((inside_quote) > 0)

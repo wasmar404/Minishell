@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/13 08:47:18 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/02/13 11:59:12 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ void	main_helper(char *input, t_shell *shell)
 	if (main_quote_check(input, shell) == 0)
 		return ;
 	splitted_input = token_split(input);
-	head = input_to_linked_listt( splitted_input, shell);
+	head = parse_input_to_tokens( splitted_input, shell);
 	 // print_list(head);
 	if (input_check(head, splitted_input, shell->env_array, shell) == 0)
 		return ;
@@ -579,7 +579,7 @@ void	heredoc(char *str, int fd, t_env *envp, t_shell *exitcode)
 			break ;
 		}
 		if (flag == 1)
-			main_dollar_heredoc(&input, envp, exitcode);
+			process_dollar_heredoc(&input, envp, exitcode);
 		// remove_quotes_main()
 		// remove_quotes_main_h(input);
 		write(fd, input, strlen(input));

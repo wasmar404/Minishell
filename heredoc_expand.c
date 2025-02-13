@@ -158,11 +158,11 @@ char *check_char_after_dollar1(char *str,t_env *envp,t_shell *exitcode)
     {
         new_string = strdup(str+2);
     }
-    else if((is_num_or_char(str[1]) == 0 && (str[1] != '_')))
+    else if((is_alphanumeric(str[1]) == 0 && (str[1] != '_')))
     {
         new_string = strdup(str);
     }
-    else if((is_num_or_char(str[1]) == 1 || (str[1] == '_')))
+    else if((is_alphanumeric(str[1]) == 1 || (str[1] == '_')))
      {//check ffirst charr
         new_string = expand_dollar(str,envp);
      }
@@ -183,7 +183,7 @@ int check_if_quotes_exit(char *input)
     }
     return (count);
 }
-void  main_dollar_helper_h(int *i,char **input,char **str,t_env *env,t_shell *exitcode)
+void  process_dollar_helper_h(int *i,char **input,char **str,t_env *env,t_shell *exitcode)
 {
     int start = 0;
     char *expanded;
@@ -219,7 +219,7 @@ void  main_dollar_helper_h(int *i,char **input,char **str,t_env *env,t_shell *ex
 
             }
 }
-void main_dollar_heredoc(char **input, t_env *env,t_shell *exitcode)
+void process_dollar_heredoc(char **input, t_env *env,t_shell *exitcode)
 {
     int i = 0;
     char *str = NULL;
@@ -230,7 +230,7 @@ void main_dollar_heredoc(char **input, t_env *env,t_shell *exitcode)
     int len = 0;
         while(input[i])
         {
-            main_dollar_helper_h(&i, input, &str, env,exitcode);
+            process_dollar_helper_h(&i, input, &str, env,exitcode);
             i++;
         }
     
