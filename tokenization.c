@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:16:26 by wasmar            #+#    #+#             */
-/*   Updated: 2025/02/13 10:59:21 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/02/16 21:44:37 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,8 +248,19 @@ void remove_empty_nodes(t_token **head)
     {
         if(check_if_null(current->token) == 0)
         {
+			if(current -> prev == NULL && current -> next == NULL) 
+			{
+				// printf("sbdjksg\n\n");
+				// temp = current ->next;
+				// temp1 = current;
+				// free(temp1);
+				// temp -> prev = NULL;
+				(*head) = NULL;
+				break;
+				// free(temp1);
+			 }
 			if(current -> next == NULL){
-				 temp = current->prev;
+				temp = current->prev;
             	temp1=current;
 				temp -> next = NULL;
 				// free(temp1);

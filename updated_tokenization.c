@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   updated_tokenization.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:02:23 by wasmar            #+#    #+#             */
-/*   Updated: 2025/02/13 13:32:40 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/02/16 16:44:49 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ t_token	*parse_input_to_tokens( char **splitted_input,t_shell *shell)
 			append_token_node(&head, new_node);
 		i++;
 	 }
-	process_dolloris(head1,shell); 
+	process_dolloris(head1,shell);
 	remove_quotes_main(head1);
 	remove_empty_nodes(&head1);
 	add_type(head1,shell->env_array);
