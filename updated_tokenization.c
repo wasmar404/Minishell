@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:02:23 by wasmar            #+#    #+#             */
-/*   Updated: 2025/02/16 16:44:49 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/02/17 01:17:57 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -490,13 +490,13 @@ void remove_quotes_main(t_token *head)
 
 			if(end-1 > len)
 			{
+				double_quotes = 0;
+
 				break;
 			}
-			if((head)->token[end-1])
+			if((head)->token[end])
 			{
 			i = end -1;
-		    // printf("i :%d\n",i);
-			single_quotes = 0;
 	 		double_quotes = 0;
 			}
 			 continue;
@@ -511,19 +511,17 @@ void remove_quotes_main(t_token *head)
 											// printf("end %d\n",end);
 					if(end-1 >= len)
 					{
-						single_quotes = 0;
-						double_quotes = 0;
 						break;
 					}
-					if((head)->token[end-1])
+					if((head)->token[end])
 					{
 					i = end -1;
 						// printf("%d\n",i);
 					single_quotes = 0;
-					double_quotes = 0;
+					
 					}
 										single_quotes = 0;
-					double_quotes = 0;
+				
 					continue;
 		 }
 		 i++;					
