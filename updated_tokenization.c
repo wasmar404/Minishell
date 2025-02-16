@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:02:23 by wasmar            #+#    #+#             */
-/*   Updated: 2025/02/17 01:17:57 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/02/17 01:29:33 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,18 +209,6 @@ t_token	*create_node_token(char *str, int i, bool built_in_or_not)
 	return (new_node);
 }
 
-// t_env	*search_and_find_a_type_my_envpp(t_env *envp, char *to_find)
-// {
-// 	while ((envp) != NULL)
-// 	{
-// 		if (ft_strcmp(to_find, (envp)->type) == 0)
-// 		{
-// 			return (envp);
-// 		}
-// 		(envp) = (envp)->next;
-// 	}
-// 	return (NULL);
-// }
 
 char	*new_string(char *str, int i, int j)
 {
@@ -234,13 +222,10 @@ char	*new_string(char *str, int i, int j)
 	{
 		len--;
 	}
-	// len = len - 2;
-	// printf("\nlen %d\n",len);
 
 	new_str = malloc(len + 1);
 	x = 0;
 	y = 0;
-	// printf("testtt :%c %c\n",str[i],str[j]);
 	while (y < len)
 	{
 		if (y != i && y != j)
@@ -255,25 +240,7 @@ char	*new_string(char *str, int i, int j)
 	return (new_str);
 }
 
-// int	expand_or_not(t_token *head)
-// {
-// 	int	i;
 
-// 	i = 0;
-// 	while (head->token[i])
-// 	{
-// 		if (head->token[i] == '"')
-// 		{
-// 			return (1);
-// 		}
-// 		if (head->token[i] == '\'')
-// 		{
-// 			return (0);
-// 		}
-// 		i++;
-// 	}
-// 	return (1);
-// }
 
 int	check_dollar1(t_token *head)
 {
@@ -307,63 +274,9 @@ int	check_dollar_pos(t_token *head)
 	return (0);//change to -1
 }
 
-// int	return_end_pos(t_token *head)
-// {
-// 	int	i;
 
-// 	i = check_dollar_pos(head);
-// 	i++;
-// 	if(head->token[i] && !((head->token[i] >= 'a' && head->token[i] <= 'z')
-// 			|| (head->token[i] >= 'A' && head->token[i] <= 'Z')
-// 			|| head->token[i] == '_'))
-// 			{
-// 				return(i);
-// 			}
-// 	while (head->token[i] && ((head->token[i] >= 'a' && head->token[i] <= 'z')
-// 			|| (head->token[i] >= 'A' && head->token[i] <= 'Z')
-// 			|| (head->token[i] >= '0' && head->token[i] <= '9')
-// 			|| head->token[i] == '_'))
-// 	{
-// 		i++;
-// 	}
-// 	return (i-1);
-// }
 
-// void	update_token_linked_list(t_token **head, t_env *envp_linked)
-// {
-// 	// int	flagg;
-// 	// int	flag;
 
-// 	// flagg = 0;
-// 	// flag = 0;
-// 	while ((*head))
-// 	{
-// 		// if ((*head))
-// 		// {
-// 			if ((check_dollar1(*head) == 0 || expand_or_not(*head) == 0) && (*head))
-// 			{
-// 				if (!(*head)->next)
-// 					break ;
-// 				(*head) = (*head)->next;
-// 				continue;
-// 			}
-// 		// 	if (check_dollar1(*head) == 1)
-// 		// 		flag++;
-// 		// 	if (expand_or_not(*head) == 0)
-// 		// 	{
-// 		// 		flag++;
-// 		// 		if (!(*head)->next)
-// 		// 			break ;
-// 		// 		(*head) = (*head)->next;
-// 		// 	}
-// 		// }
-// 		// if (flag != 0)
-// 		// 	flagg++;
-// 		// if (flagg == 1)
-// 			process_token(head, envp_linked);
-// 		(*head) = (*head)->next;
-// 	}
-// }
 
 int	calculate_len(t_env *enva, t_token **head, char *find)
 {
@@ -485,9 +398,6 @@ void remove_quotes_main(t_token *head)
 			 	double_quotes++;
 			len = strlen((head)->token);
 			end = find_end_of_quotes(copy,'"',i);
-            // break;
-			// printf("end1 %d\n",end);
-
 			if(end-1 > len)
 			{
 				double_quotes = 0;
@@ -508,7 +418,6 @@ void remove_quotes_main(t_token *head)
 				single_quotes++;
 							len = strlen((head)->token);
 					end = find_end_of_quotes(copy,'\'',i);
-											// printf("end %d\n",end);
 					if(end-1 >= len)
 					{
 						break;
@@ -516,12 +425,10 @@ void remove_quotes_main(t_token *head)
 					if((head)->token[end])
 					{
 					i = end -1;
-						// printf("%d\n",i);
 					single_quotes = 0;
 					
 					}
-										single_quotes = 0;
-				
+					single_quotes = 0;
 					continue;
 		 }
 		 i++;					
@@ -548,7 +455,6 @@ void remove_quotes_and_replace(t_token **head,int start)
 int find_end_of_quotes(char *str, char quote,int start)
 {
 	int x= start+1 ;
-	// printf("\n%s\n",str);
 	while(str[x])
 	{
 		if(str[x] == quote)
@@ -557,7 +463,7 @@ int find_end_of_quotes(char *str, char quote,int start)
 	}
 	return(-1);
 }
-// echo "'hello'""kkkm'
+//  echo "'hello'""kkkm'
 // echo "'"ho'l'a"'"
 // 'hola'
 // echo "'"ho'l'a"'"
