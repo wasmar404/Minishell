@@ -6,25 +6,12 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:16:26 by wasmar            #+#    #+#             */
-/*   Updated: 2025/02/16 21:44:37 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/02/17 01:05:22 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 #include "libft/libft.h"
-int x = 0;
-// t_token	*create_node_token(char *str, int i, bool built_in_or_not)
-// {
-// 	t_token	*new_node;
-
-// 	new_node = malloc(sizeof(t_token));
-// 	new_node->token = str;
-// 	new_node->built_in_or_not = built_in_or_not;
-// 	new_node->type = i;
-// 	new_node->next = NULL;
-// 	new_node->prev = NULL;
-// 	return (new_node);
-// }
 bool	built_in_or_not(char *cmd)
 {
 	if (ft_strcmp(cmd, "echo") == 0)
@@ -250,11 +237,6 @@ void remove_empty_nodes(t_token **head)
         {
 			if(current -> prev == NULL && current -> next == NULL) 
 			{
-				// printf("sbdjksg\n\n");
-				// temp = current ->next;
-				// temp1 = current;
-				// free(temp1);
-				// temp -> prev = NULL;
 				(*head) = NULL;
 				break;
 				// free(temp1);
@@ -314,13 +296,3 @@ t_token	*input_to_linked_list(char **input, char **envp)
 	}
 	return (print);
 }
-// int check_if_commmand(t_token *head )
-// {
-// 	if(head -> prev ==NULL)
-// 		return (1);
-// 	else if (strcmp(head->prev->token,"|") == 0)
-// 		return (1);
-// 	else 
-// 		return (0);
-// }
-

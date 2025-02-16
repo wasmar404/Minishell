@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/16 21:47:40 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/02/17 01:05:54 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,16 +118,19 @@ void	main_helper(char *input, t_shell *shell)
 	splitted_input = token_split(input);
 	head = parse_input_to_tokens( splitted_input, shell);
 	// //   print_list(head);
-	// if (input_check(head, splitted_input, shell->env_array, shell) == 0)
-	// 	return ;
-	// if (pipe_count_array(splitted_input) == 0)
-	// {
-	// 	if (check_command(head->token, shell->env_array, shell) == 0)
-	// 	{
-	// 		return ;
-	// 	}
-	// }
+	if(head)
+	{
+	if (input_check(head, splitted_input, shell->env_array, shell) == 0)
+		return ;
+	if (pipe_count_array(splitted_input) == 0)
+	{
+		if (check_command(head->token, shell->env_array, shell) == 0)
+		{
+			return ;
+		}
+	}
 	complicated_execute((&shell->env), head, shell->env_array, shell);
+}
 	//   free_doubly_linked_list(head);
 	 free_array(splitted_input);
 }
@@ -299,16 +302,12 @@ void	complicated_execute(t_env **my_envp, t_token *head, char *envp1[],
 	saved_stdout = dup(STDOUT_FILENO);
 	flag = 0;
 	flag20 = 0;
-	if(current == NULL)
-		return;
 	if (strcmp(current->token, "exit") == 0)
 	{
 		exit_command(current, exitcode);
 	}
 	while (current != NULL)
 	{
-		// ft_putendl_fd(current->token, 2);
-		// printf("bdgkfjbg \"%s\"\n\n",current->token);
 		envp = env_to_array(*my_envp);
 		if (command_exists(head) == 0)
 		{
