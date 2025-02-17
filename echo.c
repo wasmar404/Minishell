@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 11:27:21 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/12 13:28:18 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/02/17 04:02:22 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,9 @@ void	echo_main(t_token *head,t_shell *exitcode)
 		return ;
 	}
 	head = head->next;
-	while (head != NULL && (head->type == WORD || head->type == DIRECTORY || head->type == SINPUT_REDIRECTION))
+	while (head != NULL && (head->type == WORD || head->type == DIRECTORY || head->type == SINPUT_REDIRECTION || head->type == SOUTPUT_REDIRECTION ))
 	{
-		if(head->type == SINPUT_REDIRECTION )
+		if(head->type == SINPUT_REDIRECTION   )
 		{
 			if(head->next )
 				head = head->next;
@@ -65,6 +65,20 @@ void	echo_main(t_token *head,t_shell *exitcode)
 				break;
 			if(head -> prev ->prev ->prev && head -> prev ->prev ->prev ->type != COMMAND)
 				printf(" ");
+			continue;
+		}
+		if(head->type == SOUTPUT_REDIRECTION  )
+		{
+			if(head->next )
+				head = head->next;
+			else
+				break;
+			if(head->next )
+				head = head->next;
+			else
+				break;
+			// if(head -> prev ->prev ->prev && head -> prev ->prev ->prev ->type != COMMAND)
+			// 	printf(" ");
 			continue;
 		}
 		if (check_n(head) == 1 && flag1 == 0)

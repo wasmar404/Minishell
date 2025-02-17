@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:16:26 by wasmar            #+#    #+#             */
-/*   Updated: 2025/02/17 01:05:22 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/02/17 04:12:38 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,7 +241,16 @@ void remove_empty_nodes(t_token **head)
 				break;
 				// free(temp1);
 			 }
-			if(current -> next == NULL){
+			 else if(current -> prev == NULL) 
+			 {
+				// printf("ggg\n\n");
+				 temp = current ->next;
+				 temp1 = current;
+				 (*head)= temp;
+				 temp -> prev = NULL;
+				 // free(temp1);
+			 }
+			else if(current -> next == NULL){
 				temp = current->prev;
             	temp1=current;
 				temp -> next = NULL;
@@ -256,13 +265,7 @@ void remove_empty_nodes(t_token **head)
             current->prev = temp;
 			// free(temp1);
 			}
-			else if(current -> prev == NULL) 
-			{
-				temp = current ->next;
-				temp1 = current;
-				temp -> prev = NULL;
-				// free(temp1);
-			}
+	
 			
         }
         current = current->next;

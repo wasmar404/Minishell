@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/17 01:26:04 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/02/17 04:13:12 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ void	main_helper(char *input, t_shell *shell)
 	// 	return ;
 	splitted_input = token_split(input);
 	head = parse_input_to_tokens( splitted_input, shell);
-	// //   print_list(head);
+//  print_list(head);
 	if(head)
 	{
 	if (input_check(head, splitted_input, shell->env_array, shell) == 0)
@@ -129,7 +129,7 @@ void	main_helper(char *input, t_shell *shell)
 			return ;
 		}
 	}
-	complicated_execute((&shell->env), head, shell->env_array, shell);
+	 complicated_execute((&shell->env), head, shell->env_array, shell);
 }
 	//   free_doubly_linked_list(head);
 	 free_array(splitted_input);
