@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 10:14:57 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/13 11:57:42 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/03/16 14:36:12 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -319,7 +319,7 @@ int check_cd_command(t_token *head,t_shell *exitcode)
     {
         if(head -> type == COMMAND)
         {
-            if(strcmp(head -> token,"cd") == 0 && (head -> next -> type == WORD))
+            if(head ->next && strcmp(head -> token,"cd") == 0 && (head -> next -> type == WORD))
             {
                 exitcode -> exit_code = 1;
                 ft_putendl_fd("bash: cd: No such file or directory",2);

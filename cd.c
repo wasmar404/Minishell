@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/05 12:28:27 by wasmar            #+#    #+#             */
-/*   Updated: 2025/02/12 13:28:18 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/03/16 14:38:38 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -299,7 +299,7 @@ void main_cd(t_token *head, t_env **my_envp, t_shell *exitcode)
         exitcode -> exit_code = 1;
         return ;
     }
-    if(head ->next->next && head -> next -> next -> type == WORD)
+    if(head && head->next && head ->next->next && head -> next -> next -> type == WORD)
     {
         ft_putendl_fd("cd: too many arguments",2);
         exitcode -> exit_code = 1;
