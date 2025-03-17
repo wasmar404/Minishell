@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   header.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/13 15:04:29 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/03/17 14:58:27 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "get_next_line.h"
 # include "libft/libft.h"
 #include "expand_dollar/dollar.h"
+#include "builtins/builtins.h"
 # include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
@@ -112,7 +113,7 @@ int		is_alphanumeric(char c);
 
 
 
-
+void main_cd(t_token *head, t_env **my_envp, t_shell *shell);
 char *check_char_after_dollar_and_expand1(char *str,t_env *envp,t_shell *exitcode);
 
 char *ft_strndup(char *s, int n);

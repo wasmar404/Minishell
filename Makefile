@@ -4,7 +4,7 @@ CFLAGS =  -g
 LIBS = -lreadline -Llibft -lft  # Link to the libft library (-lft) and readline
 #-Wall -Wextra -Werror
 # Files
-SRC = $(wildcard *.c) $(wildcard expand_dollar/*.c)
+SRC = $(wildcard *.c) $(wildcard expand_dollar/*.c builtins/*.c)
 OBJ = $(SRC:.c=.o)
 EXEC = minishell
 
