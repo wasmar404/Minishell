@@ -1,0 +1,25 @@
+export jnde="'"
+echo $jnde
+
+echo $USER"$USER"'$USER''"$USER"'"'$USER'"
+
+
+wasmar@c2r6s6:~/Minishell$ < jnde
+bash: jnde: No such file or directory
+wasmar@c2r6s6:~/Minishell$ clear
+
+
+
+
+wasmar@c2r6s6:~/Minishell$ sleep 5 | sleep 5 | sleep 5
+^\Quit (core dumped)
+wasmar@c2r6s6:~/Minishell$ echo $?
+131
+wasmar@c2r6s6:~/Minishell$ 
+
+
+wasmar@c2r6s6:~/Minishell$ echo "jnde is big" > test | grep "is" < test
+bash: test: No such file or directory
+wasmar@c2r6s6:~/Minishell$ echo "jnde is big" > test | grep "is" < test
+wasmar@c2r6s6:~/Minishell$ echo "jnde is big" > test | grep "is" < test
+jnde is big
