@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dollar.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 10:37:55 by wasmar            #+#    #+#             */
-/*   Updated: 2025/02/13 15:21:16 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/03/19 08:23:18 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,15 @@ void	update_quote_status(t_quotes *quotes, char c)
 			|| (quotes->inside_quote) == 2))
 	{
 		if (c == '"' && (quotes->d_start) == 1)
+		{
 			(quotes->inside_quote) = 0;
+			(quotes->d_start) = 0;
+		}
 		if (c == '\'' && (quotes->s_start) == 1)
+		{
 			(quotes->inside_quote) = 0;
+			(quotes->s_start) = 0;
+		}
 	}
 }
 /*
