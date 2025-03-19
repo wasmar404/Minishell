@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/03/17 14:58:27 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/03/19 12:44:14 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,4 +254,8 @@ void update_quote_status(t_quotes *quotes, char c);
 void change_value_in_envp(t_env *my_envp,char *new_value);
 void return_env_to_beginning(t_env **my_envp);
 void free_2_variables(char *str1,char* str2);
+
+
+void restore_signals();
+void ignore_signals();
 #endif

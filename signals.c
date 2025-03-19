@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:53:50 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/12 10:43:41 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/03/19 12:43:48 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,17 @@ void main_signal()
 {
 	signal(SIGINT,ctrl_c);
 	signal(SIGQUIT,SIG_IGN);
+}
+
+
+void ignore_signals()
+{
+	signal(SIGINT,SIG_IGN);
+	signal(SIGQUIT,SIG_IGN);
+}
+
+void restore_signals()
+{
+	signal(SIGINT,SIG_DFL);
+	signal(SIGQUIT,SIG_DFL);
 }

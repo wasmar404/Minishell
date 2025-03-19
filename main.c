@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/17 04:13:12 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/03/19 12:42:35 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -362,6 +362,7 @@ void	complicated_execute(t_env **my_envp, t_token *head, char *envp1[],
 				exitcode->pid = fork();
 				if (exitcode->pid == 0)
 				{
+					restore_signals();
 					if (exitcode->exit_code == 127)
 					{
 						fd = open("/dev/null", O_RDONLY);
@@ -404,8 +405,10 @@ void	complicated_execute(t_env **my_envp, t_token *head, char *envp1[],
 	// }
 	if (flag20 == 0)
 	{
+		ignore_signals();
 		while (wait(&status) > 0)
 			;
+		main_signal();
 		if (WIFEXITED(status)) // Check if the child exited normally
 		{
 			exitcode->exit_code = WEXITSTATUS(status); // Extract the exit code
