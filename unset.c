@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:29:11 by wasmar            #+#    #+#             */
-/*   Updated: 2025/02/12 13:28:18 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/03/22 14:07:17 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void delete_first_node(t_env **my_envp)
     node_to_delete = (*my_envp);
     (*my_envp) = (*my_envp) -> next;
     (*my_envp)->prev =NULL;
-    free(node_to_delete);
 }
 void delete_last_node(t_env **my_envp)
 {
@@ -44,7 +43,6 @@ void delete_last_node(t_env **my_envp)
     node_to_delete = (*my_envp);
     (*my_envp) = (*my_envp)->prev;
     (*my_envp)->next =NULL;
-    free(node_to_delete);
 }
 void delete_middle_node(t_env **my_envp)
 {
@@ -61,7 +59,6 @@ void delete_middle_node(t_env **my_envp)
     {
         after->prev = before;
     }
-    free(node_to_delete);
 }
 void main_unset1(t_env **my_envp ,char *var_name,t_shell *exitcode)
 {

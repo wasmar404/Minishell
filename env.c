@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 21:54:01 by wasmar            #+#    #+#             */
-/*   Updated: 2025/01/23 11:31:04 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/03/22 14:08:43 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 #include "libft/libft.h"
 
-t_env	*create_node_tokenn(char *str, char *type, bool equal, char *all_line)
+t_env	*create_node_tokenn(char *str, char *type, bool equal, char *all_line,t_shell *shell)
 {
 	t_env	*new_node;
 
-	new_node = malloc(sizeof(t_env));
+	new_node = ft_malloc(shell->mallo, sizeof(t_env));
 	new_node->enva = str;
 	new_node->type = type;
 	new_node->equal = equal;
@@ -77,7 +77,7 @@ int	check_equal(char *str)
 	}
 	return (0);
 }
-t_env	*env_to_linked_list(char **envp)
+t_env	*env_to_linked_list(char **envp,t_shell *shell)
 {
 	int		i;
 	t_env	*head;
@@ -102,9 +102,9 @@ t_env	*env_to_linked_list(char **envp)
 		{
 			j++;
 			equal = true;
-			a = ft_strndup(envp[i], j - 1);
+			a = ft_strndup(envp[i], j - 1,shell);
 		}
-		new_node = create_node_tokenn(envp[i] + j, a, equal, envp[i]);
+		new_node = create_node_tokenn(envp[i] + j, a, equal, envp[i],shell);
 		if (head == NULL)
 		{
 			head = new_node;
@@ -120,36 +120,25 @@ t_env	*env_to_linked_list(char **envp)
 	}
 	return (print);
 }
-char	**env_to_array(t_env *head)
+char	**env_to_array(t_env *head,t_shell *shell)
 {
 	int	i;
 
 	int len = count_nodes(head);                        
-		// Number of nodes in the list
-	char **my_envp = malloc((len + 1) * sizeof(char *));
-		// Allocate for 'len' strings + NULL terminator
+	char **my_envp = ft_malloc(shell->mallo,(len + 1) * sizeof(char *));
 	i = 0;
 	if (!my_envp)
-		return (NULL); // Check malloc success
+		return (NULL);
 	while (head != NULL)
 	{
 		int str_len = ft_strlen(head->all);               
-			// Length of current string
-		my_envp[i] = malloc((str_len + 1) * sizeof(char));
-			// Allocate space for the string + '\0'
-		if (!my_envp[i]) // Check malloc success
-		{
-			// Free all previously allocated memory in case of error
-			while (i-- > 0)
-				free(my_envp[i]);
-			free(my_envp);
-			return (NULL);
-		}
-		strcpy(my_envp[i], head->all); // Copy the string content
+		my_envp[i] = ft_malloc(shell->mallo,(str_len + 1) * sizeof(char));
+
+		strcpy(my_envp[i], head->all); 
 		head = head->next;
 		i++;
 	}
-	my_envp[i] = NULL; // Null-terminate the array
+	my_envp[i] = NULL; 
 	return (my_envp);
 }
 

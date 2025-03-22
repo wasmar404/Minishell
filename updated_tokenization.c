@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:02:23 by wasmar            #+#    #+#             */
-/*   Updated: 2025/03/19 08:03:49 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/03/22 16:24:56 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_token	*parse_input_to_tokens( char **splitted_input,t_shell *shell)
 	new_node = NULL;
 	while (splitted_input[i])
 	{
-		new_node = generate_token( splitted_input, i);
+		new_node = generate_token( splitted_input, i,shell);
 		if (head == NULL)
 		{
 			head = new_node;
@@ -44,17 +44,17 @@ t_token	*parse_input_to_tokens( char **splitted_input,t_shell *shell)
 		i++;
 	 }
 	process_dolloris(head1,shell);
-	remove_quotes_main(head1);
+	remove_quotes_main(head1,shell);
 	remove_empty_nodes(&head1);
-	add_type(head1,shell->env_array);
+	add_type(head1,shell->env_array,shell);
 	return (head1);
 }
-void add_type(t_token *head,char **envp)
+void add_type(t_token *head,char **envp,t_shell *shell)
 {
 	t_token *temp = (head);
 	while((head) != NULL)
 	{
-		(head)->type = check_input_type((head)->token,envp,temp);
+		(head)->type = check_input_type((head)->token,envp,temp,shell);
 		(head) = (head) ->next ;
 		
 	}
@@ -75,19 +75,20 @@ char	*return_value_of_envp_type(t_env *envp_linked, char *search_for)
 	return (NULL);
 }
 
-t_token	*generate_token( char **splitted_input,int i)
+t_token	*generate_token( char **splitted_input,int i,t_shell *shell)
 {
 	int		type = 6;
 	t_token	*new_node;
 
 	
-	new_node = create_node_token(strdup(splitted_input[i]), type,
-			built_in_or_not(splitted_input[i]));
+	new_node = create_node_token(ft_strdup(splitted_input[i],shell->mallo), type,
+			built_in_or_not(splitted_input[i]),shell);
 			new_node ->node_count = i;
 	return (new_node);
 }
 
-token_type	check_input_type(char *input, char **envp, t_token *head)
+
+token_type	check_input_type(char *input, char **envp, t_token *head,t_shell *shell)
 {
 	if (check_if_heredoc_aoutput_minus_tilde(input) != 0)
 	{
@@ -100,7 +101,7 @@ token_type	check_input_type(char *input, char **envp, t_token *head)
 	}
 	else
 	{
-		return (check_if_twopoints_dir_cmd_word(input, envp, head));
+		return (check_if_twopoints_dir_cmd_word(input, envp, head,shell));
 	}
 }
 
@@ -130,11 +131,11 @@ token_type	check_if_pipe_soutput_sinput(char *input)
 		return (0);
 }
 
-token_type	check_if_twopoints_dir_cmd_word(char *input, char **envp,t_token *head)
+token_type	check_if_twopoints_dir_cmd_word(char *input, char **envp,t_token *head,t_shell *shell)
 {
 	if (ft_strcmp(input, "..") == 0)
 		return (TWO_POINTS);
-	else if (check_if_cmd(input, envp, head))
+	else if (check_if_cmd(input, envp, head,shell))
 		return (COMMAND);
 	else if (access(input, F_OK) == 0)
 		return (DIRECTORY);
@@ -151,7 +152,7 @@ int count_ttoken_nodes(t_token *head)
 	}
 	return (i);
 }
-char * find_endd2(char *a)
+char * find_endd2(char *a,t_shell *shell)
 {
 	int i = 0;
 	while(a[i])
@@ -162,12 +163,12 @@ char * find_endd2(char *a)
 		}
 		i++;
 	}
-	char * result = ft_strndup(a,i);
+	char * result = ft_strndup(a,i,shell);
 	return result;
 }
-int	check_if_cmd(char *input, char **envp, t_token *head)
+int	check_if_cmd(char *input, char **envp, t_token *head,t_shell *shell)
 {
-	char *a = find_path_of_cmd(input, envp);
+	char *a = find_path_of_cmd(input, envp,shell);
 	struct stat path_stat;
 
 	if( head->token[0] == '.' && head->token[1] == '/' && access(head -> token,X_OK) == 0 )
@@ -177,9 +178,8 @@ int	check_if_cmd(char *input, char **envp, t_token *head)
             return (1);
         // }
 	}
-		if (find_path_of_cmd(input, envp))
+		if (find_path_of_cmd(input, envp,shell))
 	{
-		// free(a);
 		if (head->prev == NULL  || (head -> prev && (strcmp(head -> prev -> token, "|") == 0) ))
 		{
 			return(1);
@@ -196,11 +196,11 @@ int	check_if_cmd(char *input, char **envp, t_token *head)
 	return (0);
 }
 }
-t_token	*create_node_token(char *str, int i, bool built_in_or_not)
+t_token	*create_node_token(char *str, int i, bool built_in_or_not,t_shell *shell)
 {
 	t_token	*new_node;
 
-	new_node = malloc(sizeof(t_token));
+	new_node = ft_malloc(shell->mallo,sizeof(t_token));
 	new_node->token = str;
 	new_node->built_in_or_not = built_in_or_not;
 	new_node->type = i;
@@ -210,7 +210,7 @@ t_token	*create_node_token(char *str, int i, bool built_in_or_not)
 }
 
 
-char	*new_string(char *str, int i, int j)
+char	*new_string(char *str, int i, int j,t_shell *shell)
 {
 	int		len;
 	char	*new_str;
@@ -223,7 +223,7 @@ char	*new_string(char *str, int i, int j)
 		len--;
 	}
 
-	new_str = malloc(len + 1);
+	new_str = ft_malloc(shell->mallo,len + 1);
 	x = 0;
 	y = 0;
 	while (y < len)
@@ -370,7 +370,7 @@ int	calculate_len(t_env *enva, t_token **head, char *find)
 // 	return (1);
 // }
 
-void remove_quotes_main(t_token *head)
+void remove_quotes_main(t_token *head,t_shell *shell)
 {
 	int i = 0;
 	int end = 0;
@@ -393,8 +393,8 @@ void remove_quotes_main(t_token *head)
 		{
 			if((head)->token[i] == '"' && single_quotes == 0)
 			{
-				copy=ft_strdup((head)->token);
-				remove_quotes_and_replace(&head,i);
+				copy=ft_strdup((head)->token,shell->mallo);
+				remove_quotes_and_replace(&head,i,shell);
 			 	double_quotes++;
 			len = strlen((head)->token);
 			end = find_end_of_quotes(copy,'"',i);
@@ -417,8 +417,8 @@ void remove_quotes_main(t_token *head)
 			}
 			if((head)->token[i] == '\'' && double_quotes == 0)
 			{
-								copy=ft_strdup((head)->token);
-				remove_quotes_and_replace(&head,i);
+								copy=ft_strdup((head)->token,shell->mallo);
+				remove_quotes_and_replace(&head,i,shell);
 				single_quotes++;
 							len = strlen((head)->token);
 					end = find_end_of_quotes(copy,'\'',i);
@@ -445,7 +445,7 @@ void remove_quotes_main(t_token *head)
 	}
 }
 
-void remove_quotes_and_replace(t_token **head,int start)
+void remove_quotes_and_replace(t_token **head,int start,t_shell *shell)
 {
 	int end = 0;
 	char *new = NULL;
@@ -455,9 +455,9 @@ void remove_quotes_and_replace(t_token **head,int start)
 	{
 		return;
 	}
-	new = new_string((*head)->token,start,end);
+	new = new_string((*head)->token,start,end,shell);
 	len = strlen(new);
-	(*head)->token =malloc(len+1);
+	(*head)->token =ft_malloc(shell->mallo,len+1);
 	strcpy((*head)->token,new);
 }
 int find_end_of_quotes(char *str, char quote,int start)

@@ -6,12 +6,32 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:00:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/12 14:49:26 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/03/22 13:58:02 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 #include "libft/libft.h"
+char	*ft_strndup1(char *str, int i,t_malloc *mallo)
+{
+	int		z;
+	char	*array ;
+
+	z = 0;
+	array = ft_malloc(mallo,(i + 1) * sizeof(char));
+	if (!array)
+	{
+		return (NULL);
+	}
+	while (z < i)
+	{
+		array[z] = str[z];
+		z++;
+	}
+	array[z] = '\0';
+	return (array);
+}
+
 
 int	check_double_sep(char *input, int i)
 {
@@ -40,13 +60,13 @@ int	ft_strlenn(char *input)
 	return (i);
 }
 
-char	*ft_strndup(char *str, int i)
+char	*ft_strndup(char *str, int i,t_shell *shell)
 {
 	int		z;
 	char	*array ;
 
 	z = 0;
-	array = malloc((i + 1) * sizeof(char));
+	array = ft_malloc(shell->mallo,(i + 1) * sizeof(char));
 	if (!array)
 	{
 		return (NULL);
@@ -59,17 +79,17 @@ char	*ft_strndup(char *str, int i)
 	array[z] = '\0';
 	return (array);
 }
-int	delimeter_check(char **tokens, int *token, char *str, int *i)
+int	delimeter_check(char **tokens, int *token, char *str, int *i,t_malloc *mallo)
 {
 	if (check_double_sep(str, (*i)) == 1)
 	{
-		tokens[(*token)] = ft_strndup(str + (*i), 2);
+		tokens[(*token)] = ft_strndup1(str + (*i), 2,mallo);
 		(*token)++;
 		(*i) += 2;
 	}
 	else if (check_single_sep(str[(*i)]) == 1)
 	{
-		tokens[(*token)] = ft_strndup(str + (*i), 1);
+		tokens[(*token)] = ft_strndup1(str + (*i), 1,mallo);
 		(*token)++;
 		(*i) += 1;
 	}
@@ -118,7 +138,7 @@ void	check_non_delimeter_h( char *str, int *i,int *start,int *len)
 		}
 }
 
-void	check_non_delimeter(char **tokens, int *token, char *str, int *i)
+void	check_non_delimeter(char **tokens, int *token, char *str, int *i,t_malloc *mallo)
 {
 	int	start;
 	int	len;
@@ -133,7 +153,7 @@ void	check_non_delimeter(char **tokens, int *token, char *str, int *i)
 	}
 	if (len > 0)
 	{
-		tokens[(*token)] = ft_strndup(str + start, len);
+		tokens[(*token)] = ft_strndup1(str + start, len,mallo);
 		(*token)++;
 	}
 }
@@ -221,7 +241,7 @@ int	token_count(char *input)
 	}
 	return (count);
 }
-char	**token_split(char *str)
+char	**token_split(char *str,t_shell *shell,t_malloc *mallo)
 {
 	char	**tokens;
 	int		token;
@@ -231,7 +251,7 @@ char	**token_split(char *str)
 	i = 0;
 	if (str == NULL) 
 		return (NULL);
-	tokens = malloc(sizeof(char *) * (token_count(str) + 1));
+	tokens = ft_malloc(mallo,sizeof(char *) * (token_count(str) + 1));
 	if (!tokens) 
 		return (NULL);
 	int lenn = strlen(str);
@@ -239,9 +259,9 @@ char	**token_split(char *str)
 	{
 		while (str[i] && str[i] == ' ')
 			i++;
-		if (!delimeter_check(tokens, &token, str, &i))
+		if (!delimeter_check(tokens, &token, str, &i,mallo))
 		{
-			check_non_delimeter(tokens, &token, str, &i);
+			check_non_delimeter(tokens, &token, str, &i,mallo);
 		}
 	}
 	tokens[token] = NULL; 

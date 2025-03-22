@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 14:46:47 by wasmar            #+#    #+#             */
-/*   Updated: 2025/01/31 11:36:35 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/03/22 14:06:45 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,17 +66,8 @@ static	void	fillwords(const char *str, char **res, char c, size_t *k)
 		(*k)++;
 }
 
-void	freeres(char ***res, int i)
-{
-	while (i > 0)
-	{
-		free(*(res[i - 1]));
-		i--;
-	}
-	free(*res);
-}
 
-char	**ft_split(char const *s, char c)
+char	**ft_split(char const *s, char c,t_malloc *mallo)
 {
 	char	**res = NULL;
 	size_t	i;
@@ -86,16 +77,13 @@ char	**ft_split(char const *s, char c)
 	k = 0;
 	if (s == NULL)
         return (NULL);
-	res = (char **)malloc(sizeof(char *) * (wordcount(s, c) + 1));
+	res = (char **)ft_malloc(mallo,sizeof(char *) * (wordcount(s, c) + 1));
 	if (!res)
 		return (NULL);
 	while (i < (wordcount(s, c)))
 	{
-		res[i] = (char *)malloc(sizeof(char) * (returnres(s, c, k) + 1));
-		if (!res[i])
-		{
-			freeres(&res, i);
-		}
+		res[i] = (char *)ft_malloc(mallo,sizeof(char) * (returnres(s, c, k) + 1));
+
 		fillwords(s, &(res[i]), c, &k);
 		i++;
 	}

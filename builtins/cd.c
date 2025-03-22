@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/05 12:28:27 by wasmar            #+#    #+#             */
-/*   Updated: 2025/03/18 07:34:02 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/03/22 16:29:06 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,11 @@ void	cd(t_token *head, t_env **my_envp, t_shell *shell)
 			shell->exit_code = 1;
 			return ;
 		}
-		new_path = strdup((env_node)->enva);
+		new_path = ft_strdup((env_node)->enva,shell->mallo);
 		if (change_dir(new_path, shell) == -1)
 			return ;
-		if (update_pwd_and_oldpwd((*my_envp), new_path) == -1)
+		if (update_pwd_and_oldpwd((*my_envp), new_path,shell) == -1)
 			return ;
-		free(new_path);
 		shell->exit_code = 0;
 	}
 }
@@ -73,11 +72,11 @@ void	cd_directory(t_token *head, t_env **my_envp, t_shell *shell)
 			shell->exit_code = 1;
 			return ;
 		}
-		new_pwd = ft_strjoin(env_node->enva, "/");
-		new_pwd = ft_strjoin(new_pwd, head->next->token);
+		new_pwd = ft_strjoin(env_node->enva, "/",shell->mallo);
+		new_pwd = ft_strjoin(new_pwd, head->next->token,shell->mallo);
 		if (change_dir(new_pwd, shell) == -1)
 			return ;
-		if (update_pwd_and_oldpwd((*my_envp), new_pwd) == -1)
+		if (update_pwd_and_oldpwd((*my_envp), new_pwd,shell) == -1)
 			return ;
 		shell->exit_code = 0;
 	}
@@ -101,11 +100,11 @@ void	cd_two_points(t_token *head, t_env **my_envp, t_shell *shell)
 			return ;
 		}
 		j = find_last_backslash(env_node->enva);
-		new_path = ft_strndup(env_node->enva, j);
+		new_path = ft_strndup(env_node->enva, j,shell);
 		if (change_dir(new_path, shell) == -1)
 			return ;
 		shell->exit_code = 0;
-		if (update_pwd_and_oldpwd((*my_envp), new_path) == -1)
+		if (update_pwd_and_oldpwd((*my_envp), new_path,shell) == -1)
 			return ;
 	}
 }
@@ -127,7 +126,7 @@ void	cd_minus(t_token *head, t_env **my_envp, t_shell *shell)
 		}
 		if (change_dir(env_node->enva, shell) == -1)
 			return ;
-		if (update_pwd_and_oldpwd((*my_envp), env_node->enva) == -1)
+		if (update_pwd_and_oldpwd((*my_envp), env_node->enva,shell) == -1)
 			return ;
 		shell->exit_code = 0;
 	}
@@ -148,12 +147,11 @@ void	cd_tilde(t_token *head, t_env **my_envp, t_shell *shell)
 			shell->exit_code = 1;
 			return ;
 		}
-		new_path = strdup((env_node)->enva);
+		new_path = ft_strdup((env_node)->enva,shell->mallo);
 		if (change_dir(new_path, shell) == -1)
 			return ;
-		if (update_pwd_and_oldpwd((*my_envp), new_path) == -1)
+		if (update_pwd_and_oldpwd((*my_envp), new_path,shell) == -1)
 			return ;
-		free(new_path);
 		shell->exit_code = 0;
 	}
 }

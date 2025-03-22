@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/05 12:28:27 by wasmar            #+#    #+#             */
-/*   Updated: 2025/03/17 20:40:57 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/03/22 16:27:31 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int	change_dir(char *tochange, t_shell *shell)
 	if (chdir(tochange) == -1)
 	{
 		shell->exit_code = 1;
-		free(tochange);
 		return (-1);
 	}
 	return (1);
@@ -37,7 +36,7 @@ t_env	*search_env(t_env *envp, char *to_find)
 	return (NULL);
 }
 
-int	update_pwd_and_oldpwd(t_env *my_envp, char *new_path)
+int	update_pwd_and_oldpwd(t_env *my_envp, char *new_path,t_shell *shell)
 {
 	t_env	*env_node;
 	char	*new_oldpwd;
@@ -47,7 +46,7 @@ int	update_pwd_and_oldpwd(t_env *my_envp, char *new_path)
 	env_node = search_env(my_envp, "PWD");
 	if (env_node == NULL)
 		return (-1);
-	new_oldpwd = strdup(env_node->enva);
+	new_oldpwd = ft_strdup(env_node->enva,shell->mallo);
 	strcpy(env_node->enva, new_path);
 	env_node = search_env(my_envp, "OLDPWD");
 	if (env_node == NULL)

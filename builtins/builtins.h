@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:23:48 by schaaban          #+#    #+#             */
-/*   Updated: 2025/03/18 07:35:18 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/03/22 16:27:52 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	cd_tilde(t_token *head, t_env **my_envp, t_shell *shell);
 //cd_helper.c
 int	change_dir(char *tochange, t_shell *shell);
 t_env	*search_env(t_env *envp, char *to_find);
-int	update_pwd_and_oldpwd(t_env *my_envp, char *new_path);
+int	update_pwd_and_oldpwd(t_env *my_envp, char *new_path,t_shell *shell);
 int	find_last_backslash(char *str);
 
 

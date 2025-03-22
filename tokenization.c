@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:16:26 by wasmar            #+#    #+#             */
-/*   Updated: 2025/02/17 04:12:38 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/03/22 14:07:34 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,18 +40,7 @@ void	find_the_word_path_in_envp(char ***envp)
 		(*envp)++;
 	}
 }
-void	free_array(char **array)
-{
-	int	i;
 
-	i = 0;
-	while (array[i])
-	{
-		free(array[i]);
-		i++;
-	}
-	free(array);
-}
 int	ft_strcmp(char *str1, char *str2)
 {
 	int	i;
@@ -84,7 +73,7 @@ char	*find_path_of_cmd_helper(char *command)
 	else
 		return (NULL);
 }
-char	*find_path_of_cmd(char *command, char **envp)
+char	*find_path_of_cmd(char *command, char **envp,t_shell *shell)
 {
 	char	**all_path;
 	char	*cmd_path;
@@ -95,7 +84,7 @@ char	*find_path_of_cmd(char *command, char **envp)
 	{
 
           		getcwd(cwd,sizeof(cwd));
-		cmd_path = ft_strjoin(cwd,command + 1);
+		cmd_path = ft_strjoin(cwd,command + 1,shell->mallo);
 		return (cmd_path);
         
 
@@ -105,24 +94,20 @@ char	*find_path_of_cmd(char *command, char **envp)
 	find_the_word_path_in_envp(&envp);
 	if (envp == NULL || *envp == NULL) // <-- Check if PATH is found
         return (NULL);
-	all_path = ft_split(*envp + 5, ':');
+	all_path = ft_split(*envp + 5, ':',shell->mallo);
 	if (all_path == NULL) // <-- Check if ft_split succeeded
         return (NULL);
 	i = 0;
 	while (all_path[i] != NULL)
 	{
-		temp = ft_strjoin(all_path[i], "/");
-		cmd_path = ft_strjoin(temp, command);
-		free(temp);
+		temp = ft_strjoin(all_path[i], "/",shell->mallo);
+		cmd_path = ft_strjoin(temp, command,shell->mallo);
 		if (access(cmd_path, X_OK) == 0)
 		{
-			free_array(all_path);
 			return (cmd_path);
 		}
-		free(cmd_path);
 		i++;
 	}
-	free_array(all_path);
 	return (find_path_of_cmd_helper(command));
 }
 token_type	check_delimeter1(char *splitted_token)
@@ -174,7 +159,7 @@ token_type	check_delimeter2(char *splitted_token)
 	else
 		return (0);
 }
-token_type	check_delimeter3(char *splitted_token, char **envp)
+token_type	check_delimeter3(char *splitted_token, char **env,t_shell *shell)
 {
 	token_type	type;
 
@@ -188,7 +173,7 @@ token_type	check_delimeter3(char *splitted_token, char **envp)
 		type = DIRECTORY;
 		return (type);
 	}
-	else if (find_path_of_cmd(splitted_token, envp))
+	else if (find_path_of_cmd(splitted_token, env,shell))
 	{
 		type = COMMAND;
 		return (type);
@@ -199,7 +184,7 @@ token_type	check_delimeter3(char *splitted_token, char **envp)
 		return (type);
 	}
 }
-token_type	check_delimeter(char *splitted_token, char **envp)
+token_type	check_delimeter(char *splitted_token, char **envp,t_shell *shelll)
 {
 	token_type	type;
 
@@ -215,7 +200,7 @@ token_type	check_delimeter(char *splitted_token, char **envp)
 	}
 	else
 	{
-		type = check_delimeter3(splitted_token, envp);
+		type = check_delimeter3(splitted_token, envp,shelll);
 		return (type);
 	}
 }
@@ -239,7 +224,6 @@ void remove_empty_nodes(t_token **head)
 			{
 				(*head) = NULL;
 				break;
-				// free(temp1);
 			 }
 			 else if(current -> prev == NULL) 
 			 {
@@ -248,13 +232,11 @@ void remove_empty_nodes(t_token **head)
 				 temp1 = current;
 				 (*head)= temp;
 				 temp -> prev = NULL;
-				 // free(temp1);
 			 }
 			else if(current -> next == NULL){
 				temp = current->prev;
             	temp1=current;
 				temp -> next = NULL;
-				// free(temp1);
 			}
 			else if((current -> next != NULL) && (current -> prev != NULL))
 			{
@@ -263,7 +245,6 @@ void remove_empty_nodes(t_token **head)
             current = current->next;
             temp ->next = current;
             current->prev = temp;
-			// free(temp1);
 			}
 	
 			
@@ -272,7 +253,7 @@ void remove_empty_nodes(t_token **head)
     }
 }
 
-t_token	*input_to_linked_list(char **input, char **envp)
+t_token	*input_to_linked_list(char **input, char **envp,t_shell *shell)
 {
 	int		i;
 	int		type;
@@ -286,8 +267,8 @@ t_token	*input_to_linked_list(char **input, char **envp)
 	print = NULL;
 	while (input[i])
 	{
-		type = check_delimeter(input[i], envp);
-		new = create_node_token(ft_strdup(input[i]), type, built_in_or_not(input[i]));
+		type = check_delimeter(input[i], envp,shell);
+		new = create_node_token(ft_strdup(input[i],shell->mallo), type, built_in_or_not(input[i]),shell);
 		if (head == NULL)
 		{
 			head = new;

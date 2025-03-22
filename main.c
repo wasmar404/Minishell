@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/03/19 12:42:35 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/03/22 16:25:15 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,33 +17,69 @@ void init_shell_struct(t_shell *shell,char **envp)
     // head = env_to_linked_list(envp);
 
  	shell->exit_code = 0;
-	shell->env =  env_to_linked_list(envp);
-	shell->env_array = env_to_array(shell->env);
+	shell->env =  env_to_linked_list(envp,shell);
+	shell->env_array = env_to_array(shell->env,shell);
 }
-int	main(int ac, char **av, char **envp)
-{
-	char	*input;
-	t_shell	shell;
+#include <stdio.h>
 
-	input = NULL;
-	(void)ac;
-	(void)av;
-    init_shell_struct(&shell,envp);
-	main_signal();
-	while (1)
-	{
-		input = readline("sw_shell> ");
-		if (input == NULL)
-			break ;
-		if (*input)
-		{
-			add_history(input);
-			main_helper(input, &shell);
-		}
-		free(input);
-	}
-	return (0);
+#include <stdio.h>
+
+void print_malloc(t_malloc *gc)
+{
+
+    t_mem_node *current = gc->head;
+    while (current)
+    {
+		printf("sufuf0");
+		fflush(stdout);
+        printf("Allocated pointer: %p\n", current->ptr);
+        current = current->next;
+
+    }
 }
+
+
+int main(int ac, char **av, char **envp)
+{
+    char *input = NULL;
+    t_shell shell;
+    t_malloc *mallo = malloc(sizeof(t_malloc)); // Allocate memory for t_malloc
+
+    if (!mallo) {
+        perror("malloc failed");
+        return 1;  // Return error if malloc fails
+    }
+
+    shell.mallo = mallo; // Now it's safe to assign mallo to shell.mallo
+
+    init_shell_struct(&shell, envp);
+    main_signal();
+
+    while (1)
+    {
+        input = readline("sw_shell> ");
+        if (input == NULL)
+        {
+            break;  // Exit on EOF (Ctrl-D)
+        }
+
+        if (*input)
+        {
+            add_history(input);  // Add input to history
+            main_helper(input, &shell,mallo);  // Process the input
+        }
+
+        if (strcmp(input, "stop") == 0)
+        {
+            break;  // Exit on "stop" command
+        }
+
+    }
+     ft_free_all(mallo);  // Clean up allocated memory
+
+    return 0;
+}
+
 int	check_if_null(char *input)
 {
 	int	i;
@@ -73,18 +109,7 @@ void	print_list(t_token *head)
 		head = head->next;
 	}
 }
-void	free_doubly_linked_list(t_token *head)
-{
-	t_token	*temp;
 
-	while (head != NULL)
-	{
-		temp = head;
-		head = head->next;
-		free(temp->token);
-		free(temp);
-	}
-}
 
 int	pipe_count_array(char **str)
 {
@@ -101,7 +126,7 @@ int	pipe_count_array(char **str)
 	}
 	return (count);
 }
-void	main_helper(char *input, t_shell *shell)
+void	main_helper(char *input, t_shell *shell,t_malloc *mallo)
 {
 	char **splitted_input;
 	t_token *head;
@@ -115,7 +140,7 @@ void	main_helper(char *input, t_shell *shell)
 	}
 	// if (main_quote_check(input, shell) == 0)
 	// 	return ;
-	splitted_input = token_split(input);
+	splitted_input = token_split(input,shell,mallo);
 	head = parse_input_to_tokens( splitted_input, shell);
 //  print_list(head);
 	if(head)
@@ -129,10 +154,9 @@ void	main_helper(char *input, t_shell *shell)
 			return ;
 		}
 	}
-	 complicated_execute((&shell->env), head, shell->env_array, shell);
+	 complicated_execute((&shell->env), head, shell->env_array, shell,shell);
 }
-	//   free_doubly_linked_list(head);
-	 free_array(splitted_input);
+
 }
 
 void	find_a_node_move_pointer(t_token **head, int i)
@@ -162,7 +186,7 @@ int	pipe_count(t_token *head)
 	}
 	return (pipes);
 }
-char	**array_complicated_execute(t_token *head)
+char	**array_complicated_execute(t_token *head,t_shell *shell)
 {
 	char	**current_command;
 	int		len;
@@ -187,7 +211,7 @@ char	**array_complicated_execute(t_token *head)
 		}
 		temp = temp->next;
 	}
-	current_command = malloc((len + 1) * sizeof(char *));
+	current_command = ft_malloc(shell->mallo,(len + 1) * sizeof(char *));
 	temp = head;
 	while (temp != NULL && temp->type != PIPE)
 	{
@@ -201,7 +225,7 @@ char	**array_complicated_execute(t_token *head)
 		{
 			break ;
 		}
-		current_command[i] = strdup(temp->token);
+		current_command[i] = ft_strdup(temp->token,shell->mallo);
 		i++;
 		temp = temp->next;
 	}
@@ -279,7 +303,7 @@ int	command_exists(t_token *head)
 	return (0);
 }
 void	complicated_execute(t_env **my_envp, t_token *head, char *envp1[],
-		t_shell *exitcode)
+		t_shell *exitcode,t_shell *shell)
 {
 	int		pipefd[2];
 	int		status;
@@ -308,7 +332,7 @@ void	complicated_execute(t_env **my_envp, t_token *head, char *envp1[],
 	}
 	while (current != NULL)
 	{
-		envp = env_to_array(*my_envp);
+		envp = env_to_array(*my_envp,shell);
 		if (command_exists(head) == 0)
 		{
 			if (current->type == HERE_DOC)
@@ -375,9 +399,9 @@ void	complicated_execute(t_env **my_envp, t_token *head, char *envp1[],
 						// ": command not found", 2);
 					//     exit(127);
 					// }
-					add_shell_level(my_envp, current, &envp);
+					add_shell_level(my_envp, current, &envp,shell);
 					run_command_helper(current, envp, my_envp, pipefd, input_fd,
-						array_complicated_execute(current), flag, exitcode);
+						array_complicated_execute(current,shell), flag, exitcode);
 					// exit(exit_code);
 				}
 				else if (exitcode->pid > 0)
@@ -395,7 +419,6 @@ void	complicated_execute(t_env **my_envp, t_token *head, char *envp1[],
 			if (flag == 1)
 				close(pipefd[1]);
 		}
-		free_array(envp);
 		current = current->next;
 	}
 	// if(flag20 == 0)
@@ -420,24 +443,23 @@ void	complicated_execute(t_env **my_envp, t_token *head, char *envp1[],
 				// Set exit code to 128 + signal number
 		}
 	}
-	// free_doubly_linked_list(current);
 }
-void	change_value_in_envp(t_env *my_envp, char *new_value)
+void	change_value_in_envp(t_env *my_envp, char *new_value,t_shell *shell)
 {
 	char	*new_all;
 
-	my_envp->enva = ft_strdup(new_value);
+	my_envp->enva = ft_strdup(new_value,shell->mallo);
 	if (my_envp->equal == true)
 	{
-		new_all = ft_strjoin(my_envp->type, "=");
-		my_envp->all = ft_strjoin(new_all, my_envp->enva);
+		new_all = ft_strjoin(my_envp->type, "=",shell->mallo);
+		my_envp->all = ft_strjoin(new_all, my_envp->enva,shell->mallo);
 	}
 	else
 	{
-		my_envp->all = ft_strjoin(my_envp->type, my_envp->enva);
+		my_envp->all = ft_strjoin(my_envp->type, my_envp->enva,shell->mallo);
 	}
 }
-void	add_shell_level(t_env **my_envp, t_token *head, char ***envp)
+void	add_shell_level(t_env **my_envp, t_token *head, char ***envp,t_shell *shelll)
 {
 	int		shell;
 	char	*a;
@@ -450,11 +472,11 @@ void	add_shell_level(t_env **my_envp, t_token *head, char ***envp)
 		{
 			shell = atoi((*my_envp)->enva);
 			shell++;
-			a = ft_itoa(shell);
-			(*my_envp)->enva = ft_strdup(a);
-			change_value_in_envp((*my_envp), a);
+			a = ft_itoa(shell,shelll->mallo);
+			(*my_envp)->enva = ft_strdup(a,shelll->mallo);
+			change_value_in_envp((*my_envp), a,shelll);
 			return_env_to_beginning(my_envp);
-			(*envp) = env_to_array(*my_envp);
+			(*envp) = env_to_array(*my_envp,shelll);
 		}
 	}
 }
@@ -521,7 +543,7 @@ void	external_commands(t_token *head, char **envp, t_env *my_envp,
 		(void)my_envp;
 		super_complicated_handle_dups(head, pipefd, input_fd, flag, my_envp,
 			exitcode);
-		path = find_path_of_cmd(head->token, envp);
+		path = find_path_of_cmd(head->token, envp,exitcode);
 		if (execve(path, current_command, envp) == -1)
 			printf("execve failed");
 		exit(EXIT_SUCCESS);
@@ -575,13 +597,12 @@ void	heredoc(char *str, int fd, t_env *envp, t_shell *exitcode)
 	{
 		flag = 1;
 	}
-	remove_quotes_main_heredoc(&str);
+	remove_quotes_main_heredoc(&str,exitcode);
 	while (1)
 	{
 		input = readline("> ");
 		if (strcmp(str, input) == 0)
 		{
-			free(input);
 			break ;
 		}
 		if (flag == 1)
@@ -590,6 +611,5 @@ void	heredoc(char *str, int fd, t_env *envp, t_shell *exitcode)
 		// remove_quotes_main_h(input);
 		write(fd, input, strlen(input));
 		write(fd, "\n", 1);
-		free(input);
 	}
 }

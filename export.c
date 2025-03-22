@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 21:04:03 by wasmar            #+#    #+#             */
-/*   Updated: 2025/02/12 13:28:18 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/03/22 14:08:30 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,13 @@ void reset_bool_printed(t_env *head)
         head = head->next;
     }
 }
-char	*ft_strdupp(char *str, int i)
+char	*ft_strdupp(char *str, int i,t_shell *shell)
 {
 	int		z;
 	char	*array;
 
 	z = 0;
-array = malloc((i + 1) * sizeof(char));
+array = ft_malloc(shell->mallo,(i + 1) * sizeof(char));
 	if(!array)
 	{
 		
@@ -104,34 +104,32 @@ int check_equall(t_token *head)
     } 
     return (i);
 }
-void find_type(t_token *head,t_env **my_envp)
+void find_type(t_token *head,t_env **my_envp,t_shell *shell)
 {
 
     head = head ->next;
     int i ;
     i = check_equall(head);
-    char *type = ft_strdupp(head->token,i);
+    char *type = ft_strdupp(head->token,i,shell);
     t_env  *a =  check_if_var_exists(*my_envp,type);
     if(a == NULL)
     {
         t_env *tail = find_tail(*my_envp);
          int len = ft_strlen(head->token);
-        char *enva =ft_strdupp(head->token+i+1,len -(i+1));
-        t_env *new_node = create_node_tokenn(enva,type,check_equal(head -> token),head -> token);
+        char *enva =ft_strdupp(head->token+i+1,len -(i+1),shell);
+        t_env *new_node = create_node_tokenn(enva,type,check_equal(head -> token),head -> token,shell);
         tail -> next = new_node;
         new_node -> next = NULL;
         new_node -> prev = tail;
     }
 else {
     int len = ft_strlen(head->token);
-    char *enva = ft_strdupp(head->token + i + 1, len - (i + 1));
+    char *enva = ft_strdupp(head->token + i + 1, len - (i + 1),shell);
     strcpy(a->enva, enva);
-    free(enva); // Free `enva` after copying its contents
     a->equal = true;
 
-    char *all = ft_strjoin(a->type, "=");
-    char *temp = ft_strjoin(all, a->enva);
-    free(all); // Free intermediate `all`
+    char *all = ft_strjoin(a->type, "=",shell->mallo);
+    char *temp = ft_strjoin(all, a->enva,shell->mallo);
     a->all = temp; // Assign the final result to `a->all`
 }
 
@@ -144,7 +142,7 @@ void export_main(t_env **my_envp,t_token *head,t_shell *exitcode)
         return ;
     }
     if(head->next && head->next->type == 6)
-            find_type(head,my_envp);
+            find_type(head,my_envp,exitcode);
     else
     {
         print_env_sorted(*my_envp);

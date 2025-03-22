@@ -99,7 +99,7 @@
 // 		// (*head) = (*head) -> next;
 // 	}
 // }
-void expand_and_replace_heredoc(char **mainstr,char *str, int end)
+void expand_and_replace_heredoc(char **mainstr,char *str, int end,t_shell *shell)
 {
     if(!str[0])
     {
@@ -109,9 +109,9 @@ void expand_and_replace_heredoc(char **mainstr,char *str, int end)
     char *s;
     int i = 0;
     int x = 0;
-    s = strdup((*mainstr) + end);
+    s = ft_strdup((*mainstr) + end,shell->mallo);
     int len = strlen(str) + strlen(s);
-    (*mainstr) = malloc(len + 1);
+    (*mainstr) = ft_malloc(shell->mallo,len + 1);
     while(str[i])
     {
         (*mainstr)[x] = str[i];
@@ -128,13 +128,13 @@ void expand_and_replace_heredoc(char **mainstr,char *str, int end)
     (*mainstr)[x] = '\0';
 
 }
-char *create_array_till_dollar_h(char *input,int index)
+char *create_array_till_dollar_h(char *input,int index,t_shell *shell)
 {
     char * new_string;
     int i;
     i = 0;
     new_string = NULL;
-    new_string = malloc(index+1);
+    new_string = ft_malloc(shell->mallo,index+1);
     while(i < index)
     {
         new_string[i] = input[i];
@@ -148,23 +148,23 @@ char *check_char_after_dollar_and_expand1(char *str,t_env *envp,t_shell *exitcod
     char *new_string = NULL;
     if((str[0] == '$' && str[1] == '?'))
     {
-     new_string = ft_itoa(exitcode -> exit_code);
+     new_string = ft_itoa(exitcode -> exit_code,exitcode->mallo);
     }
      else if(str[0] == '$' && (str[1] == '"' || str[1] == '\'') )
     {
-        new_string = strdup(str+1);
+        new_string = ft_strdup(str+1,exitcode->mallo);
     }
     else if(str[0] == '$' && (str[1] >= '0' && str[1] <= '9'))
     {
-        new_string = strdup(str+2);
+        new_string = ft_strdup(str+2,exitcode->mallo);
     }
     else if((is_alphanumeric(str[1]) == 0 && (str[1] != '_')))
     {
-        new_string = strdup(str);
+        new_string = ft_strdup(str,exitcode->mallo);
     }
     else if((is_alphanumeric(str[1]) == 1 || (str[1] == '_')))
      {//check ffirst charr
-        new_string = expand_dollar(str,envp);
+        new_string = expand_dollar(str,envp,exitcode);
      }
     //  printf("null1");
     return (new_string);
@@ -191,24 +191,22 @@ void  process_dolloris_helper_h(int *i,char **input,char **str,t_env *env,t_shel
     char *to_expand;
             if((*input)[(*i)] == '$')
             {
-               (*str) = create_array_till_dollar_h((*input),(*i));
+               (*str) = create_array_till_dollar_h((*input),(*i),exitcode);
                start = (*i);
                end = find_end_variable((*input),(*i));
                to_expand = strndup((*input)+start,end -start);
                 expanded = check_char_after_dollar_and_expand1(to_expand,env,exitcode);
                 if(expanded == NULL)
                 {
-                    expand_and_replace_heredoc(input,(*str),end);
+                    expand_and_replace_heredoc(input,(*str),end,exitcode);
                     (*i) = strlen((*str)) -1;
                 }
                 else if(expanded)
                 {
-                    char *temp = ft_strjoin((*str),expanded);
-                    free((*str));
+                    char *temp = ft_strjoin((*str),expanded,exitcode->mallo);
                     (*str) = temp;
-                    free(to_expand);
-                    free(expanded);
-                     expand_and_replace_heredoc(input,(*str),end);
+
+                     expand_and_replace_heredoc(input,(*str),end,exitcode);
                     (*i) = strlen((*str))-1 ;
                     
                 }
@@ -248,7 +246,7 @@ int find_end_of_quotes_h(char *str, char quote,int start)
 	}
 	return(-1);
 }
-void remove_quotes_and_replace_h(char **str,int start)
+void remove_quotes_and_replace_h(char **str,int start,t_shell *shell)
 {
 	int end = 0;
 	char *new = NULL;
@@ -258,14 +256,14 @@ void remove_quotes_and_replace_h(char **str,int start)
 	{
 		return;
 	}
-	new = new_string((*str),start,end);
+	new = new_string((*str),start,end,shell);
 	len = strlen(new);
-	(*str) =malloc(len+1);
+	(*str) =ft_malloc(shell->mallo,len+1);
 	strcpy((*str),new);
 }  
 
 
-void remove_quotes_main_heredoc(char **str)
+void remove_quotes_main_heredoc(char **str,t_shell *shell)
 {
     int i = 0, end = 0, single_quotes = 0, double_quotes = 0;
     int len = 0;
@@ -275,14 +273,13 @@ void remove_quotes_main_heredoc(char **str)
     {
         if ((*str)[i] == '"' && single_quotes == 0)
         {
-            copy = ft_strdup((*str));  // Make a copy before modifying
+            copy = ft_strdup((*str),shell->mallo);  // Make a copy before modifying
             end = find_end_of_quotes_h(copy, '"', i);
-            free(copy);
 
             if (end == -1 || end >= strlen(*str))
                 break;
 
-            remove_quotes_and_replace_h(str, i);
+            remove_quotes_and_replace_h(str, i,shell);
             i = end - 1;
             single_quotes = 0;
             double_quotes = 0;
@@ -290,14 +287,13 @@ void remove_quotes_main_heredoc(char **str)
         }
         if ((*str)[i] == '\'' && double_quotes == 0)
         {
-            copy = ft_strdup((*str));
+            copy = ft_strdup((*str),shell->mallo);
             end = find_end_of_quotes_h(copy, '\'', i);
-            free(copy);
 
             if (end == -1 || end >= strlen(*str))
                 break;
 
-            remove_quotes_and_replace_h(str, i);
+            remove_quotes_and_replace_h(str, i,shell);
             i = end - 1;
             single_quotes = 0;
             double_quotes = 0;

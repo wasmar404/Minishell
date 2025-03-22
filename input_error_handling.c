@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 10:14:57 by schaaban          #+#    #+#             */
-/*   Updated: 2025/03/16 14:36:12 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/03/22 14:08:16 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int check_command(char *array,char **envp,t_shell *exitcode)
     //     exit_code = 126;
     //     return (0);
     // }
-    str = find_path_of_cmd(array,envp);
+    str = find_path_of_cmd(array,envp,exitcode);
     if(str == NULL)
     {
         flag =1;
@@ -58,10 +58,8 @@ int check_command(char *array,char **envp,t_shell *exitcode)
     {
             ft_putendl_fd_two("zsh: command not found: ",array,2);
             exitcode -> exit_code = 127;
-            // free(str);
             return(0);
     }
-    // free(str);
     return (1);
 }
 int check_if_pipe_is_valid(t_token *head,t_shell *exitcode)
