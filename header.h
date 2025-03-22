@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/03/22 14:04:48 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/03/22 19:06:30 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,10 +128,13 @@ t_env	*search_and_find_a_type_my_envpp(t_env *envp, char *to_find);
 int		is_alphanumeric(char c);
 
 
+int	command_exists(t_token *head);
 
 void main_cd(t_token *head, t_env **my_envp, t_shell *shell);
 char *check_char_after_dollar_and_expand1(char *str,t_env *envp,t_shell *exitcode);
-
+void	a_out_redirection(t_token *head);
+void	s_out_redirection(t_token *head);
+char	**array_complicated_execute(t_token *head,t_shell *shell);
 char	*ft_strndup(char *str, int i,t_shell *shell);
 int is_alphanumeric(char c);
 void process_dolloris_heredoc(char **input, t_env *env,t_shell *exitcode);

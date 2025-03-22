@@ -6,20 +6,14 @@
 // /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 // /*                                                +#+#+#+#+#+   +#+           */
 // /*   Created: 2025/02/12 13:23:32 by wasmar            #+#    #+#             */
-// /*   Updated: 2025/02/12 14:54:22 by wasmar           ###   ########.fr       */
+// /*   Updated: 2025/03/22 19:03:05 by wasmar           ###   ########.fr       */
 // /*                                                                            */
 // /* ************************************************************************** */
 
 // #include "header.h"
 
 // // main.c
-// void	init_shell_struct(t_shell *shell, char **envp);
-// void	main_helper(char *input, t_shell *shell);
-// int		main(int ac, char **av, char **envp);
 
-// // utils.c
-// int		check_if_null(char *input);
-// int	ft_strcmp(char *str1, char *str2);
 
 // int	main(int ac, char **av, char **envp)
 // {
