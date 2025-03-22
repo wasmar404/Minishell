@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/03/22 19:06:30 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/03/22 21:19:33 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,7 @@ int					delimeter_check_echo(t_token *head);
 int					check_dollar(t_token *head);
 t_env				*check_in_envp(t_env *head, char *a);
 void				echo_main(t_token *head,t_shell *exitcode);
-void	complicated_execute(t_env **my_envp, t_token *head, char *envp1[],
+void	complicated_execute(t_env **my_envp, t_token *head,
 	t_shell *exitcode,t_shell *shell);
 int	check_dollar1(t_token *head);
 bool				built_in_or_not(char *cmd);
