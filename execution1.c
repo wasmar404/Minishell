@@ -6,14 +6,14 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 19:03:54 by wasmar            #+#    #+#             */
-/*   Updated: 2025/03/22 21:19:14 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/03/22 22:48:14 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
-void pipe_check(t_token **temp,int *pipefd,int *flag);
-void	complicated_execute(t_env **my_envp, t_token *head,
-    t_shell *exitcode,t_shell *shell)
+void check_and_create_pipe(t_token *temp,int *pipefd,int *flag);
+
+void	complicated_execute(t_env **my_envp, t_token *head,t_shell *shell)
 {
 int		pipefd[2];
 int		status;
@@ -28,7 +28,7 @@ int		flag20;
 int		fd;
 
 input_fd = STDIN_FILENO;
-exitcode->pid = -1;
+shell->pid = -1;
 current = head;
 saved_stdin = dup(STDIN_FILENO);
 saved_stdout = dup(STDOUT_FILENO);
@@ -36,7 +36,7 @@ flag = 0;
 flag20 = 0;
 if (strcmp(current->token, "exit") == 0)
 {
-    exit_command(current, exitcode);
+    exit_command(current, shell);
 }
 while (current != NULL)
 {
@@ -54,13 +54,13 @@ while (current != NULL)
     {
         flag = 0;
         temp = current->next;
-        pipe_check(&temp,pipefd,&flag);
+        check_and_create_pipe(temp,pipefd,&flag);
 
         if (pipe_count(head) == 0 && current->built_in_or_not == true)
         {
             flag20 = 1;
             run_built_ins(current, my_envp, pipefd, input_fd, 0, flag,
-                exitcode);
+                shell);
             dup2(saved_stdin, STDIN_FILENO);
             dup2(saved_stdout, STDOUT_FILENO);
             close(saved_stdin);
@@ -68,11 +68,11 @@ while (current != NULL)
         }
         else
         {
-            exitcode->pid = fork();
-            if (exitcode->pid == 0)
+            shell->pid = fork();
+            if (shell->pid == 0)
             {
                 restore_signals();
-                if (exitcode->exit_code == 127)
+                if (shell->exit_code == 127)
                 {
                     fd = open("/dev/null", O_RDONLY);
                     dup2(fd, STDIN_FILENO);
@@ -80,9 +80,9 @@ while (current != NULL)
     
                 add_shell_level(my_envp, current, &envp,shell);
                 run_command_helper(current, envp, my_envp, pipefd, input_fd,
-                    array_complicated_execute(current,shell), flag, exitcode);
+                array_complicated_execute(current,shell), flag, shell);
             }
-            else if (exitcode->pid > 0)
+            else if (shell->pid > 0)
             {
                 if (input_fd != STDIN_FILENO && pipefd[0] != -1)
                     close(input_fd);
@@ -108,23 +108,40 @@ if (flag20 == 0)
     main_signal();
     if (WIFEXITED(status)) 
     {
-        exitcode->exit_code = WEXITSTATUS(status); 
+        shell->exit_code = WEXITSTATUS(status); 
     }
     else if (WIFSIGNALED(status))
     {
-        exitcode->exit_code = 128 + WTERMSIG(status);
+        shell->exit_code = 128 + WTERMSIG(status);
     }
 }
 }
-void pipe_check(t_token **temp,int *pipefd,int *flag)
+
+/**
+ * check_and_create_pipe - Checks if there is a pipe after a command until another command is reached.
+ * If found, the pipe is created.
+ * 
+ * @head: A double pointer to the next node after the command.
+ * @pipe_fd: An array of two integers representing the file descriptors for the pipe.
+ * @flag: A pointer to a flag that is incremented when a pipe is created.
+ * 
+ * Description:
+ * This function iterates through the linked list of tokens, starting from the node after the command. 
+ * If it encounters a `PIPE` token before a `COMMAND` token, it creates a pipe.  
+ * If pipe creation fails, the function prints an error message and exits.  
+ * If no pipe is found, `pipe_fd` is set to `-1, -1`.
+ */
+
+void check_and_create_pipe (t_token *head,int *pipe_fd,int *flag)
 {
-    while (*temp && (*temp)->type != COMMAND)
+    while (head && (head)->type != COMMAND)
     {
-        if ((*temp)->type == PIPE)
+        if (head->type == PIPE)
         {
-            if (pipe(pipefd) == -1)
+            if (pipe(pipe_fd) == -1)
             {
                 perror("pipe failed");
+                // add the free function
                 exit(EXIT_FAILURE);
             }
             (*flag)++;
@@ -132,9 +149,9 @@ void pipe_check(t_token **temp,int *pipefd,int *flag)
         }
         else
         {
-            (pipefd)[0] = -1;
-            (pipefd)[1] = -1;
+            pipe_fd[0] = -1;
+            pipe_fd[1] = -1;
         }
-        *temp = (*temp)->next;
+        head = head->next;
     }
 }

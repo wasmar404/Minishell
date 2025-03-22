@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/03/22 21:19:43 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/03/22 22:47:45 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,7 @@ void	main_helper(char *input, t_shell *shell,t_malloc *mallo)
 			return ;
 		}
 	}
-	 complicated_execute((&shell->env), head, shell,shell);
+	 complicated_execute((&shell->env), head,shell);
 }
 
 }
