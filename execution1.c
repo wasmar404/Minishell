@@ -6,41 +6,45 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 19:03:54 by wasmar            #+#    #+#             */
-/*   Updated: 2025/03/22 22:48:14 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/03/23 15:10:01 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 void check_and_create_pipe(t_token *temp,int *pipefd,int *flag);
-
+typedef struct t_exe
+{
+    int		saved_stdin;
+    int		saved_stdout;
+    int     pipefd[2];
+    int status;
+    int   input_fd;
+    int fd;
+    char	**envp;
+    int		fork_flag;
+    int pipe_flag;
+}t_exe;
 void	complicated_execute(t_env **my_envp, t_token *head,t_shell *shell)
 {
-int		pipefd[2];
-int		status;
-char	**envp;
-int		input_fd;
+t_exe exe;
 t_token	*temp;
 t_token	*current;
-int		saved_stdin;
-int		saved_stdout;
-int		flag;
-int		flag20;
-int		fd;
+// int		flag;
 
-input_fd = STDIN_FILENO;
+exe.input_fd = STDIN_FILENO;
 shell->pid = -1;
 current = head;
-saved_stdin = dup(STDIN_FILENO);
-saved_stdout = dup(STDOUT_FILENO);
-flag = 0;
-flag20 = 0;
+exe.saved_stdin = dup(STDIN_FILENO);
+exe.saved_stdout = dup(STDOUT_FILENO);
+exe.pipe_flag = 0;
+exe.fork_flag= 0;
 if (strcmp(current->token, "exit") == 0)
 {
     exit_command(current, shell);
 }
 while (current != NULL)
 {
-    envp = env_to_array(*my_envp,shell);
+    exe.envp = env_to_array(*my_envp,shell);
     if (command_exists(head) == 0)
     {
         if (current->type == HERE_DOC)
@@ -52,19 +56,19 @@ while (current != NULL)
     }
     if (current->type == COMMAND)
     {
-        flag = 0;
+        exe.pipe_flag = 0;
         temp = current->next;
-        check_and_create_pipe(temp,pipefd,&flag);
+        check_and_create_pipe(temp,exe.pipefd,&(exe.pipe_flag));
 
         if (pipe_count(head) == 0 && current->built_in_or_not == true)
         {
-            flag20 = 1;
-            run_built_ins(current, my_envp, pipefd, input_fd, 0, flag,
+            exe.fork_flag = 1;
+            run_built_ins(current, my_envp, exe.pipefd, exe.input_fd, 0, exe.pipe_flag,
                 shell);
-            dup2(saved_stdin, STDIN_FILENO);
-            dup2(saved_stdout, STDOUT_FILENO);
-            close(saved_stdin);
-            close(saved_stdout);
+            dup2(exe.saved_stdin, STDIN_FILENO);
+            dup2(exe.saved_stdout, STDOUT_FILENO);
+            close(exe.saved_stdin);
+            close(exe.saved_stdout);
         }
         else
         {
@@ -74,19 +78,19 @@ while (current != NULL)
                 restore_signals();
                 if (shell->exit_code == 127)
                 {
-                    fd = open("/dev/null", O_RDONLY);
-                    dup2(fd, STDIN_FILENO);
+                    exe.fd = open("/dev/null", O_RDONLY);
+                    dup2(exe.fd, STDIN_FILENO);
                 }
     
-                add_shell_level(my_envp, current, &envp,shell);
-                run_command_helper(current, envp, my_envp, pipefd, input_fd,
-                array_complicated_execute(current,shell), flag, shell);
+                add_shell_level(my_envp, current, &(exe.envp),shell);
+                run_command_helper(current, (exe.envp), my_envp, exe.pipefd, exe.input_fd,
+                array_complicated_execute(current,shell), exe.pipe_flag, shell);
             }
             else if (shell->pid > 0)
             {
-                if (input_fd != STDIN_FILENO && pipefd[0] != -1)
-                    close(input_fd);
-                input_fd = pipefd[0];
+                if (exe.input_fd != STDIN_FILENO && exe.pipefd[0] != -1)
+                    close(exe.input_fd);
+                exe.input_fd = exe.pipefd[0];
             }
             else
             {
@@ -94,25 +98,25 @@ while (current != NULL)
                 exit(EXIT_FAILURE);
             }
         }
-        if (flag == 1)
-            close(pipefd[1]);
+        if (exe.pipe_flag == 1)
+            close(exe.pipefd[1]);
     }
     current = current->next;
 }
 
-if (flag20 == 0)
+if (exe.fork_flag == 0)
 {
     ignore_signals();
-    while (wait(&status) > 0)
+    while (wait(&(exe.status)) > 0)
         ;
     main_signal();
-    if (WIFEXITED(status)) 
+    if (WIFEXITED(exe.status)) 
     {
-        shell->exit_code = WEXITSTATUS(status); 
+        shell->exit_code = WEXITSTATUS(exe.status); 
     }
-    else if (WIFSIGNALED(status))
+    else if (WIFSIGNALED(exe.status))
     {
-        shell->exit_code = 128 + WTERMSIG(status);
+        shell->exit_code = 128 + WTERMSIG(exe.status);
     }
 }
 }
