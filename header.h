@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/03/22 22:47:39 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/03/23 19:35:29 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,20 @@
 
 # define RESET "\033[0m"
 # define BOLD_CYAN "\033[1;36m"
+
+
+typedef struct t_exe
+{
+    int		saved_stdin;
+    int		saved_stdout;
+    int     pipefd[2];
+    int status;
+    int   input_fd;
+    int fd;
+    char	**envp;
+    int		fork_flag;
+    int pipe_flag;
+}t_exe;
 typedef enum token_type
 {
 	COMMAND,
@@ -191,9 +205,9 @@ void	main_helper(char *input, t_shell *shell,t_malloc *mallo);
 						char **envp, t_env *my_envp, int *pipefd, int input_fd);
 int					pipe_count(t_token *head);
 void				heredoc(char *str, int fd,t_env *envp,t_shell *exitcode);
-void				run_command_helper(t_token *head, char **envp,
-						t_env **my_envp, int *pipefd, int input_fd,
-						char **current_command,int flag,t_shell *exitcode);
+void	run_command_helper(t_token *head, char **envp, t_env **my_envp,
+	int *pipefd, int input_fd, char **current_command, int flag,
+	t_shell *exitcode,t_exe *exe);
 void				check_back_and_front(t_token *head_back,
 						t_token **current_input, t_token **current_output,
 						t_token *current);
@@ -218,8 +232,7 @@ token_type			check_if_pipe_soutput_sinput(char *input);
 token_type	check_input_type(char *input, char **envp, t_token *head,t_shell *shell);
 int	check_if_cmd(char *input, char **envp, t_token *head,t_shell *shell);
 token_type	check_if_twopoints_dir_cmd_word(char *input, char **envp,t_token *head,t_shell *shell);
-void				run_built_ins(t_token *head, t_env **my_envp, int *pipefd,
-						int input_fd, int flag,int flag2,t_shell *exitcode);
+void	run_built_ins(t_token *head, t_env **my_envp,int flag, t_exe *exe, t_shell *exitcode);
 void				append_token_node(t_token **head, t_token *new);
 bool				built_in_or_not(char *cmd);
 t_token	*create_node_token(char *str, int i, bool built_in_or_not,t_shell *shell);

@@ -6,38 +6,32 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 19:03:54 by wasmar            #+#    #+#             */
-/*   Updated: 2025/03/23 15:10:01 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/03/23 20:32:14 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 void check_and_create_pipe(t_token *temp,int *pipefd,int *flag);
-typedef struct t_exe
+
+
+void init_exe_struct(t_exe *exe)
 {
-    int		saved_stdin;
-    int		saved_stdout;
-    int     pipefd[2];
-    int status;
-    int   input_fd;
-    int fd;
-    char	**envp;
-    int		fork_flag;
-    int pipe_flag;
-}t_exe;
+    exe->input_fd = STDIN_FILENO;
+exe->saved_stdin = dup(STDIN_FILENO);
+exe->saved_stdout = dup(STDOUT_FILENO);
+exe->pipe_flag = 0;
+exe->fork_flag= 0;
+}
 void	complicated_execute(t_env **my_envp, t_token *head,t_shell *shell)
 {
 t_exe exe;
 t_token	*temp;
 t_token	*current;
-// int		flag;
 
-exe.input_fd = STDIN_FILENO;
+
+init_exe_struct(exe);
 shell->pid = -1;
 current = head;
-exe.saved_stdin = dup(STDIN_FILENO);
-exe.saved_stdout = dup(STDOUT_FILENO);
-exe.pipe_flag = 0;
-exe.fork_flag= 0;
 if (strcmp(current->token, "exit") == 0)
 {
     exit_command(current, shell);
@@ -63,8 +57,7 @@ while (current != NULL)
         if (pipe_count(head) == 0 && current->built_in_or_not == true)
         {
             exe.fork_flag = 1;
-            run_built_ins(current, my_envp, exe.pipefd, exe.input_fd, 0, exe.pipe_flag,
-                shell);
+            run_built_ins(current, my_envp, 0, &exe,shell);
             dup2(exe.saved_stdin, STDIN_FILENO);
             dup2(exe.saved_stdout, STDOUT_FILENO);
             close(exe.saved_stdin);
@@ -84,7 +77,7 @@ while (current != NULL)
     
                 add_shell_level(my_envp, current, &(exe.envp),shell);
                 run_command_helper(current, (exe.envp), my_envp, exe.pipefd, exe.input_fd,
-                array_complicated_execute(current,shell), exe.pipe_flag, shell);
+                array_complicated_execute(current,shell), exe.pipe_flag, shell,&exe);
             }
             else if (shell->pid > 0)
             {

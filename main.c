@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/03/22 22:47:45 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/03/23 19:39:31 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -352,12 +352,10 @@ int	find_var_name_return(t_env *my_envp, char *var_name)
 	}
 	return (0);
 }
-void	run_built_ins(t_token *head, t_env **my_envp, int *pipefd, int input_fd,
-		int flag, int flag2, t_shell *exitcode)
+void	run_built_ins(t_token *head, t_env **my_envp,int flag, t_exe *exe, t_shell *exitcode)
 {
 	t_env *env_copy = (*my_envp); // so the var  my_envp does not become null
-	super_complicated_handle_dups(head, pipefd, input_fd, flag2, (*my_envp),
-		exitcode);
+	super_complicated_handle_dups(head, exe->pipefd, exe->input_fd, exe->fork_flag, (*my_envp),exitcode);
 	if ((strcmp(head->token, "env") == 0))
 	{
 		if (find_var_name_return((*my_envp), "PATH") == 1)
@@ -423,17 +421,12 @@ int	path_exists(char **envp)
 }
 void	run_command_helper(t_token *head, char **envp, t_env **my_envp,
 		int *pipefd, int input_fd, char **current_command, int flag,
-		t_shell *exitcode)
+		t_shell *exitcode,t_exe *exe)
 {
 	if (path_exists(envp) == 1)
 	{
-		if ((strcmp(head->token, "env") == 0) || (strcmp(head->token,
-					"echo") == 0) || (strcmp(head->token, "cd") == 0)
-			|| (strcmp(head->token, "pwd") == 0))
-			run_built_ins(head, my_envp, pipefd, input_fd, 1, flag, exitcode);
-		else if ((strcmp(head->token, "export") == 0) || (strcmp(head->token,
-					"unset") == 0) || (strcmp(head->token, "exit") == 0))
-			run_built_ins(head, my_envp, pipefd, input_fd, 1, flag, exitcode);
+		if (head->built_in_or_not == true)
+			run_built_ins(head, my_envp, 1, exe, exitcode);
 		else
 			external_commands(head, envp, (*my_envp), pipefd, input_fd,
 				current_command, flag, exitcode);
