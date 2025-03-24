@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 00:55:44 by wasmar            #+#    #+#             */
-/*   Updated: 2025/03/24 11:24:36 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/03/24 17:05:44 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,7 +201,6 @@ void check_back(t_token *head,t_token **current_input,t_token **current_output ,
         }
         head = head -> prev;
     }
-
 }
 void dups2(t_token *current_input,t_token *current_output,int input_fd,t_token *head)
 {

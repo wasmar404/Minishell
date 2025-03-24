@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_split.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:00:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/03/22 13:58:02 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/03/24 15:00:32 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,19 +103,23 @@ int	check_single_sep_quote(char input)
 		return (1);
 	return (0);
 }
+void check_non_delimeter_helper(char *str, int *i,int *start,int *len)
+{
+	(*i)++;
+	while (str[(*i)] && str[(*i)] != '"' ) //&& str[(*i)] != ' '
+		(*i)++;
+				(*i)++;
+	while (str[(*i)] && !check_double_sep(str, (*i))
+	&& !check_single_sep(str[(*i)])  )			
+		(*i)++;
+	(*len) = (*i) - (*start)+1;
+	(*i)++;
+}
 void	check_non_delimeter_h( char *str, int *i,int *start,int *len)
 {
 		if (str[(*i)] == '"')
 		{
-			(*i)++;
-			while (str[(*i)] && str[(*i)] != '"' ) //&& str[(*i)] != ' '
-				(*i)++;
-						(*i)++;
-			while (str[(*i)] && !check_double_sep(str, (*i))
-			&& !check_single_sep(str[(*i)])  )			
-				(*i)++;
-			(*len) = (*i) - (*start)+1;
-			 (*i)++;
+			check_non_delimeter_helper(str,i,start,len);
 		}
 		else if (str[(*i)] == '\'')
 		{

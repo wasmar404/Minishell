@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/03/24 11:49:22 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/03/24 16:10:34 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,9 @@ typedef struct t_variables
 
 
 int count_tokens_for_exec_array(t_token *head,t_shell *shell);
-
+void exit_command_helper(t_token *head,t_shell *shell);
+void exit_command_helper2(t_token *head,t_shell *shell);
+int check_if_pipe_is_valid_helper(t_token *head, t_shell *shell,int flag);
 void    *ft_malloc(t_malloc *var, size_t size);
 void    ft_free_all(t_malloc *gc);
 t_env	*search_and_find_a_type_my_envpp(t_env *envp, char *to_find);

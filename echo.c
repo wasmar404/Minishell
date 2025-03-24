@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 11:27:21 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/17 04:02:22 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/03/24 17:03:03 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	echo_main(t_token *head,t_shell *exitcode)
 	head = head->next;
 	while (head != NULL && (head->type == WORD || head->type == DIRECTORY || head->type == SINPUT_REDIRECTION || head->type == SOUTPUT_REDIRECTION ))
 	{
-		if(head->type == SINPUT_REDIRECTION   )
+		if(head->type == SINPUT_REDIRECTION)
 		{
 			if(head->next )
 				head = head->next;
@@ -67,7 +67,7 @@ void	echo_main(t_token *head,t_shell *exitcode)
 				printf(" ");
 			continue;
 		}
-		if(head->type == SOUTPUT_REDIRECTION  )
+		if(head->type == SOUTPUT_REDIRECTION)
 		{
 			if(head->next )
 				head = head->next;

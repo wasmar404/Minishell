@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_error_handling.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 10:14:57 by schaaban          #+#    #+#             */
-/*   Updated: 2025/03/22 14:08:16 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/03/24 16:10:15 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,37 +75,35 @@ int check_if_pipe_is_valid(t_token *head,t_shell *exitcode)
             while(temp -> prev != NULL && temp -> prev ->type != PIPE)
             {
                 if(temp -> prev -> type == COMMAND)
-                {
                     flag = 1;
-                }
-                temp = temp -> prev;
+                 temp = temp -> prev;
             }
-            if(head -> next == NULL || head -> prev == NULL)
-            {
-                ft_putendl_fd("bash: syntax error near unexpected token `|'",2);
-                exitcode -> exit_code = 2;
-                return(0);
-            }
-            if(head -> next && head -> next -> type != COMMAND)
-            {
-                ft_putendl_fd_two(head-> next ->token,": command not found2",2);
-                exitcode -> exit_code = 127;
+            if(check_if_pipe_is_valid_helper(head,exitcode,flag) == 0)
                 return (0);
-            }
-
-            if(flag == 0)
-            {
-                // ft_putendl_fd_two(head -> token,": command not found5848",2);
-                // exit_code = 127;
-                // return(0);
-                ft_putendl_fd("command not found5848", 2);
-                exitcode -> exit_code = 127;
-            }
         }
         head = head -> next;
-
     }
     return(1);
+}
+int check_if_pipe_is_valid_helper(t_token *head, t_shell *shell,int flag)
+{
+    if(head -> next == NULL || head -> prev == NULL)
+    {
+        ft_putendl_fd("bash: syntax error near unexpected token `|'",2);
+        shell -> exit_code = 2;
+        return(0);
+    }
+    if(head -> next && head -> next -> type != COMMAND)
+    {
+        ft_putendl_fd_two(head-> next ->token,": command not found2",2);
+        shell -> exit_code = 127;
+        return (0);
+    }
+    if(flag == 0)
+    {
+        ft_putendl_fd("command not found5848", 2);
+        shell -> exit_code = 127;
+    }
 }
 int count_commands(t_token *head)
 {

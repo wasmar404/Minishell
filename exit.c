@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 12:57:39 by schaaban          #+#    #+#             */
-/*   Updated: 2025/03/24 11:26:40 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/03/24 13:48:08 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,7 @@ long long	ft_atoll(const char *nptr)
 
 void exit_command(t_token *head,t_shell *exitcode)
 {
-    long long num;
-    num = 0;
+
     
     // if (!head) 
     // {
@@ -82,37 +81,47 @@ void exit_command(t_token *head,t_shell *exitcode)
     }
     else if(head -> next)
     {
-        if(is_digit_string(head -> next -> token) == 0)
-        {
-            exitcode -> exit_code = 2;
-            printf("exit\n");
-            ft_putendl_fd("bash: numeric argument required",2);
-            ft_free_all(exitcode -> mallo);
-            exit(exitcode -> exit_code);
-        }
-        if(is_digit_string(head -> next -> token) == -1)
-        {
-            exitcode -> exit_code = 156;
-            printf("exit\n");
-            // ft_putendl_fd("bash: numeric argument required",2);
-            ft_free_all(exitcode -> mallo);
-            exit(exitcode -> exit_code);
-        }
-        if(is_digit_string(head -> next -> token) == 2)
-        {
-            exitcode -> exit_code = 100;
-            printf("exit\n");
-            // ft_putendl_fd("bash: numeric argument required",2);
-            ft_free_all(exitcode -> mallo);
-            exit(exitcode -> exit_code);
-        }
-        else
-        {
-            num = ft_atoll(head -> next -> token);
-            printf("exit\n");
-            exitcode -> exit_code = num;
-            ft_free_all(exitcode -> mallo);
-            exit(exitcode -> exit_code);
-        }
+        exit_command_helper(head,exitcode);
+        exit_command_helper2(head,exitcode);
+    }
+}
+void exit_command_helper(t_token *head,t_shell *shell)
+{
+    if(is_digit_string(head -> next -> token) == 0)
+    {
+        shell -> exit_code = 2;
+        printf("exit\n");
+        ft_putendl_fd("bash: numeric argument required",2);
+        ft_free_all(shell -> mallo);
+        exit(shell -> exit_code);
+    }
+    if(is_digit_string(head -> next -> token) == -1)
+    {
+        shell -> exit_code = 156;
+        printf("exit\n");
+        // ft_putendl_fd("bash: numeric argument required",2);
+        ft_free_all(shell -> mallo);
+        exit(shell -> exit_code);
+    }
+}
+void exit_command_helper2(t_token *head,t_shell *shell)
+{
+    long long num;
+    num = 0;
+    if(is_digit_string(head -> next -> token) == 2)
+    {
+        shell-> exit_code = 100;
+        printf("exit\n");
+        // ft_putendl_fd("bash: numeric argument required",2);
+        ft_free_all(shell -> mallo);
+        exit(shell-> exit_code);
+    }
+    else
+    {
+        num = ft_atoll(head -> next -> token);
+        printf("exit\n");
+        shell -> exit_code = num;
+        ft_free_all(shell -> mallo);
+        exit(shell -> exit_code);
     }
 }

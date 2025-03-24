@@ -205,16 +205,12 @@ void  process_dolloris_helper_h(int *i,char **input,char **str,t_env *env,t_shel
                 {
                     char *temp = ft_strjoin((*str),expanded,exitcode->mallo);
                     (*str) = temp;
-
                      expand_and_replace_heredoc(input,(*str),end,exitcode);
                     (*i) = strlen((*str))-1 ;
                     
                 }
                 else
-                {
                     (*i)= end;
-                }
-
             }
 }
 void process_dolloris_heredoc(char **input, t_env *env,t_shell *exitcode)
@@ -231,8 +227,6 @@ void process_dolloris_heredoc(char **input, t_env *env,t_shell *exitcode)
             process_dolloris_helper_h(&i, input, &str, env,exitcode);
             i++;
         }
-    
-  
  }
 int find_end_of_quotes_h(char *str, char quote,int start)
 {
