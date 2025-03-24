@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/03/23 19:39:31 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/03/24 08:14:00 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -419,21 +419,20 @@ int	path_exists(char **envp)
 	}
 	return (0);
 }
-void	run_command_helper(t_token *head, char **envp, t_env **my_envp,
-		int *pipefd, int input_fd, char **current_command, int flag,
-		t_shell *exitcode,t_exe *exe)
+void	run_command_helper(t_token *head, t_env **my_envp,t_shell *shell,t_exe *exe)
 {
-	if (path_exists(envp) == 1)
+	char ** current_command = array_complicated_execute(head, shell);
+	if (path_exists(exe->envp) == 1)
 	{
 		if (head->built_in_or_not == true)
-			run_built_ins(head, my_envp, 1, exe, exitcode);
+			run_built_ins(head, my_envp, 1, exe, shell);
 		else
-			external_commands(head, envp, (*my_envp), pipefd, input_fd,
-				current_command, flag, exitcode);
+			external_commands(head, exe->envp, (*my_envp),exe->pipefd, exe->input_fd,
+				current_command, exe->pipe_flag, shell);
 	}
 	else
 	{
-		exitcode->exit_code = 127;
+		shell->exit_code = 127;
 		// ft_putendl_fd("bash: No such file or directory",2);
 		// close(STDIN_FILENO);
 		// exit(exit_code);

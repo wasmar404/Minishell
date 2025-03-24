@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/03/23 19:35:29 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/03/24 08:14:24 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,9 +205,10 @@ void	main_helper(char *input, t_shell *shell,t_malloc *mallo);
 						char **envp, t_env *my_envp, int *pipefd, int input_fd);
 int					pipe_count(t_token *head);
 void				heredoc(char *str, int fd,t_env *envp,t_shell *exitcode);
-void	run_command_helper(t_token *head, char **envp, t_env **my_envp,
-	int *pipefd, int input_fd, char **current_command, int flag,
-	t_shell *exitcode,t_exe *exe);
+// void	run_command_helper(t_token *head, char **envp, t_env **my_envp,
+// 	int *pipefd, int input_fd, char **current_command, int flag,
+// 	t_shell *exitcode,t_exe *exe);
+void	run_command_helper(t_token *head, t_env **my_envp,t_shell *shell,t_exe *exe);
 void				check_back_and_front(t_token *head_back,
 						t_token **current_input, t_token **current_output,
 						t_token *current);
