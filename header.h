@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/03/24 10:57:26 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/03/24 11:49:22 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,10 +128,6 @@ typedef struct t_variables
 	char *tertiary;
     char **array;
 } t_variables;
-
-// globals.h
-// extern long long  exit_code;
-
 
 
 int count_tokens_for_exec_array(t_token *head,t_shell *shell);

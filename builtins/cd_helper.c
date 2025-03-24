@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_helper.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/05 12:28:27 by wasmar            #+#    #+#             */
-/*   Updated: 2025/03/22 16:27:31 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/03/24 12:07:11 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,18 @@ int	update_pwd_and_oldpwd(t_env *my_envp, char *new_path,t_shell *shell)
 int	find_last_backslash(char *str)
 {
 	int i = 0;
-	int j = 0;
+	// int j = 0;
+	int old = 0;
+	int new = 0;
 	while (str[i])
 	{
 		if (str[i] == '/')
-			j = i;
+		{
+			old = new;
+			new = i;
+			// j = i;
+		}
 		i++;
 	}
-	return (j);
+	return (old);
 }
