@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 19:03:54 by wasmar            #+#    #+#             */
-/*   Updated: 2025/03/24 08:40:33 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/03/24 08:45:39 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,6 @@ void handle_fork(t_exe *exe,t_token *current,t_env **my_envp,t_shell *shell)
 void	complicated_execute(t_env **my_envp, t_token *head, t_shell *shell)
 {
 	t_exe	exe;
-	t_token	*temp;
 	t_token	*current;
 
 	init_exe_struct(&exe);
@@ -113,8 +112,7 @@ void	complicated_execute(t_env **my_envp, t_token *head, t_shell *shell)
 		if (current->type == COMMAND)
 		{
 			exe.pipe_flag = 0;
-			temp = current->next;
-			check_and_create_pipe(temp, exe.pipefd, &(exe.pipe_flag));
+			check_and_create_pipe(current->next, exe.pipefd, &(exe.pipe_flag));
 			if (pipe_count(head) == 0 && current->built_in_or_not == true)
 				builtin_and_no_pipe(&exe,current,my_envp,shell);
 			else
@@ -126,10 +124,12 @@ void	complicated_execute(t_env **my_envp, t_token *head, t_shell *shell)
 	}
 	manage_wait_status(&exe,shell);
 }
-
-void	check_and_create_pipe(t_token *head, int *pipe_fd, int *flag)
+void	check_and_create_pipe(t_token *current_next, int *pipe_fd, int *flag)
 {
-	while (head && (head)->type != COMMAND)
+	t_token *head;
+	head = current_next; 
+
+	while (head && head->type != COMMAND)
 	{
 		if (head->type == PIPE)
 		{
@@ -147,7 +147,7 @@ void	check_and_create_pipe(t_token *head, int *pipe_fd, int *flag)
 			pipe_fd[0] = -1;
 			pipe_fd[1] = -1;
 		}
-		head = head->next;
+		head = head->next; 
 	}
 }
 
