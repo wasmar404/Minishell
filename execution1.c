@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 19:03:54 by wasmar            #+#    #+#             */
-/*   Updated: 2025/03/24 08:28:48 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/03/24 08:40:33 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,24 @@ void	handle_heredoc_and_redirections_no_cmd(t_token *head, t_token *current)
 			a_out_redirection(current);
 	}
 }
-
+void manage_wait_status(t_exe *exe,t_shell *shell)
+{
+	if (exe->fork_flag == 0)
+	{
+		ignore_signals();
+		while (wait(&(exe->status)) > 0)
+			;
+		main_signal();
+		if (WIFEXITED(exe->status))
+		{
+			shell->exit_code = WEXITSTATUS(exe->status);
+		}
+		else if (WIFSIGNALED(exe->status))
+		{
+			shell->exit_code = 128 + WTERMSIG(exe->status);
+		}
+	}
+}
 
 void handle_fork(t_exe *exe,t_token *current,t_env **my_envp,t_shell *shell)
 {
@@ -107,21 +124,7 @@ void	complicated_execute(t_env **my_envp, t_token *head, t_shell *shell)
 		}
 		current = current->next;
 	}
-	if (exe.fork_flag == 0)
-	{
-		ignore_signals();
-		while (wait(&(exe.status)) > 0)
-			;
-		main_signal();
-		if (WIFEXITED(exe.status))
-		{
-			shell->exit_code = WEXITSTATUS(exe.status);
-		}
-		else if (WIFSIGNALED(exe.status))
-		{
-			shell->exit_code = 128 + WTERMSIG(exe.status);
-		}
-	}
+	manage_wait_status(&exe,shell);
 }
 
 void	check_and_create_pipe(t_token *head, int *pipe_fd, int *flag)
