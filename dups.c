@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dups.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 00:55:44 by wasmar            #+#    #+#             */
-/*   Updated: 2025/02/17 03:40:08 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/03/24 11:24:36 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,14 +128,20 @@ void check_front(t_token *head,t_token **current_input,t_token **current_output 
                 exitcode -> input_file_flag = 1;
                 exitcode -> exit_code = 1;
                 if( exitcode -> pid != -1)
+                {
+                    ft_free_all(exitcode -> mallo);
                     exit(1);
+                }
             }
            else if(access(head->next->token,R_OK) == -1)
             {
                 ft_putendl_fd_two("bash: Permission denied: ",head -> next -> token,2);
                 exitcode -> exit_code = 1;
                 if( exitcode -> pid != -1)
+                {
+                    ft_free_all(exitcode -> mallo);
                     exit(1);
+                }
             }
             fd = open(head->next->token, O_RDONLY, 0644);
             dup2(fd, 0);
@@ -164,14 +170,20 @@ void check_back(t_token *head,t_token **current_input,t_token **current_output ,
                 exitcode -> input_file_flag = 1;
                 exitcode -> exit_code = 1;
                 if( exitcode -> pid != -1)
+                {
+                    ft_free_all(exitcode -> mallo);
                     exit(1);
+                }
             }
            else if(access(head->next->token,R_OK) == -1)
             {
                 ft_putendl_fd_two("bash: Permission denied: ",head -> next -> token,2);
                 exitcode -> exit_code = 1;
                 if( exitcode -> pid != -1)
+                {
+                    ft_free_all(exitcode -> mallo);
                     exit(1);
+                }
             }
             fd = open(head->next->token, O_RDONLY, 0644);
             dup2(fd, 0);

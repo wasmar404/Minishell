@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/03/24 08:14:00 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/03/24 11:28:00 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,38 +45,29 @@ int main(int ac, char **av, char **envp)
     t_shell shell;
     t_malloc *mallo = malloc(sizeof(t_malloc)); // Allocate memory for t_malloc
 
-    if (!mallo) {
+    if (!mallo) 
+	{
         perror("malloc failed");
         return 1;  // Return error if malloc fails
     }
-
     shell.mallo = mallo; // Now it's safe to assign mallo to shell.mallo
-
     init_shell_struct(&shell, envp);
     main_signal();
-
     while (1)
     {
         input = readline("sw_shell> ");
         if (input == NULL)
-        {
             break;  // Exit on EOF (Ctrl-D)
-        }
-
-        if (*input)
+		if (*input)
         {
             add_history(input);  // Add input to history
             main_helper(input, &shell,mallo);  // Process the input
         }
-
         if (strcmp(input, "stop") == 0)
-        {
             break;  // Exit on "stop" command
-        }
 
     }
      ft_free_all(mallo);  // Clean up allocated memory
-
     return 0;
 }
 
@@ -150,13 +141,10 @@ void	main_helper(char *input, t_shell *shell,t_malloc *mallo)
 	if (pipe_count_array(splitted_input) == 0)
 	{
 		if (check_command(head->token, shell->env_array, shell) == 0)
-		{
 			return ;
-		}
 	}
 	 complicated_execute((&shell->env), head,shell);
-}
-
+	}
 }
 
 void	find_a_node_move_pointer(t_token **head, int i)
@@ -195,42 +183,42 @@ char	**array_complicated_execute(t_token *head,t_shell *shell)
 
 	len = 0;
 	i = 0;
-	temp = head;
-	while (temp != NULL && temp->type != PIPE)
-	{
-		len++;
-		if (temp->type == COMMAND && temp != head)
-		{
-			break ;
-		}
-		if (temp->type == SINPUT_REDIRECTION
-			|| temp->type == SOUTPUT_REDIRECTION
-			|| temp->type == AOUTPUT_REDIRECTION || temp->type == HERE_DOC)
-		{
-			break ;
-		}
-		temp = temp->next;
-	}
+	len = count_tokens_for_exec_array(head,shell);
 	current_command = ft_malloc(shell->mallo,(len + 1) * sizeof(char *));
 	temp = head;
 	while (temp != NULL && temp->type != PIPE)
 	{
 		if (temp->type == COMMAND && temp != head)
-		{
 			break ;
-		}
 		if (temp->type == SINPUT_REDIRECTION
 			|| temp->type == SOUTPUT_REDIRECTION
 			|| temp->type == AOUTPUT_REDIRECTION || temp->type == HERE_DOC)
-		{
 			break ;
-		}
 		current_command[i] = ft_strdup(temp->token,shell->mallo);
 		i++;
 		temp = temp->next;
 	}
 	current_command[i] = NULL;
 	return (current_command);
+}
+int count_tokens_for_exec_array(t_token *head,t_shell *shell)
+{
+	t_token *temp;
+	temp = head;
+	int len;
+	len = 0;
+	while (temp != NULL && temp->type != PIPE)
+	{
+		len++;
+		if (temp->type == COMMAND && temp != head)
+			break ;
+		if (temp->type == SINPUT_REDIRECTION
+			|| temp->type == SOUTPUT_REDIRECTION
+			|| temp->type == AOUTPUT_REDIRECTION || temp->type == HERE_DOC)
+			break ;
+		temp = temp->next;
+	}
+	return (len);
 }
 
 void	here_doc_first(char *s, t_token *head, int fd)
@@ -352,10 +340,9 @@ int	find_var_name_return(t_env *my_envp, char *var_name)
 	}
 	return (0);
 }
-void	run_built_ins(t_token *head, t_env **my_envp,int flag, t_exe *exe, t_shell *exitcode)
+void run_built_ins_helper(t_token *head, t_env **my_envp, t_shell *exitcode)
 {
 	t_env *env_copy = (*my_envp); // so the var  my_envp does not become null
-	super_complicated_handle_dups(head, exe->pipefd, exe->input_fd, exe->fork_flag, (*my_envp),exitcode);
 	if ((strcmp(head->token, "env") == 0))
 	{
 		if (find_var_name_return((*my_envp), "PATH") == 1)
@@ -371,6 +358,11 @@ void	run_built_ins(t_token *head, t_env **my_envp,int flag, t_exe *exe, t_shell 
 		main_cd(head, &env_copy, exitcode);
 	if (strcmp(head->token, "export") == 0)
 		export_main(my_envp, head, exitcode);
+}
+void	run_built_ins(t_token *head, t_env **my_envp,int flag, t_exe *exe, t_shell *exitcode)
+{
+	super_complicated_handle_dups(head, exe->pipefd, exe->input_fd, exe->fork_flag, (*my_envp),exitcode);
+	run_built_ins_helper(head,my_envp,exitcode);
 	if (strcmp(head->token, "unset") == 0)
 	{
 		if (head->next == NULL || head->next->token == NULL
@@ -387,7 +379,10 @@ void	run_built_ins(t_token *head, t_env **my_envp,int flag, t_exe *exe, t_shell 
 		main_unset1(my_envp, head->next->token, exitcode);
 	}
 	if (flag == 1)
+	{
+		ft_free_all(exitcode -> mallo);
 		exit(exitcode->exit_code);
+	}
 }
 void	external_commands(t_token *head, char **envp, t_env *my_envp,
 		int *pipefd, int input_fd, char **current_command, int flag,
@@ -403,6 +398,7 @@ void	external_commands(t_token *head, char **envp, t_env *my_envp,
 		path = find_path_of_cmd(head->token, envp,exitcode);
 		if (execve(path, current_command, envp) == -1)
 			printf("execve failed");
+		ft_free_all(exitcode -> mallo);
 		exit(EXIT_SUCCESS);
 	}
 }

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   execution1.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 19:03:54 by wasmar            #+#    #+#             */
-/*   Updated: 2025/03/24 08:49:22 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/03/24 11:31:06 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-void	check_and_create_pipe(t_token *current_next, int *pipe_fd, int *flag)
+void	check_and_create_pipe(t_token *current_next, int *pipe_fd, int *flag,t_shell *shell)
 {
 	t_token	*head;
 
@@ -24,7 +24,7 @@ void	check_and_create_pipe(t_token *current_next, int *pipe_fd, int *flag)
 			if (pipe(pipe_fd) == -1)
 			{
 				perror("pipe failed");
-				// add the free function
+				ft_free_all(shell -> mallo);
 				exit(EXIT_FAILURE);
 			}
 			(*flag)++;
@@ -120,6 +120,7 @@ void	handle_fork(t_exe *exe, t_token *current, t_env **my_envp,
 	else
 	{
 		perror("fork failed");
+		ft_free_all(shell -> mallo);
 		exit(EXIT_FAILURE);
 	}
 }
@@ -148,7 +149,7 @@ void	complicated_execute(t_env **my_envp, t_token *head, t_shell *shell)
 		if (current->type == COMMAND)
 		{
 			exe.pipe_flag = 0;
-			check_and_create_pipe(current->next, exe.pipefd, &(exe.pipe_flag));
+			check_and_create_pipe(current->next, exe.pipefd, &(exe.pipe_flag),shell);
 			if (pipe_count(head) == 0 && current->built_in_or_not == true)
 				builtin_and_no_pipe(&exe, current, my_envp, shell);
 			else

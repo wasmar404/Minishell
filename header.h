@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   header.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/03/24 08:14:24 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/03/24 10:57:26 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ typedef struct t_variables
 
 
 
-
+int count_tokens_for_exec_array(t_token *head,t_shell *shell);
 
 void    *ft_malloc(t_malloc *var, size_t size);
 void    ft_free_all(t_malloc *gc);
