@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 19:03:54 by wasmar            #+#    #+#             */
-/*   Updated: 2025/03/24 08:15:22 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/03/24 08:28:48 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,13 @@ void	restore_terminal_file_descriptor(t_exe *exe)
 	close(exe->saved_stdin);
 	close(exe->saved_stdout);
 }
+
+void builtin_and_no_pipe(t_exe *exe,t_token *current,t_env **my_envp,t_shell *shell)
+{
+	exe->fork_flag = 1;
+	run_built_ins(current, my_envp, 0, exe, shell);
+	restore_terminal_file_descriptor(exe);
+}
 void	handle_heredoc_and_redirections_no_cmd(t_token *head, t_token *current)
 {
 	if (command_exists(head) == 0)
@@ -39,6 +46,34 @@ void	handle_heredoc_and_redirections_no_cmd(t_token *head, t_token *current)
 			s_out_redirection(current);
 		else if (current->type == AOUTPUT_REDIRECTION)
 			a_out_redirection(current);
+	}
+}
+
+
+void handle_fork(t_exe *exe,t_token *current,t_env **my_envp,t_shell *shell)
+{
+	shell->pid = fork();
+	if (shell->pid == 0)
+	{
+		restore_signals();
+		if (shell->exit_code == 127)
+		{
+			exe->fd = open("/dev/null", O_RDONLY);
+			dup2(exe->fd, STDIN_FILENO);
+		}
+		add_shell_level(my_envp, current, &(exe->envp), shell);
+		run_command_helper(current, my_envp, shell, exe);
+	}
+	else if (shell->pid > 0)
+	{
+		if (exe->input_fd != STDIN_FILENO && exe->pipefd[0] != -1)
+			close(exe->input_fd);
+		exe->input_fd = exe->pipefd[0];
+	}
+	else
+	{
+		perror("fork failed");
+		exit(EXIT_FAILURE);
 	}
 }
 void	complicated_execute(t_env **my_envp, t_token *head, t_shell *shell)
@@ -64,37 +99,9 @@ void	complicated_execute(t_env **my_envp, t_token *head, t_shell *shell)
 			temp = current->next;
 			check_and_create_pipe(temp, exe.pipefd, &(exe.pipe_flag));
 			if (pipe_count(head) == 0 && current->built_in_or_not == true)
-			{
-				exe.fork_flag = 1;
-				run_built_ins(current, my_envp, 0, &exe, shell);
-				restore_terminal_file_descriptor(&exe);
-			}
+				builtin_and_no_pipe(&exe,current,my_envp,shell);
 			else
-			{
-				shell->pid = fork();
-				if (shell->pid == 0)
-				{
-					restore_signals();
-					if (shell->exit_code == 127)
-					{
-						exe.fd = open("/dev/null", O_RDONLY);
-						dup2(exe.fd, STDIN_FILENO);
-					}
-					add_shell_level(my_envp, current, &(exe.envp), shell);
-					run_command_helper(current, my_envp, shell, &exe);
-				}
-				else if (shell->pid > 0)
-				{
-					if (exe.input_fd != STDIN_FILENO && exe.pipefd[0] != -1)
-						close(exe.input_fd);
-					exe.input_fd = exe.pipefd[0];
-				}
-				else
-				{
-					perror("fork failed");
-					exit(EXIT_FAILURE);
-				}
-			}
+				handle_fork(&exe,current,my_envp,shell);
 			if (exe.pipe_flag == 1)
 				close(exe.pipefd[1]);
 		}
@@ -140,4 +147,5 @@ void	check_and_create_pipe(t_token *head, int *pipe_fd, int *flag)
 		head = head->next;
 	}
 }
+
 
