@@ -6,13 +6,38 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 19:03:54 by wasmar            #+#    #+#             */
-/*   Updated: 2025/03/24 08:45:39 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/03/24 08:49:22 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-void	check_and_create_pipe(t_token *temp, int *pipefd, int *flag);
+void	check_and_create_pipe(t_token *current_next, int *pipe_fd, int *flag)
+{
+	t_token	*head;
+
+	head = current_next;
+	while (head && head->type != COMMAND)
+	{
+		if (head->type == PIPE)
+		{
+			if (pipe(pipe_fd) == -1)
+			{
+				perror("pipe failed");
+				// add the free function
+				exit(EXIT_FAILURE);
+			}
+			(*flag)++;
+			break ;
+		}
+		else
+		{
+			pipe_fd[0] = -1;
+			pipe_fd[1] = -1;
+		}
+		head = head->next;
+	}
+}
 
 void	init_exe_struct(t_exe *exe)
 {
@@ -22,6 +47,7 @@ void	init_exe_struct(t_exe *exe)
 	exe->pipe_flag = 0;
 	exe->fork_flag = 0;
 }
+
 void	restore_terminal_file_descriptor(t_exe *exe)
 {
 	dup2(exe->saved_stdin, STDIN_FILENO);
@@ -30,12 +56,14 @@ void	restore_terminal_file_descriptor(t_exe *exe)
 	close(exe->saved_stdout);
 }
 
-void builtin_and_no_pipe(t_exe *exe,t_token *current,t_env **my_envp,t_shell *shell)
+void	builtin_and_no_pipe(t_exe *exe, t_token *current, t_env **my_envp,
+		t_shell *shell)
 {
 	exe->fork_flag = 1;
 	run_built_ins(current, my_envp, 0, exe, shell);
 	restore_terminal_file_descriptor(exe);
 }
+
 void	handle_heredoc_and_redirections_no_cmd(t_token *head, t_token *current)
 {
 	if (command_exists(head) == 0)
@@ -48,7 +76,8 @@ void	handle_heredoc_and_redirections_no_cmd(t_token *head, t_token *current)
 			a_out_redirection(current);
 	}
 }
-void manage_wait_status(t_exe *exe,t_shell *shell)
+
+void	manage_wait_status(t_exe *exe, t_shell *shell)
 {
 	if (exe->fork_flag == 0)
 	{
@@ -67,7 +96,8 @@ void manage_wait_status(t_exe *exe,t_shell *shell)
 	}
 }
 
-void handle_fork(t_exe *exe,t_token *current,t_env **my_envp,t_shell *shell)
+void	handle_fork(t_exe *exe, t_token *current, t_env **my_envp,
+		t_shell *shell)
 {
 	shell->pid = fork();
 	if (shell->pid == 0)
@@ -93,6 +123,15 @@ void handle_fork(t_exe *exe,t_token *current,t_env **my_envp,t_shell *shell)
 		exit(EXIT_FAILURE);
 	}
 }
+
+void	ft_exit(t_token *current, t_shell *shell)
+{
+	if (strcmp(current->token, "exit") == 0)
+	{
+		exit_command(current, shell);
+	}
+}
+
 void	complicated_execute(t_env **my_envp, t_token *head, t_shell *shell)
 {
 	t_exe	exe;
@@ -101,10 +140,7 @@ void	complicated_execute(t_env **my_envp, t_token *head, t_shell *shell)
 	init_exe_struct(&exe);
 	shell->pid = -1;
 	current = head;
-	if (strcmp(current->token, "exit") == 0)
-	{
-		exit_command(current, shell);
-	}
+	ft_exit(current, shell);
 	while (current != NULL)
 	{
 		exe.envp = env_to_array(*my_envp, shell);
@@ -114,41 +150,13 @@ void	complicated_execute(t_env **my_envp, t_token *head, t_shell *shell)
 			exe.pipe_flag = 0;
 			check_and_create_pipe(current->next, exe.pipefd, &(exe.pipe_flag));
 			if (pipe_count(head) == 0 && current->built_in_or_not == true)
-				builtin_and_no_pipe(&exe,current,my_envp,shell);
+				builtin_and_no_pipe(&exe, current, my_envp, shell);
 			else
-				handle_fork(&exe,current,my_envp,shell);
+				handle_fork(&exe, current, my_envp, shell);
 			if (exe.pipe_flag == 1)
 				close(exe.pipefd[1]);
 		}
 		current = current->next;
 	}
-	manage_wait_status(&exe,shell);
+	manage_wait_status(&exe, shell);
 }
-void	check_and_create_pipe(t_token *current_next, int *pipe_fd, int *flag)
-{
-	t_token *head;
-	head = current_next; 
-
-	while (head && head->type != COMMAND)
-	{
-		if (head->type == PIPE)
-		{
-			if (pipe(pipe_fd) == -1)
-			{
-				perror("pipe failed");
-				// add the free function
-				exit(EXIT_FAILURE);
-			}
-			(*flag)++;
-			break ;
-		}
-		else
-		{
-			pipe_fd[0] = -1;
-			pipe_fd[1] = -1;
-		}
-		head = head->next; 
-	}
-}
-
-
