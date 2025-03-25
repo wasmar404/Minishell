@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 10:14:57 by schaaban          #+#    #+#             */
-/*   Updated: 2025/03/24 16:10:15 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/03/25 10:32:53 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,9 @@ int check_if_pipe_is_valid_helper(t_token *head, t_shell *shell,int flag)
     {
         ft_putendl_fd("command not found5848", 2);
         shell -> exit_code = 127;
+        return (0);
     }
+    return (1);
 }
 int count_commands(t_token *head)
 {
