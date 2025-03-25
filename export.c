@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 21:04:03 by wasmar            #+#    #+#             */
-/*   Updated: 2025/03/24 16:57:54 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/03/25 12:14:45 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,30 +119,35 @@ void	find_type(t_token *head, t_env **my_envp, t_shell *shell)
 	char	*temp;
 
 	head = head->next;
-	i = check_equall(head);
-	type = ft_strdupp(head->token, i, shell);
-	a = check_if_var_exists(*my_envp, type);
-	if (a == NULL)
+	while(head && head->type == WORD)
 	{
-		tail = find_tail(*my_envp);
-		len = ft_strlen(head->token);
-		enva = ft_strdupp(head->token + i + 1, len - (i + 1), shell);
-		new_node = create_node_tokenn(enva, type, check_equal(head->token),
-				head->token, shell);
-		tail->next = new_node;
-		new_node->next = NULL;
-		new_node->prev = tail;
+		i = check_equall(head);
+		type = ft_strdupp(head->token, i, shell);
+		a = check_if_var_exists(*my_envp, type);
+		if (a == NULL)
+		{
+			tail = find_tail(*my_envp);
+			len = ft_strlen(head->token);
+			enva = ft_strdupp(head->token + i + 1, len - (i + 1), shell);
+			new_node = create_node_tokenn(enva, type, check_equal(head->token),
+					head->token, shell);
+			tail->next = new_node;
+			new_node->next = NULL;
+			new_node->prev = tail;
+		}
+		else
+		{
+			len = ft_strlen(head->token);
+			enva = ft_strdupp(head->token + i + 1, len - (i + 1), shell);
+			strcpy(a->enva, enva);
+			a->equal = true;
+			all = ft_strjoin(a->type, "=", shell->mallo);
+			temp = ft_strjoin(all, a->enva, shell->mallo);
+			a->all = temp; // Assign the final result to `a->all`
+		}
+		head = head -> next;
 	}
-	else
-	{
-		len = ft_strlen(head->token);
-		enva = ft_strdupp(head->token + i + 1, len - (i + 1), shell);
-		strcpy(a->enva, enva);
-		a->equal = true;
-		all = ft_strjoin(a->type, "=", shell->mallo);
-		temp = ft_strjoin(all, a->enva, shell->mallo);
-		a->all = temp; // Assign the final result to `a->all`
-	}
+
 }
 void	export_main(t_env **my_envp, t_token *head, t_shell *exitcode)
 {

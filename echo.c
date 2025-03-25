@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 11:27:21 by schaaban          #+#    #+#             */
-/*   Updated: 2025/03/24 17:03:03 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/03/25 12:04:47 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ void	echo_main(t_token *head,t_shell *exitcode)
 		exitcode -> input_file_flag = 0;
 		return ;
 	}
-// exitcode = malloc(sizeof(t_shell));
 	if (!head->next)
 	{
 		printf("\n");

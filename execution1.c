@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 19:03:54 by wasmar            #+#    #+#             */
-/*   Updated: 2025/03/24 11:31:06 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/03/25 12:16:55 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	restore_terminal_file_descriptor(t_exe *exe)
 void	builtin_and_no_pipe(t_exe *exe, t_token *current, t_env **my_envp,
 		t_shell *shell)
 {
-	exe->fork_flag = 1;
+	 exe->fork_flag = 1;
 	run_built_ins(current, my_envp, 0, exe, shell);
 	restore_terminal_file_descriptor(exe);
 }

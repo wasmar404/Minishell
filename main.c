@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/03/24 11:28:00 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/03/25 12:22:07 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void init_shell_struct(t_shell *shell,char **envp)
     // head = env_to_linked_list(envp);
 
  	shell->exit_code = 0;
+	shell->input_file_flag = 0;
 	shell->env =  env_to_linked_list(envp,shell);
 	shell->env_array = env_to_array(shell->env,shell);
 }
@@ -361,7 +362,7 @@ void run_built_ins_helper(t_token *head, t_env **my_envp, t_shell *exitcode)
 }
 void	run_built_ins(t_token *head, t_env **my_envp,int flag, t_exe *exe, t_shell *exitcode)
 {
-	super_complicated_handle_dups(head, exe->pipefd, exe->input_fd, exe->fork_flag, (*my_envp),exitcode);
+	 super_complicated_handle_dups(head, exe->pipefd, exe->input_fd, exe->fork_flag, (*my_envp),exitcode);
 	run_built_ins_helper(head,my_envp,exitcode);
 	if (strcmp(head->token, "unset") == 0)
 	{
