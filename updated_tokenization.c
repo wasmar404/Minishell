@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   updated_tokenization.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:02:23 by wasmar            #+#    #+#             */
-/*   Updated: 2025/03/25 12:00:44 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/03/26 13:48:03 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,13 @@ t_token	*parse_input_to_tokens(char **splitted_input, t_shell *shell)
 }
 void	add_type(t_token *head, char **envp, t_shell *shell)
 {
-	t_token	*temp;
+	// t_token	*temp;
 
-	temp = (head);
+	// temp = (head);
+	// using head insted of temp cause it is causeing problems in this cases echo "jnde is big" > test | grep "is" < test
 	while ((head) != NULL)
 	{
-		(head)->type = check_input_type((head)->token, envp, temp, shell);
+		(head)->type = check_input_type((head)->token, envp, head, shell);
 		(head) = (head)->next;
 	}
 }
