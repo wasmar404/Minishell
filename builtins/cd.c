@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/05 12:28:27 by wasmar            #+#    #+#             */
-/*   Updated: 2025/03/24 12:08:55 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/03/26 19:48:20 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,10 @@ void	cd_directory(t_token *head, t_env **my_envp, t_shell *shell)
 			return ;
 		}
 		new_pwd = ft_strjoin(env_node->enva, "/",shell->mallo);
-		new_pwd = ft_strjoin(new_pwd, head->next->token,shell->mallo);
+		if(ft_strcmp(head->next->token,env_node->enva) != 0)
+		{
+			new_pwd = ft_strjoin(new_pwd, head->next->token,shell->mallo);
+		}
 		if (change_dir(new_pwd, shell) == -1)
 			return ;
 		if (update_pwd_and_oldpwd((*my_envp), new_pwd,shell) == -1)
