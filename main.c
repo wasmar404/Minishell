@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/03/25 12:22:07 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/03/28 08:40:38 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,11 +130,12 @@ void	main_helper(char *input, t_shell *shell,t_malloc *mallo)
 		rl_clear_history();
 		return ;
 	}
-	// if (main_quote_check(input, shell) == 0)
-	// 	return ;
+	if (main_quote_check(input, shell) == 0)
+		return ;
 	splitted_input = token_split(input,shell,mallo);
+	// print_array(splitted_input);
 	head = parse_input_to_tokens( splitted_input, shell);
-//  print_list(head);
+// //  print_list(head);
 	if(head)
 	{
 	if (input_check(head, splitted_input, shell->env_array, shell) == 0)
