@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dups.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 00:55:44 by wasmar            #+#    #+#             */
-/*   Updated: 2025/03/25 12:11:47 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/03/30 10:17:33 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void check_front(t_token *head,t_token **current_input,t_token **current_output 
     int fd;
 
 
-    while (temp != NULL && temp->type != COMMAND)
+    while (temp != NULL)
     {
 
         if (temp->type == HERE_DOC)
