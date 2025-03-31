@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:00:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/03/28 08:37:36 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/03/31 14:01:26 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -302,7 +302,7 @@ char **token_split(char *str, t_shell *shell, t_malloc *mallo)
     
     int token = 0, i = 0;
     int count = token_count(str);
-    char **tokens = ft_malloc(mallo, sizeof(char *) * (count + 1));
+    char **tokens = ft_malloc(mallo, sizeof(char *) * (count + 2));
     while (str[i])
     {
         while (str[i] == ' ') 
