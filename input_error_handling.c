@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 10:14:57 by schaaban          #+#    #+#             */
-/*   Updated: 2025/03/31 12:54:56 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/03/31 17:39:43 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -291,7 +291,7 @@ int check_if_dir_after_redirections(t_token *head,t_shell *exitcode)
         if(head -> type == SOUTPUT_REDIRECTION || head -> type == AOUTPUT_REDIRECTION
                 || head -> type == SINPUT_REDIRECTION)
         {
-            if(head -> next -> type == DIRECTORY)
+            if(head && head->next && head -> next -> type == DIRECTORY)
             {
                 if (stat(head->next->token, &path_stat) == 0)
                 {
