@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_error_handling.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 10:14:57 by schaaban          #+#    #+#             */
-/*   Updated: 2025/03/25 10:32:53 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/03/31 12:54:56 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -276,7 +276,7 @@ int  main_quote_check(char *str,t_shell *exitcode)
       }
       if((quotes.inside_quote) > 0)
       {
-        ft_putendl_fd("quote not closed",2);
+        ft_putendl_fd("quote not ft_closed",2);
         exitcode -> exit_code = 1;
             return (0);
       }

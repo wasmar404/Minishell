@@ -123,7 +123,7 @@
 //       }
 //       if((inside_quote) > 0)
 //       {
-//         ft_putendl_fd("quote not closed",2);
+//         ft_putendl_fd("quote not ft_closed",2);
 //         exitcode -> exit_code = 1;
 //             return (0);
 //       }

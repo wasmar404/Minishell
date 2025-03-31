@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 00:55:44 by wasmar            #+#    #+#             */
-/*   Updated: 2025/03/30 10:17:33 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/03/31 12:54:56 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd,int f
     if (input_fd != STDIN_FILENO)
     {
         dup2(input_fd, STDIN_FILENO);
-        close(input_fd);
+        ft_close(input_fd);
     }
     check_back(head,&current_input,&current_output,&flag1,exitcode);
     check_front(current,&current_input,&current_output,&flag1,envp,exitcode);
@@ -38,8 +38,8 @@ void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd,int f
     dups2(current1,current_output,input_fd,head);
     if(flag == 1)
     {
-        close(pipefd[0]);
-        close(pipefd[1]);
+        ft_close(pipefd[0]);
+        ft_close(pipefd[1]);
     }
 }
 void check_and_create_file(t_token *head)
@@ -58,7 +58,7 @@ void check_and_create_file(t_token *head)
         }  
         fd = open(head->next->token, O_WRONLY | O_CREAT | O_TRUNC, 0644);
         dup2(fd,1);
-        close(fd);
+        ft_close(fd);
     }
     else if(head->type == AOUTPUT_REDIRECTION)
     {
@@ -71,7 +71,7 @@ void check_and_create_file(t_token *head)
         }
         fd = open(head->next->token, O_WRONLY | O_CREAT | O_APPEND, 0644);
         dup2(fd,1);
-        close(fd);
+        ft_close(fd);
     }
 }
 
@@ -93,7 +93,7 @@ void check_front(t_token *head,t_token **current_input,t_token **current_output 
                 return;
             }
             heredoc(temp->next->token, fd,envp,exitcode);
-            close(fd);
+            ft_close(fd);
 
         }
         temp = temp->next;
@@ -101,7 +101,7 @@ void check_front(t_token *head,t_token **current_input,t_token **current_output 
 
     fd = open("temp", O_RDONLY);
     dup2(fd, 0);
-    close(fd);
+    ft_close(fd);
     unlink("temp");
 
 
@@ -145,7 +145,7 @@ void check_front(t_token *head,t_token **current_input,t_token **current_output 
             }
             fd = open(head->next->token, O_RDONLY, 0644);
             dup2(fd, 0);
-            close(fd);
+            ft_close(fd);
             // (*current_input) = head;
 		}
         head = head ->next;
@@ -153,7 +153,7 @@ void check_front(t_token *head,t_token **current_input,t_token **current_output 
     // if(fd != -1)
     // {
     // dup2(fd, 0);
-    // close(fd);
+    // ft_close(fd);
     // }
 }
 void check_back(t_token *head,t_token **current_input,t_token **current_output ,int *flag,t_shell *exitcode)
@@ -187,7 +187,7 @@ void check_back(t_token *head,t_token **current_input,t_token **current_output ,
             }
             fd = open(head->next->token, O_RDONLY, 0644);
             dup2(fd, 0);
-            close(fd);
+            ft_close(fd);
         }
         if( head ->type == PIPE || head ->type ==HERE_DOC)
         {
@@ -208,7 +208,7 @@ void dups2(t_token *current_input,t_token *current_output,int input_fd,t_token *
     if(current_input && current_input->type == PIPE)
     {
         dup2(input_fd,0);
-        close(input_fd);
+        ft_close(input_fd);
     }
 }
 
@@ -219,10 +219,10 @@ void dups1(t_token *current_input,t_token *current_output,int *pipefd,t_env *env
     {
         fd = open("temp", O_WRONLY | O_CREAT | O_APPEND , 0644);
          heredoc(current_input->next->token,fd,envp,exitcode);
-        close(fd);
+        ft_close(fd);
         fd = open("temp",O_RDONLY);
         dup2(fd,0);
-        close(fd);
+        ft_close(fd);
         unlink("temp");
     }
     // if (current_input && current_input->type == SINPUT_REDIRECTION)
@@ -244,11 +244,11 @@ void dups1(t_token *current_input,t_token *current_output,int *pipefd,t_env *env
     //     }
     //     fd = open(current_input->next->token, O_RDONLY, 0644);
     //     dup2(fd, 0);
-    //     close(fd);
+    //     ft_close(fd);
     // }
         if (current_output && current_output->type == PIPE)
     {
         dup2(pipefd[1],1);
-        close(pipefd[1]);
+        ft_close(pipefd[1]);
     }
 }

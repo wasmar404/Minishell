@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   header.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/03/24 16:10:34 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/03/31 12:55:11 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ void    ft_free_all(t_malloc *gc);
 t_env	*search_and_find_a_type_my_envpp(t_env *envp, char *to_find);
 int		is_alphanumeric(char c);
 
-
+void ft_close(int fd);
 int	command_exists(t_token *head);
 
 void main_cd(t_token *head, t_env **my_envp, t_shell *shell);

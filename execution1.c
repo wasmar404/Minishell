@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution1.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 19:03:54 by wasmar            #+#    #+#             */
-/*   Updated: 2025/03/25 12:16:55 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/03/31 12:54:56 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ void	restore_terminal_file_descriptor(t_exe *exe)
 {
 	dup2(exe->saved_stdin, STDIN_FILENO);
 	dup2(exe->saved_stdout, STDOUT_FILENO);
-	close(exe->saved_stdin);
-	close(exe->saved_stdout);
+	ft_close(exe->saved_stdin);
+	ft_close(exe->saved_stdout);
 }
 
 void	builtin_and_no_pipe(t_exe *exe, t_token *current, t_env **my_envp,
@@ -114,7 +114,7 @@ void	handle_fork(t_exe *exe, t_token *current, t_env **my_envp,
 	else if (shell->pid > 0)
 	{
 		if (exe->input_fd != STDIN_FILENO && exe->pipefd[0] != -1)
-			close(exe->input_fd);
+			ft_close(exe->input_fd);
 		exe->input_fd = exe->pipefd[0];
 	}
 	else
@@ -155,7 +155,7 @@ void	complicated_execute(t_env **my_envp, t_token *head, t_shell *shell)
 			else
 				handle_fork(&exe, current, my_envp, shell);
 			if (exe.pipe_flag == 1)
-				close(exe.pipefd[1]);
+				ft_close(exe.pipefd[1]);
 		}
 		current = current->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/03/28 08:40:38 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/03/31 12:54:56 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -253,10 +253,10 @@ void	heredoc_dup(t_token *head)
 		fd = open("temp", O_WRONLY | O_CREAT | O_APPEND, 0644);
 		// heredoc(head->next->token,fd);
 		here_doc_first(head->next->token, head, fd);
-		close(fd);
+		ft_close(fd);
 		fd = open("temp", O_RDONLY);
 		// dup2(fd,0);
-		close(fd);
+		ft_close(fd);
 		unlink("temp");
 	}
 }
@@ -268,7 +268,7 @@ void	s_out_redirection(t_token *head)
 	if (head && head->type == SOUTPUT_REDIRECTION)
 	{
 		fd = open(head->next->token, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-		close(fd);
+		ft_close(fd);
 	}
 }
 void	a_out_redirection(t_token *head)
@@ -279,7 +279,7 @@ void	a_out_redirection(t_token *head)
 	if (head && head->type == AOUTPUT_REDIRECTION)
 	{
 		fd = open(head->next->token, O_CREAT | O_WRONLY | O_APPEND, 0644);
-		close(fd);
+		ft_close(fd);
 	}
 }
 int	command_exists(t_token *head)
@@ -432,7 +432,7 @@ void	run_command_helper(t_token *head, t_env **my_envp,t_shell *shell,t_exe *exe
 	{
 		shell->exit_code = 127;
 		// ft_putendl_fd("bash: No such file or directory",2);
-		// close(STDIN_FILENO);
+		// ft_close(STDIN_FILENO);
 		// exit(exit_code);
 	}
 }
