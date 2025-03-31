@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 19:03:54 by wasmar            #+#    #+#             */
-/*   Updated: 2025/03/31 13:37:56 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/03/31 14:40:07 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void	init_exe_struct(t_exe *exe)
     exe->pipefd[1] = -1;
     exe->pipe_flag = 0;
     exe->envp = NULL; 
+	exe->status = 0;
 }
 
 void	restore_terminal_file_descriptor(t_exe *exe)
