@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 11:08:50 by wasmar            #+#    #+#             */
-/*   Updated: 2025/03/31 12:55:03 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/03/31 13:22:43 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void    ft_free_all(t_malloc *gc)
     if (!gc || !gc->head)
         return ;
     curr = gc->head;
-    gc->head = NULL;
     while (curr)
     {
         tmp = curr;
@@ -46,6 +45,7 @@ void    ft_free_all(t_malloc *gc)
             free(tmp->ptr);
         free(tmp);
     }
+    free(gc);
 }
 
 int is_fd_open(int fd)

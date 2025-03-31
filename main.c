@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/03/31 12:54:56 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/03/31 13:24:17 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,31 +44,26 @@ int main(int ac, char **av, char **envp)
 {
     char *input = NULL;
     t_shell shell;
-    t_malloc *mallo = malloc(sizeof(t_malloc)); // Allocate memory for t_malloc
-
-    if (!mallo) 
-	{
-        perror("malloc failed");
-        return 1;  // Return error if malloc fails
-    }
-    shell.mallo = mallo; // Now it's safe to assign mallo to shell.mallo
+    t_malloc *mallo = malloc(sizeof(t_malloc));
+	mallo->head=NULL;
+    shell.mallo = mallo;
     init_shell_struct(&shell, envp);
     main_signal();
     while (1)
     {
         input = readline("sw_shell> ");
         if (input == NULL)
-            break;  // Exit on EOF (Ctrl-D)
+            break;  
 		if (*input)
         {
-            add_history(input);  // Add input to history
-            main_helper(input, &shell,mallo);  // Process the input
+            add_history(input);  
+            main_helper(input, &shell,mallo); 
         }
         if (strcmp(input, "stop") == 0)
-            break;  // Exit on "stop" command
+            break;  
 
     }
-     ft_free_all(mallo);  // Clean up allocated memory
+     ft_free_all(mallo); 
     return 0;
 }
 
