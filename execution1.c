@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 19:03:54 by wasmar            #+#    #+#             */
-/*   Updated: 2025/03/31 12:54:56 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/03/31 13:37:56 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,10 @@ void	init_exe_struct(t_exe *exe)
 	exe->saved_stdout = dup(STDOUT_FILENO);
 	exe->pipe_flag = 0;
 	exe->fork_flag = 0;
+	exe->pipefd[0] = -1;
+    exe->pipefd[1] = -1;
+    exe->pipe_flag = 0;
+    exe->envp = NULL; 
 }
 
 void	restore_terminal_file_descriptor(t_exe *exe)

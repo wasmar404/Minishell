@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 00:55:44 by wasmar            #+#    #+#             */
-/*   Updated: 2025/03/31 12:54:56 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/03/31 13:34:51 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd,int f
     t_token *current_input =NULL;
     t_token *current_output =NULL;
     int flag1= 0;
-    if (input_fd != STDIN_FILENO)
+    if (input_fd >= 0 && input_fd != STDIN_FILENO)
     {
         dup2(input_fd, STDIN_FILENO);
         ft_close(input_fd);
@@ -36,10 +36,12 @@ void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd,int f
     check_front(current,&current_input,&current_output,&flag1,envp,exitcode);
     dups1(current_input,current_output,pipefd,envp,exitcode);
     dups2(current1,current_output,input_fd,head);
-    if(flag == 1)
+    if (flag == 1 && pipefd)
     {
-        ft_close(pipefd[0]);
-        ft_close(pipefd[1]);
+        if (pipefd[0] >= 0)
+            ft_close(pipefd[0]);
+        if (pipefd[1] >= 0)
+            ft_close(pipefd[1]);
     }
 }
 void check_and_create_file(t_token *head)

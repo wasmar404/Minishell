@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:02:23 by wasmar            #+#    #+#             */
-/*   Updated: 2025/03/26 13:48:03 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/03/31 13:40:07 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -336,7 +336,7 @@ void	remove_quotes_main(t_token *head, t_shell *shell)
 					double_quotes = 0;
 					break ;
 				}
-				if ((head)->token[end])
+				if ((head)->token[end-1])//if something broke remove the -1 and try
 				{
 					i = end - 1;
 					double_quotes = 0;
