@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/03/31 13:24:17 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/03/31 14:47:15 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -445,6 +445,8 @@ void	heredoc(char *str, int fd, t_env *envp, t_shell *exitcode)
 	while (1)
 	{
 		input = readline("> ");
+		if (input == NULL)  // Handle EOF (Ctrl+D)
+			break ;
 		if (strcmp(str, input) == 0)
 		{
 			break ;
