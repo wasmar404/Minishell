@@ -3,22 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   updated_tokenization.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hackme <hackme@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:02:23 by wasmar            #+#    #+#             */
-/*   Updated: 2025/03/31 13:40:07 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/04/01 09:11:03 by hackme           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
-
-void	return_head_to_beginning(t_token **head)
-{
-	if (!head || !(*head))
-		return ;
-	while ((*head)->prev)
-		*head = (*head)->prev;
-}
 
 t_token	*parse_input_to_tokens(char **splitted_input, t_shell *shell)
 {
@@ -50,31 +42,13 @@ t_token	*parse_input_to_tokens(char **splitted_input, t_shell *shell)
 }
 void	add_type(t_token *head, char **envp, t_shell *shell)
 {
-	// t_token	*temp;
-
-	// temp = (head);
-	// using head insted of temp cause it is causeing problems in this cases echo "jnde is big" > test | grep "is" < test
 	while ((head) != NULL)
 	{
 		(head)->type = check_input_type((head)->token, envp, head, shell);
 		(head) = (head)->next;
 	}
 }
-char	*return_value_of_envp_type(t_env *envp_linked, char *search_for)
-{
-	char	*result;
 
-	while (envp_linked != NULL)
-	{
-		if (strcmp(envp_linked->type, search_for) == 0)
-		{
-			result = strdup(envp_linked->enva);
-			return (result);
-		}
-		envp_linked = envp_linked->next;
-	}
-	return (NULL);
-}
 
 t_token	*generate_token(char **splitted_input, int i, t_shell *shell)
 {
@@ -155,23 +129,7 @@ int	count_ttoken_nodes(t_token *head)
 	}
 	return (i);
 }
-char	*find_endd2(char *a, t_shell *shell)
-{
-	int		i;
-	char	*result;
 
-	i = 0;
-	while (a[i])
-	{
-		if (a[i] == '/')
-		{
-			break ;
-		}
-		i++;
-	}
-	result = ft_strndup(a, i, shell);
-	return (result);
-}
 int	check_if_cmd(char *input, char **envp, t_token *head, t_shell *shell)
 {
 	char		*a;
@@ -237,139 +195,7 @@ char	*new_string(char *str, int i, int j, t_shell *shell)
 		y++;
 	}
 	new_str[x] = '\0';
-	// printf("new srt:\"%s\"\n",str);
 	return (new_str);
-}
-
-int	check_dollar1(t_token *head)
-{
-	int	i;
-
-	i = 0;
-	while (head->token[i])
-	{
-		if (head->token[i] == '$')
-		{
-			return (1);
-		}
-		i++;
-	}
-	return (0);
-}
-
-int	check_dollar_pos(t_token *head)
-{
-	int	i;
-
-	i = 0;
-	while (head->token[i])
-	{
-		if (head->token[i] == '$')
-		{
-			return (i);
-		}
-		i++;
-	}
-	return (0); // change to -1
-}
-
-int	calculate_len(t_env *enva, t_token **head, char *find)
-{
-	int	len_enva;
-	int	len_token;
-	int	len_find;
-	int	len;
-
-	len_enva = 0;
-	len_token = 0;
-	len_find = 0;
-	len = 0;
-	if (enva)
-		len_enva = strlen(enva->enva);
-	len_token = strlen((*head)->token);
-	len_find = strlen(find);
-	len = len_token - len_find + len_enva;
-	return (len);
-}
-
-
-void	remove_quotes_main(t_token *head, t_shell *shell)
-{
-	int		i;
-	int		end;
-	int		single_quotes;
-	int		double_quotes;
-	int		len;
-	char	*copy;
-
-	i = 0;
-	end = 0;
-	single_quotes = 0;
-	double_quotes = 0;
-	len = 0;
-	while ((head))
-	{
-		if (strcmp((head)->token, "<<") == 0)
-		{
-			if ((head)->next->next)
-				(head) = (head)->next->next;
-			else
-				break ;
-			continue ;
-		}
-		i = 0;
-		while ((head)->token && (head)->token[i])
-		{
-			if ((head)->token[i] == '"' && single_quotes == 0)
-			{
-				copy = ft_strdup((head)->token, shell->mallo);
-				remove_quotes_and_replace(&head, i, shell);
-				double_quotes++;
-				len = strlen((head)->token);
-				end = find_end_of_quotes(copy, '"', i);
-				if (end == -1)
-				{
-					break ;
-				}
-				if (end - 1 > len)
-				{
-					double_quotes = 0;
-					break ;
-				}
-				if ((head)->token[end-1])//if something broke remove the -1 and try
-				{
-					i = end - 1;
-					double_quotes = 0;
-				}
-				continue ;
-			}
-			if ((head)->token[i] == '\'' && double_quotes == 0)
-			{
-				copy = ft_strdup((head)->token, shell->mallo);
-				remove_quotes_and_replace(&head, i, shell);
-				single_quotes++;
-				len = strlen((head)->token);
-				end = find_end_of_quotes(copy, '\'', i);
-				if (end == -1)
-				{
-					break ;
-				}
-				if (end - 1 >= len)
-				{
-					break ;
-				}
-				if ((head)->token[end])
-				{
-					i = end - 1;
-					single_quotes = 0;
-				}
-				single_quotes = 0;
-				continue ;
-			}
-			i++;
-		}
-		(head) = (head)->next;
-	}
 }
 
 void	remove_quotes_and_replace(t_token **head, int start, t_shell *shell)

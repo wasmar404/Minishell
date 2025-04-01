@@ -1,6 +1,6 @@
 # Compiler and flags
 CC = gcc
-CFLAGS =  -g
+CFLAGS =   -g
 LIBS = -lreadline -Llibft -lft  # Link to the libft library (-lft) and readline
 #-Wall -Wextra -Werror
 # Files

@@ -3,27 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hackme <hackme@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/03/31 14:47:15 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/04/01 09:25:53 by hackme           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 void init_shell_struct(t_shell *shell,char **envp)
 {
-   	// t_env	*head;
-    // head = env_to_linked_list(envp);
-
  	shell->exit_code = 0;
 	shell->input_file_flag = 0;
 	shell->env =  env_to_linked_list(envp,shell);
 	shell->env_array = env_to_array(shell->env,shell);
 }
-#include <stdio.h>
-
-#include <stdio.h>
 
 void print_malloc(t_malloc *gc)
 {
@@ -229,7 +223,7 @@ void	here_doc_first(char *s, t_token *head, int fd)
 		{
 			break ;
 		}
-		write(fd, input, ft_strlenn(input));
+		write(fd, input, ft_strlen(input));//strlenn
 		write(fd, "\n", 1);
 	}
 	// if(head -> next -> next)
