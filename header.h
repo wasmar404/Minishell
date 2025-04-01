@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   header.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hackme <hackme@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/04/01 09:25:06 by hackme           ###   ########.fr       */
+/*   Updated: 2025/04/01 13:50:25 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,8 +128,13 @@ typedef struct t_variables
 	char *tertiary;
     char **array;
 } t_variables;
-
-
+int	check_and_create_file_SOUTPUT_REDIRECTIO(t_token *head, int *fd,
+	int *dev_null);
+int check_front_OUT_REDIRECTION_AND_PIPE(t_token **current_output,t_token *head, t_token **current_input,int *flag);
+int	if__check_front_out_redirection_pipe(t_token **current_output,
+	t_token *head, int *flag);
+void	check_and_create_file(t_token *head);
+void check_front_SINPUT_REDIRECTION(t_token *head,t_shell *shell);
 int count_tokens_for_exec_array(t_token *head,t_shell *shell);
 void exit_command_helper(t_token *head,t_shell *shell);
 void exit_command_helper2(t_token *head,t_shell *shell);
@@ -138,7 +143,7 @@ void    *ft_malloc(t_malloc *var, size_t size);
 void    ft_free_all(t_malloc *gc);
 t_env	*search_and_find_a_type_my_envpp(t_env *envp, char *to_find);
 int		is_alphanumeric(char c);
-
+void check_front_heredoc(t_token *head,t_env *envp,t_shell *shell);
 void ft_close(int fd);
 int	command_exists(t_token *head);
 void main_cd(t_token *head, t_env **my_envp, t_shell *shell);
@@ -153,6 +158,9 @@ void heredoc_dup(t_token *head);
 int main_error1(t_token *head);
 void heredoc_dup(t_token *head);
 int check_if_quotes_exit(char *input);
+int	check_and_create_file_AOUTPUT_REDIRECTION(t_token *head, int *fd,
+	int *dev_null);
+	void check_back_SINPUT_REDIRECTION(t_token *head,t_shell *shell);
 void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd,int flag,t_env *envp,t_shell *exitcode);
 int					check_double_sep(char *input, int i);
 int					check_single_sep(char input);

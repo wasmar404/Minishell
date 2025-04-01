@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/05 12:28:27 by wasmar            #+#    #+#             */
-/*   Updated: 2025/03/21 02:20:43 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/04/01 13:03:28 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void search_and_find_a_type_my_envp(t_env **envp,char *to_find)
     {
         if(ft_strcmp(to_find,(*envp)->type) == 0)
         {
-            // return(envp);
             break;
         }
         (*envp) = (*envp)->next;
