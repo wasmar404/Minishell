@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 00:55:44 by wasmar            #+#    #+#             */
-/*   Updated: 2025/04/01 13:52:00 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/04/01 15:15:29 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,30 +24,39 @@ void	check_front(t_token *head, t_token **current_input,
 			t_token **current_output, int *flag, t_env *envp,
 			t_shell *exitcode);
 
-void	super_complicated_handle_dups(t_token *head, int *pipefd, int input_fd,
-		int flag, t_env *envp, t_shell *exitcode)
+typedef struct t_dups
 {
 	t_token	*current;
 	t_token	*current1;
 	t_token	*current_input;
 	t_token	*current_output;
 	int		flag1;
-
-	current = head;
-	current1 = head;
-	current_input = NULL;
-	current_output = NULL;
-	flag1 = 0;
+}					t_dups;
+void init_dups_struct(t_dups *dups,t_token *head)
+{
+	
+	dups->current = head;
+	dups->current1 = head;
+	dups->current_input = NULL;
+	dups->current_output = NULL;
+	dups->flag1 = 0;
+}
+void	super_complicated_handle_dups(t_token *head, int *pipefd, int input_fd,
+		int flag, t_env *envp, t_shell *exitcode)
+{
+	t_dups *dups;
+	dups = ft_malloc(exitcode->mallo,sizeof(t_dups));
+	init_dups_struct(dups,head);
+	
 	if (input_fd >= 0 && input_fd != STDIN_FILENO)
 	{
 		dup2(input_fd, STDIN_FILENO);
 		ft_close(input_fd);
 	}
-	check_back(head, &current_input, &current_output, &flag1, exitcode);
-	check_front(current, &current_input, &current_output, &flag1, envp,
-		exitcode);
-	dups1(current_input, current_output, pipefd, envp, exitcode);
-	dups2(current1, current_output, input_fd, head);
+	check_back(head, &(dups->current_input), &(dups->current_output), &(dups->flag1), exitcode);
+	check_front(dups->current, &(dups->current_input),&(dups->current_output), &(dups->flag1), envp,exitcode);
+	dups1( (dups->current_input), (dups->current_output), pipefd, envp, exitcode);
+	dups2(dups->current_input, dups->current_output, input_fd, head);
 	if (flag == 1 && pipefd)
 	{
 		if (pipefd[0] >= 0)
