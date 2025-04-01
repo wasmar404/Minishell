@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 00:55:44 by wasmar            #+#    #+#             */
-/*   Updated: 2025/04/01 13:52:06 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/04/01 16:16:11 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ void	check_front_heredoc(t_token *head, t_env *envp, t_shell *shell)
 	ft_close(fd);
 	unlink("temp");
 }
-void	check_front_SINPUT_REDIRECTION(t_token *head, t_shell *shell)
+
+void	check_front_sinput_redirection(t_token *head, t_shell *shell)
 {
 	if (head->next && head->next->type != DIRECTORY)
 	{
@@ -63,7 +64,8 @@ void	check_front_SINPUT_REDIRECTION(t_token *head, t_shell *shell)
 		}
 	}
 }
-int	check_front_OUT_REDIRECTION_AND_PIPE(t_token **current_output,
+
+int	check_front_out_redirection_and_pipe(t_token **current_output,
 		t_token *head, t_token **current_input, int *flag)
 {
 	if ((head->type == AOUTPUT_REDIRECTION || head->type == SOUTPUT_REDIRECTION)
@@ -82,6 +84,7 @@ int	check_front_OUT_REDIRECTION_AND_PIPE(t_token **current_output,
 	}
 	return (1);
 }
+
 int	if__check_front_out_redirection_pipe(t_token **current_output,
 		t_token *head, int *flag)
 {
@@ -95,7 +98,8 @@ int	if__check_front_out_redirection_pipe(t_token **current_output,
 		return (1);
 	return (0);
 }
-int	check_and_create_file_SOUTPUT_REDIRECTIO(t_token *head, int *fd,
+
+int	check_and_create_file_soutput_redirectio(t_token *head, int *fd,
 		int *dev_null)
 {
 	if (head->next->type == DIRECTORY && access(head->next->token, W_OK) == -1)
@@ -109,7 +113,8 @@ int	check_and_create_file_SOUTPUT_REDIRECTIO(t_token *head, int *fd,
 	ft_close((*fd));
 	return (1);
 }
-int	check_and_create_file_AOUTPUT_REDIRECTION(t_token *head, int *fd,
+
+int	check_and_create_file_aoutput_redirection(t_token *head, int *fd,
 		int *dev_null)
 {
 	if (head->next->type == DIRECTORY && access(head->next->token, W_OK) == -1)
@@ -124,7 +129,7 @@ int	check_and_create_file_AOUTPUT_REDIRECTION(t_token *head, int *fd,
 	return (1);
 }
 
-void	check_back_SINPUT_REDIRECTION(t_token *head, t_shell *shell)
+void	check_back_sinput_redirection(t_token *head, t_shell *shell)
 {
 	if (head->next && head->next->type != DIRECTORY)
 	{

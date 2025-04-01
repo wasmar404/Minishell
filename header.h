@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/04/01 15:01:01 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/04/01 16:15:27 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,13 +128,21 @@ typedef struct t_variables
 	char *tertiary;
     char **array;
 } t_variables;
-int	check_and_create_file_SOUTPUT_REDIRECTIO(t_token *head, int *fd,
+typedef struct t_dups
+{
+	t_token	*current;
+	t_token	*current1;
+	t_token	*current_input;
+	t_token	*current_output;
+	int		flag1;
+}					t_dups;
+int	check_and_create_file_soutput_redirectio(t_token *head, int *fd,
 	int *dev_null);
-int check_front_OUT_REDIRECTION_AND_PIPE(t_token **current_output,t_token *head, t_token **current_input,int *flag);
+int check_front_out_redirection_and_pipe(t_token **current_output,t_token *head, t_token **current_input,int *flag);
 int	if__check_front_out_redirection_pipe(t_token **current_output,
 	t_token *head, int *flag);
 void	check_and_create_file(t_token *head);
-void check_front_SINPUT_REDIRECTION(t_token *head,t_shell *shell);
+void check_front_sinput_redirection(t_token *head,t_shell *shell);
 int count_tokens_for_exec_array(t_token *head,t_shell *shell);
 void exit_command_helper(t_token *head,t_shell *shell);
 void exit_command_helper2(t_token *head,t_shell *shell);
@@ -158,10 +166,12 @@ void heredoc_dup(t_token *head);
 int main_error1(t_token *head);
 void heredoc_dup(t_token *head);
 int check_if_quotes_exit(char *input);
-int	check_and_create_file_AOUTPUT_REDIRECTION(t_token *head, int *fd,
+int	check_and_create_file_aoutput_redirection(t_token *head, int *fd,
 	int *dev_null);
-	void check_back_SINPUT_REDIRECTION(t_token *head,t_shell *shell);
-void super_complicated_handle_dups(t_token *head,int *pipefd, int input_fd,int flag,t_env *envp,t_shell *exitcode);
+	void check_back_sinput_redirection(t_token *head,t_shell *shell);
+
+	void	super_complicated_handle_dups(t_token *head,t_exe *exe
+		, t_env *envp, t_shell *exitcode);
 int					check_double_sep(char *input, int i);
 int					check_single_sep(char input);
 int	delimeter_check(char **tokens, int *token, char *str, int *i,t_malloc *mallo);
@@ -207,11 +217,8 @@ void	main_helper(char *input, t_shell *shell,t_malloc *mallo);
 int					pipe_count(t_token *head);
 void				heredoc(char *str, int fd,t_env *envp,t_shell *exitcode);
 void	run_command_helper(t_token *head, t_env **my_envp,t_shell *shell,t_exe *exe);
-void				check_back_and_front(t_token *head_back,
-						t_token **current_input, t_token **current_output,
-						t_token *current);
-void				dups1(t_token *current_input, t_token *current_output,
-						int *pipefd,t_env *envp,t_shell *exitcode);
+void	check_back(t_token *head,t_dups *dups, t_shell *exitcode);
+void	dups1(t_dups *dups, int *pipefd,t_env *envp, t_shell *exitcode);
 void				dups2(t_token *current_input, t_token *current_output,
 						int input_fd,t_token *head);
 void				main_cd(t_token *head, t_env **my_envp,t_shell *exitcode);

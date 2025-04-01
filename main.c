@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hackme <hackme@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/04/01 09:25:53 by hackme           ###   ########.fr       */
+/*   Updated: 2025/04/01 15:59:52 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -352,7 +352,7 @@ void run_built_ins_helper(t_token *head, t_env **my_envp, t_shell *exitcode)
 }
 void	run_built_ins(t_token *head, t_env **my_envp,int flag, t_exe *exe, t_shell *exitcode)
 {
-	 super_complicated_handle_dups(head, exe->pipefd, exe->input_fd, exe->fork_flag, (*my_envp),exitcode);
+	 super_complicated_handle_dups(head,exe, (*my_envp),exitcode);
 	run_built_ins_helper(head,my_envp,exitcode);
 	if (strcmp(head->token, "unset") == 0)
 	{
@@ -375,19 +375,18 @@ void	run_built_ins(t_token *head, t_env **my_envp,int flag, t_exe *exe, t_shell 
 		exit(exitcode->exit_code);
 	}
 }
-void	external_commands(t_token *head, char **envp, t_env *my_envp,
-		int *pipefd, int input_fd, char **current_command, int flag,
-		t_shell *exitcode)
+void	external_commands(t_token *head, t_env *my_envp,
+	t_exe *exe, char **current_command,t_shell *exitcode)
 {
 		char *path;
 
 	if (find_var_name_return((my_envp), "PATH"))
 	{
 		(void)my_envp;
-		super_complicated_handle_dups(head, pipefd, input_fd, flag, my_envp,
+		super_complicated_handle_dups(head,exe, my_envp,
 			exitcode);
-		path = find_path_of_cmd(head->token, envp,exitcode);
-		if (execve(path, current_command, envp) == -1)
+		path = find_path_of_cmd(head->token, exe->envp,exitcode);
+		if (execve(path, current_command,exe-> envp) == -1)
 			printf("execve failed");
 		ft_free_all(exitcode -> mallo);
 		exit(EXIT_SUCCESS);
@@ -414,8 +413,8 @@ void	run_command_helper(t_token *head, t_env **my_envp,t_shell *shell,t_exe *exe
 		if (head->built_in_or_not == true)
 			run_built_ins(head, my_envp, 1, exe, shell);
 		else
-			external_commands(head, exe->envp, (*my_envp),exe->pipefd, exe->input_fd,
-				current_command, exe->pipe_flag, shell);
+			external_commands(head, (*my_envp),exe,
+				current_command, shell);
 	}
 	else
 	{
