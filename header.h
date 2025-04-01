@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   header.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hackme <hackme@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/03/31 12:55:11 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/04/01 09:25:06 by hackme           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,6 @@ int		is_alphanumeric(char c);
 
 void ft_close(int fd);
 int	command_exists(t_token *head);
-
 void main_cd(t_token *head, t_env **my_envp, t_shell *shell);
 char *check_char_after_dollar_and_expand1(char *str,t_env *envp,t_shell *exitcode);
 void	a_out_redirection(t_token *head);
@@ -173,7 +172,6 @@ void				token_count_helper(char *input, int *i, int *count,
 int					ft_strcmp(char *str1, char *str2);
 void				print_list(t_token *head);
 int					count_nodes(t_env *head);
-int					ft_strlenn(char *input);
 t_env	*create_node_tokenn(char *str, char *type, bool equal, char *all_line,t_shell *shell);
 t_env	*env_to_linked_list(char **envp,t_shell *shell);
 int					count_nodes(t_env *head);
@@ -186,7 +184,6 @@ int					check_dollar(t_token *head);
 t_env				*check_in_envp(t_env *head, char *a);
 void				echo_main(t_token *head,t_shell *exitcode);
 void	complicated_execute(t_env **my_envp, t_token *head,t_shell *shell);
-int	check_dollar1(t_token *head);
 bool				built_in_or_not(char *cmd);
 void				find_the_word_path_in_envp(char ***envp);
 void				free_array(char **array);
@@ -194,18 +191,13 @@ int					ft_strcmp(char *str1, char *str2);
 char				*find_path_of_cmd_helper(char *command);
 token_type			check_delimeter1(char *splitted_token);
 token_type			check_delimeter2(char *splitted_token);
-void	return_head_to_beginning(t_token **head);
 void	main_helper(char *input, t_shell *shell,t_malloc *mallo);
 
 		char	*find_path_of_cmd(char *command, char **envp,t_shell *shell);
-		t_token	*input_to_linked_list(char **input, char **envp,t_shell *shell);
 		void				run_command(t_token *head, char **current_command,
 						char **envp, t_env *my_envp, int *pipefd, int input_fd);
 int					pipe_count(t_token *head);
 void				heredoc(char *str, int fd,t_env *envp,t_shell *exitcode);
-// void	run_command_helper(t_token *head, char **envp, t_env **my_envp,
-// 	int *pipefd, int input_fd, char **current_command, int flag,
-// 	t_shell *exitcode,t_exe *exe);
 void	run_command_helper(t_token *head, t_env **my_envp,t_shell *shell,t_exe *exe);
 void				check_back_and_front(t_token *head_back,
 						t_token **current_input, t_token **current_output,
@@ -242,7 +234,6 @@ int					find_quotes_end(char *str, int i, int flag);
 char	*new_string(char *str, int i, int j,t_shell *shell);
 void				quotes_check_remove(t_token **head, t_env *envp);
 void				search_and_find_a_type_my_envp(t_env **envp, char *to_find);
-int					calculate_len(t_env *enva, t_token **head, char *find);
 char				*fill_array(int len, int start, int end, t_token **head,
 						t_env *enva);
 int					process_token(t_token **head, t_env *envp_linked);

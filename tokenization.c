@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   tokenization.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hackme <hackme@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:16:26 by wasmar            #+#    #+#             */
-/*   Updated: 2025/03/24 14:32:06 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/04/01 09:17:06 by hackme           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
-#include "libft/libft.h"
 bool	built_in_or_not(char *cmd)
 {
 	if (ft_strcmp(cmd, "echo") == 0)
@@ -227,7 +226,6 @@ void remove_empty_nodes(t_token **head)
 			}
 			 else if(current -> prev == NULL) 
 			 {
-				// printf("ggg\n\n");
 				 temp = current ->next;
 				 temp1 = current;
 				 (*head)= temp;
@@ -250,35 +248,5 @@ void remove_empty_nodes(t_token **head)
         current = current->next;
     }
 }
-void remove_empty_nodes_helper(t_token **current)
-{
-	
-}
 
-t_token	*input_to_linked_list(char **input, char **envp,t_shell *shell)
-{
-	int		i;
-	int		type;
-	t_token	*head;
-	t_token	*new;
-	t_token	*print;
 
-	i = 0;
-	head = NULL;
-	new = NULL;
-	print = NULL;
-	while (input[i])
-	{
-		type = check_delimeter(input[i], envp,shell);
-		new = create_node_token(ft_strdup(input[i],shell->mallo), type, built_in_or_not(input[i]),shell);
-		if (head == NULL)
-		{
-			head = new;
-			print = head;
-		}
-		else
-			append_token_node(&head,new);
-		i++;
-	}
-	return (print);
-}

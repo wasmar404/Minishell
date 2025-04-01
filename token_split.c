@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_split.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hackme <hackme@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:00:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/03/31 14:01:26 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/04/01 09:25:02 by hackme           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,19 +46,7 @@ int	check_single_sep(char input)
 		return (1);
 	return (0);
 }
-int	ft_strlenn(char *input)
-{
-	int	i;
 
-	if (input == NULL)
-		return (0);
-	i = 0;
-	while (input[i] != '\0')
-	{
-		i++;
-	}
-	return (i);
-}
 
 char	*ft_strndup(char *str, int i,t_shell *shell)
 {
@@ -79,88 +67,14 @@ char	*ft_strndup(char *str, int i,t_shell *shell)
 	array[z] = '\0';
 	return (array);
 }
-// int	delimeter_check(char **tokens, int *token, char *str, int *i,t_malloc *mallo)
-// {
-// 	if (check_double_sep(str, (*i)) == 1)
-// 	{
-// 		tokens[(*token)] = ft_strndup1(str + (*i), 2,mallo);
-// 		(*token)++;
-// 		(*i) += 2;
-// 	}
-// 	else if (check_single_sep(str[(*i)]) == 1)
-// 	{
-// 		tokens[(*token)] = ft_strndup1(str + (*i), 1,mallo);
-// 		(*token)++;
-// 		(*i) += 1;
-// 	}
-// 	else
-// 		return (0);
-// 	return (1);
-// }
+
 int	check_single_sep_quote(char input)
 {
 	if (input == '>' || input == '<' || input == '|' || input == ' ')
 		return (1);
 	return (0);
 }
-// void check_non_delimeter_helper(char *str, int *i,int *start,int *len)
-// {
-// 	(*i)++;
-// 	while (str[(*i)] && str[(*i)] != '"' ) //&& str[(*i)] != ' '
-// 		(*i)++;
-// 				(*i)++;
-// 	while (str[(*i)] && !check_double_sep(str, (*i))
-// 	&& !check_single_sep(str[(*i)])  )			
-// 		(*i)++;
-// 	(*len) = (*i) - (*start)+1;
-// 	(*i)++;
-// }
-// void	check_non_delimeter_h( char *str, int *i,int *start,int *len)
-// {
-// 		if (str[(*i)] == '"')
-// 		{
-// 			check_non_delimeter_helper(str,i,start,len);
-// 		}
-// 		else if (str[(*i)] == '\'')
-// 		{
-// 			(*i)++;
-// 			while (str[(*i)] && str[(*i)] != '\'' ) //&& str[(*i)] != ' '
-// 				(*i)++;
-// 						(*i)++;
-// 			while (str[(*i)] && !check_double_sep(str, (*i))
-// 			&& !check_single_sep(str[(*i)]))			
-// 				(*i)++;
-// 			(*len) = (*i) - (*start)+1;
-// 			 (*i)++;
-// 		}
-// 		else
-// 		{
-// 			while (str[(*i)] && str[(*i)] != ' ' && str[(*i)] != '|'
-// 				 && str[(*i)] != '>' && str[(*i)] != '<')//&& str[(*i)] != '"' 
-// 				(*i)++;
-// 			(*len) = (*i) - (*start); 
-// 		}
-// }
 
-// void	check_non_delimeter(char **tokens, int *token, char *str, int *i,t_malloc *mallo)
-// {
-// 	int	start;
-// 	int	len;
-
-// 	len = 0;
-// 	start = (*i);
-// 	while (str[(*i)] && str[(*i)] != ' ' && !check_double_sep(str, (*i))
-// 		&& !check_single_sep(str[(*i)]))
-// 	{
-// 		check_non_delimeter_h(str,i,&start,&len);
-// 		break ;
-// 	}
-// 	if (len > 0)
-// 	{
-// 		tokens[(*token)] = ft_strndup1(str + start, len,mallo);
-// 		(*token)++;
-// 	}
-// }
 void	single_sep_case(int *count, int *i, int *in_token, char *input)
 {
 	if (input[*i] != ' ')
@@ -245,32 +159,7 @@ int	token_count(char *input)
 	}
 	return (count);
 }
-// char	**token_split(char *str,t_shell *shell,t_malloc *mallo)
-// {
-// 	char	**tokens;
-// 	int		token;
-// 	int		i;
 
-// 	token = 0;
-// 	i = 0;
-// 	if (str == NULL) 
-// 		return (NULL);
-// 	tokens = ft_malloc(mallo,sizeof(char *) * (token_count(str) + 1));
-// 	if (!tokens) 
-// 		return (NULL);
-// 	int lenn = strlen(str);
-// 	while (i < lenn)
-// 	{
-// 		while (str[i] && str[i] == ' ')
-// 			i++;
-// 		if (!delimeter_check(tokens, &token, str, &i,mallo))
-// 		{
-// 			check_non_delimeter(tokens, &token, str, &i,mallo);
-// 		}
-// 	}
-// 	tokens[token] = NULL; 
-// 	return (tokens);
-// }
 void skip_quotes(char *str, int *i, char quote_type)
 {
     (*i)++; 
