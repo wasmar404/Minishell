@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 15:13:08 by schaaban          #+#    #+#             */
-/*   Updated: 2025/01/23 11:34:54 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/04/01 21:36:56 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,8 @@ int main_pwd()
 
     if (getcwd(cwd, sizeof(cwd)) != NULL) {
         printf("%s\n", cwd);
-    } else {
+    } else
         return (1);
-        printf("error");
-    }
     return (0);
 
 }

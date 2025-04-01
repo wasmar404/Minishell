@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 10:14:57 by schaaban          #+#    #+#             */
-/*   Updated: 2025/03/31 17:39:43 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/04/01 22:25:41 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int check_command(char *array,char **envp,t_shell *exitcode)
     if(flag == 1 && !(strcmp(array, ">") == 0 || strcmp(array, "<") == 0 || 
                        strcmp(array, "<<") == 0 || strcmp(array, ">>") == 0 || strcmp(array,"|") == 0))
     {
-            ft_putendl_fd_two("zsh: command not found: ",array,2);
+            ft_putendl_fd_two("sw_shell: command not found: ",array,2);
             exitcode -> exit_code = 127;
             return(0);
     }

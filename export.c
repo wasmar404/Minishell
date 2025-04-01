@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 21:04:03 by wasmar            #+#    #+#             */
-/*   Updated: 2025/03/25 12:14:45 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/04/01 21:21:06 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ int	check_equall(t_token *head)
 	}
 	return (i);
 }
+
 void	find_type(t_token *head, t_env **my_envp, t_shell *shell)
 {
 	int		i;
@@ -117,8 +118,10 @@ void	find_type(t_token *head, t_env **my_envp, t_shell *shell)
 	t_env	*new_node;
 	char	*all;
 	char	*temp;
-
 	head = head->next;
+	t_env_struct *env;
+	env = ft_malloc(shell->mallo,sizeof(t_env_struct));
+
 	while(head && head->type == WORD)
 	{
 		i = check_equall(head);
@@ -126,11 +129,13 @@ void	find_type(t_token *head, t_env **my_envp, t_shell *shell)
 		a = check_if_var_exists(*my_envp, type);
 		if (a == NULL)
 		{
+			env->equal =  check_equal(head->token);
+			env->type = ft_malloc(shell->mallo,ft_strlen(type)+1);
+			strcpy(env->type,type);
 			tail = find_tail(*my_envp);
 			len = ft_strlen(head->token);
 			enva = ft_strdupp(head->token + i + 1, len - (i + 1), shell);
-			new_node = create_node_tokenn(enva, type, check_equal(head->token),
-					head->token, shell);
+			new_node = create_node_tokenn(enva,env,head->token, shell);
 			tail->next = new_node;
 			new_node->next = NULL;
 			new_node->prev = tail;
@@ -147,7 +152,6 @@ void	find_type(t_token *head, t_env **my_envp, t_shell *shell)
 		}
 		head = head -> next;
 	}
-
 }
 void	export_main(t_env **my_envp, t_token *head, t_shell *exitcode)
 {

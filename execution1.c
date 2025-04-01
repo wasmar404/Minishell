@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 19:03:54 by wasmar            #+#    #+#             */
-/*   Updated: 2025/03/31 14:40:07 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/04/01 22:26:36 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,11 +108,11 @@ void	handle_fork(t_exe *exe, t_token *current, t_env **my_envp,
 	if (shell->pid == 0)
 	{
 		restore_signals();
-		if (shell->exit_code == 127)
-		{
-			exe->fd = open("/dev/null", O_RDONLY);
-			dup2(exe->fd, STDIN_FILENO);
-		}
+		// if (shell->exit_code == 127)
+		// {
+		// 	exe->fd = open("/dev/null", O_RDONLY);
+		// 	dup2(exe->fd, STDIN_FILENO);
+		// }
 		add_shell_level(my_envp, current, &(exe->envp), shell);
 		run_command_helper(current, my_envp, shell, exe);
 	}

@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/04/01 17:08:29 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/04/01 21:15:15 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,16 @@ typedef struct t_dups
 	t_token	*current_output;
 	int		flag1;
 }					t_dups;
+typedef struct t_env_struct
+{
+	char *type;//a
+	bool equal;
+	int i ;
+	int j;
+	t_env	*head;
+	t_env	*new_node;
+	t_env	*print;
+}					t_env_struct;
 int	check_and_create_file_soutput_redirectio(t_token *head, int *fd,
 	int *dev_null);
 int check_front_out_redirection_and_pipe(t_token **current_output,t_token *head, t_token **current_input,int *flag);
@@ -199,7 +209,7 @@ void				token_count_helper(char *input, int *i, int *count,
 int					ft_strcmp(char *str1, char *str2);
 void				print_list(t_token *head);
 int					count_nodes(t_env *head);
-t_env	*create_node_tokenn(char *str, char *type, bool equal, char *all_line,t_shell *shell);
+t_env	*create_node_tokenn(char *str, t_env_struct *env, char *all_line,t_shell *shell);
 t_env	*env_to_linked_list(char **envp,t_shell *shell);
 int					count_nodes(t_env *head);
 int				print_listt(t_env *head);
