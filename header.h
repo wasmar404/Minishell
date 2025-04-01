@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/04/01 16:15:27 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/04/01 17:08:29 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,15 @@ typedef struct t_variables
 	char *tertiary;
     char **array;
 } t_variables;
+
+typedef struct t_ints
+{
+	int i; //flag
+	int j;	//flag1
+	int x;	//x
+} t_ints;
+
+
 typedef struct t_dups
 {
 	t_token	*current;
