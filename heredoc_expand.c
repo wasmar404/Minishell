@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 12:23:12 by schaaban          #+#    #+#             */
-/*   Updated: 2025/04/02 08:18:58 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/04/02 08:40:00 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,9 +155,12 @@ void	process_dolloris_heredoc(char **input, t_env *env, t_shell *exitcode)
 	to_expand = NULL;
 	start = 0;
 	len = 0;
+	expanded = NULL;
 	while (input[i])
 	{
 		process_dolloris_helper_h(&i, input, &str, env, exitcode);
+		if(!str)
+			break;
 		i++;
 	}
 }
