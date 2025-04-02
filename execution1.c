@@ -6,13 +6,14 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 19:03:54 by wasmar            #+#    #+#             */
-/*   Updated: 2025/04/01 22:26:36 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/04/02 07:15:28 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-void	check_and_create_pipe(t_token *current_next, int *pipe_fd, int *flag,t_shell *shell)
+void	check_and_create_pipe(t_token *current_next, int *pipe_fd, int *flag,
+		t_shell *shell)
 {
 	t_token	*head;
 
@@ -24,7 +25,7 @@ void	check_and_create_pipe(t_token *current_next, int *pipe_fd, int *flag,t_shel
 			if (pipe(pipe_fd) == -1)
 			{
 				perror("pipe failed");
-				ft_free_all(shell -> mallo);
+				ft_free_all(shell->mallo);
 				exit(EXIT_FAILURE);
 			}
 			(*flag)++;
@@ -47,9 +48,9 @@ void	init_exe_struct(t_exe *exe)
 	exe->pipe_flag = 0;
 	exe->fork_flag = 0;
 	exe->pipefd[0] = -1;
-    exe->pipefd[1] = -1;
-    exe->pipe_flag = 0;
-    exe->envp = NULL; 
+	exe->pipefd[1] = -1;
+	exe->pipe_flag = 0;
+	exe->envp = NULL;
 	exe->status = 0;
 }
 
@@ -64,7 +65,7 @@ void	restore_terminal_file_descriptor(t_exe *exe)
 void	builtin_and_no_pipe(t_exe *exe, t_token *current, t_env **my_envp,
 		t_shell *shell)
 {
-	 exe->fork_flag = 1;
+	exe->fork_flag = 1;
 	run_built_ins(current, my_envp, 0, exe, shell);
 	restore_terminal_file_descriptor(exe);
 }
@@ -125,7 +126,7 @@ void	handle_fork(t_exe *exe, t_token *current, t_env **my_envp,
 	else
 	{
 		perror("fork failed");
-		ft_free_all(shell -> mallo);
+		ft_free_all(shell->mallo);
 		exit(EXIT_FAILURE);
 	}
 }
@@ -144,7 +145,6 @@ void	complicated_execute(t_env **my_envp, t_token *head, t_shell *shell)
 	t_token	*current;
 
 	init_exe_struct(&exe);
-	shell->pid = -1;
 	current = head;
 	ft_exit(current, shell);
 	while (current != NULL)
@@ -154,7 +154,8 @@ void	complicated_execute(t_env **my_envp, t_token *head, t_shell *shell)
 		if (current->type == COMMAND)
 		{
 			exe.pipe_flag = 0;
-			check_and_create_pipe(current->next, exe.pipefd, &(exe.pipe_flag),shell);
+			check_and_create_pipe(current->next, exe.pipefd, &(exe.pipe_flag),
+				shell);
 			if (pipe_count(head) == 0 && current->built_in_or_not == true)
 				builtin_and_no_pipe(&exe, current, my_envp, shell);
 			else

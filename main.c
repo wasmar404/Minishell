@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/04/01 22:25:26 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/04/02 07:15:40 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void init_shell_struct(t_shell *shell,char **envp)
 	shell->input_file_flag = 0;
 	shell->env =  env_to_linked_list(envp,shell);
 	shell->env_array = env_to_array(shell->env,shell);
+	shell->pid = -1;
 }
 
 void print_malloc(t_malloc *gc)
