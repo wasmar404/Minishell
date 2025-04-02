@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 21:04:03 by wasmar            #+#    #+#             */
-/*   Updated: 2025/04/01 21:21:06 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/04/02 07:37:57 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ t_env	*check_if_var_exists(t_env *my_envp, char *type)
 	}
 	return (NULL);
 }
+
 void	reset_bool_printed(t_env *head)
 {
 	while (head != NULL)
@@ -33,6 +34,7 @@ void	reset_bool_printed(t_env *head)
 		head = head->next;
 	}
 }
+
 char	*ft_strdupp(char *str, int i, t_shell *shell)
 {
 	int		z;
@@ -52,6 +54,7 @@ char	*ft_strdupp(char *str, int i, t_shell *shell)
 	array[z] = '\0';
 	return (array);
 }
+
 void	print_env_sorted(t_env *head)
 {
 	t_env	*smallest_value;
@@ -71,13 +74,9 @@ void	print_env_sorted(t_env *head)
 			new_head = new_head->next;
 		}
 		if (!smallest_value)
-		{
 			break ;
-		}
 		if (check_equal(smallest_value->all) == 0)
-		{
 			printf("declare -x %s\n", smallest_value->type);
-		}
 		else
 			printf("declare -x %s=\"%s\"\n", smallest_value->type,
 				smallest_value->enva);
@@ -93,6 +92,7 @@ t_env	*find_tail(t_env *my_envp)
 	}
 	return (my_envp);
 }
+
 int	check_equall(t_token *head)
 {
 	int	i;
@@ -107,52 +107,73 @@ int	check_equall(t_token *head)
 	return (i);
 }
 
+
+void	init_t_export(t_export *exp, t_shell *shell)
+{
+	exp->i = 0;
+	exp->type = NULL;
+	exp->a = NULL;
+	exp->tail = NULL;
+	exp->len = 0;
+	exp->enva = NULL;
+	exp->new_node = NULL;
+	exp->all = NULL;
+	exp->temp = NULL;
+	exp->env = NULL;
+}
+
+void	find_type_helper(t_export *export, t_token *head, t_env **my_envp,
+		t_shell *shell)
+{
+	export->env->equal = check_equal(head->token);
+	export->env->type = ft_malloc(shell->mallo, ft_strlen(export->type) + 1);
+	strcpy(export->env->type, export->type);
+	export->tail = find_tail(*my_envp);
+	export->len = ft_strlen(head->token);
+	export->enva = ft_strdupp(head->token + export->i + 1, export->len
+			- (export->i + 1), shell);
+	export->new_node = create_node_tokenn(export->enva, export->env,
+			head->token, shell);
+	export->tail->next = export->new_node;
+	export->new_node->next = NULL;
+	export->new_node->prev = export->tail;
+}
+void	find_type_helper_1(t_export *export, t_token *head, t_env **my_envp,
+		t_shell *shell)
+{
+	export->len = ft_strlen(head->token);
+	export->enva = ft_strdupp(head->token + export->i + 1, export->len
+			- (export->i + 1), shell);
+	strcpy(export->a->enva, export->enva);
+	export->a->equal = true;
+	export->all = ft_strjoin(export->a->type, "=", shell->mallo);
+	export->temp = ft_strjoin(export->all, export->a->enva, shell->mallo);
+	export->a->all = export->temp;
+}
 void	find_type(t_token *head, t_env **my_envp, t_shell *shell)
 {
-	int		i;
-	char	*type;
-	t_env	*a;
-	t_env	*tail;
-	int		len;
-	char	*enva;
-	t_env	*new_node;
-	char	*all;
-	char	*temp;
-	head = head->next;
-	t_env_struct *env;
-	env = ft_malloc(shell->mallo,sizeof(t_env_struct));
+	t_export	*export;
 
-	while(head && head->type == WORD)
+	export = ft_malloc(shell->mallo, sizeof(t_export));
+	head = head->next;
+	export->env = ft_malloc(shell->mallo, sizeof(t_env_struct));
+	while (head && head->type == WORD)
 	{
-		i = check_equall(head);
-		type = ft_strdupp(head->token, i, shell);
-		a = check_if_var_exists(*my_envp, type);
-		if (a == NULL)
+		export->i = check_equall(head);
+		export->type = ft_strdupp(head->token, export->i, shell);
+		export->a = check_if_var_exists(*my_envp, export->type);
+		if (export->a == NULL)
 		{
-			env->equal =  check_equal(head->token);
-			env->type = ft_malloc(shell->mallo,ft_strlen(type)+1);
-			strcpy(env->type,type);
-			tail = find_tail(*my_envp);
-			len = ft_strlen(head->token);
-			enva = ft_strdupp(head->token + i + 1, len - (i + 1), shell);
-			new_node = create_node_tokenn(enva,env,head->token, shell);
-			tail->next = new_node;
-			new_node->next = NULL;
-			new_node->prev = tail;
+			find_type_helper(export, head, my_envp, shell);
 		}
 		else
 		{
-			len = ft_strlen(head->token);
-			enva = ft_strdupp(head->token + i + 1, len - (i + 1), shell);
-			strcpy(a->enva, enva);
-			a->equal = true;
-			all = ft_strjoin(a->type, "=", shell->mallo);
-			temp = ft_strjoin(all, a->enva, shell->mallo);
-			a->all = temp; // Assign the final result to `a->all`
+			find_type_helper_1(export, head, my_envp, shell);
 		}
-		head = head -> next;
+		head = head->next;
 	}
 }
+
 void	export_main(t_env **my_envp, t_token *head, t_shell *exitcode)
 {
 	if (valid_identifier(head) == 0)

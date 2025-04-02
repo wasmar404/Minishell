@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/04/01 21:15:15 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/04/02 07:38:08 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,8 @@ typedef struct t_env
 	struct t_env	*prev;
 
 }					t_env;
+
+
 typedef struct t_shell
 {
 	long long exit_code;
@@ -155,6 +157,19 @@ typedef struct t_env_struct
 	t_env	*new_node;
 	t_env	*print;
 }					t_env_struct;
+typedef struct t_export
+{
+	int				i;
+	char			*type;
+	t_env			*a;
+	t_env			*tail;
+	int				len;
+	char			*enva;
+	t_env			*new_node;
+	char			*all;
+	char			*temp;
+	t_env_struct	*env;
+}					t_export;
 int	check_and_create_file_soutput_redirectio(t_token *head, int *fd,
 	int *dev_null);
 int check_front_out_redirection_and_pipe(t_token **current_output,t_token *head, t_token **current_input,int *flag);
