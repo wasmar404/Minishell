@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 08:42:15 by wasmar            #+#    #+#             */
-/*   Updated: 2025/03/21 01:59:30 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/04/02 08:16:15 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,11 @@ void	tar(int n, int *target)
 		*target = 1;
 }
 
-char	*m(int count,t_malloc *mallo)
+char	*m(int count, t_malloc *mallo)
 {
 	char	*result;
 
-	result = (char *)ft_malloc(mallo,sizeof(char) * (count + 1));
+	result = (char *)ft_malloc(mallo, sizeof(char) * (count + 1));
 	if (!result)
 	{
 		return (NULL);
@@ -52,7 +52,7 @@ char	*m(int count,t_malloc *mallo)
 	return (result);
 }
 
-char	*ft_itoa(int n,t_malloc *mallo)
+char	*ft_itoa(int n, t_malloc *mallo)
 {
 	int		count;
 	int		target;
@@ -62,8 +62,8 @@ char	*ft_itoa(int n,t_malloc *mallo)
 	count = numbercount(n);
 	tar(n, &target);
 	if (n == INT_MIN)
-		return (ft_strdup("-2147483648",mallo));
-	result = m(count,mallo);
+		return (ft_strdup("-2147483648", mallo));
+	result = m(count, mallo);
 	result[count] = '\0';
 	if (n < 0)
 	{

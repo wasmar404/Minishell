@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 10:37:55 by wasmar            #+#    #+#             */
-/*   Updated: 2025/03/22 13:55:15 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/04/02 08:15:54 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,20 +96,20 @@ void	process_dolloris_helper(int *i, t_token **head, t_quotes *quotes,
 	initialize_variable(&var);
 	if ((*head)->token[(*i)] != '$')
 		return ;
-	var.tertiary = create_array_till_dollar(*head, (*i),shell);
+	var.tertiary = create_array_till_dollar(*head, (*i), shell);
 	start = (*i);
 	var.i = find_end_variable((*head)->token, (*i));
-	var.secondary = ft_strndup((*head)->token + start, var.i - start,shell);
+	var.secondary = ft_strndup((*head)->token + start, var.i - start, shell);
 	var.primary = check_char_after_dollar_and_expand(var.secondary,
 			(quotes->inside_quote), shell);
 	if (var.primary == NULL && ((quotes->inside_quote) == 0
 			|| (quotes->inside_quote) == 1))
 	{
-		expand_variable(head, var.tertiary, var.i,shell);
+		expand_variable(head, var.tertiary, var.i, shell);
 		(*i) = ft_strlen(var.tertiary) - 1;
 	}
 	else if (var.primary)
-		if_expanded(&var, i, head,shell);
+		if_expanded(&var, i, head, shell);
 	else
 		(*i) = var.i;
 	check_quotes_till_end((*head)->token, quotes, start, var.i);
@@ -131,18 +131,18 @@ char	*check_char_after_dollar_and_expand(char *str, int inside_quote,
 	new_string = NULL;
 	if ((str[0] == '$' && str[1] == '?') && (inside_quote == 0
 			|| inside_quote == 1))
-		new_string = ft_itoa(shell->exit_code,shell->mallo);
+		new_string = ft_itoa(shell->exit_code, shell->mallo);
 	else if (str[0] == '$' && (str[1] == '"' || str[1] == '\'')
 			&& (inside_quote == 0))
-		new_string = ft_strdup(str + 1,shell->mallo);
+		new_string = ft_strdup(str + 1, shell->mallo);
 	else if (str[0] == '$' && (str[1] >= '0' && str[1] <= '9')
 		&& (inside_quote == 0 || inside_quote == 1))
-		new_string = ft_strdup(str + 2,shell->mallo);
+		new_string = ft_strdup(str + 2, shell->mallo);
 	else if ((is_alphanumeric(str[1]) == 0 && (str[1] != '_')) && str[0] == '$'
 		&& (inside_quote == 0 || inside_quote == 1))
-		new_string = ft_strdup(str,shell->mallo);
+		new_string = ft_strdup(str, shell->mallo);
 	else if ((is_alphanumeric(str[1]) == 1 || (str[1] == '_')) && str[0] == '$'
 		&& (inside_quote == 0 || inside_quote == 1))
-		new_string = expand_dollar(str, shell->env,shell);
+		new_string = expand_dollar(str, shell->env, shell);
 	return (new_string);
 }

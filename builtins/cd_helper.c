@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_helper.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/05 12:28:27 by wasmar            #+#    #+#             */
-/*   Updated: 2025/03/24 12:07:11 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/04/02 08:15:45 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_env	*search_env(t_env *envp, char *to_find)
 	return (NULL);
 }
 
-int	update_pwd_and_oldpwd(t_env *my_envp, char *new_path,t_shell *shell)
+int	update_pwd_and_oldpwd(t_env *my_envp, char *new_path, t_shell *shell)
 {
 	t_env	*env_node;
 	char	*new_oldpwd;
@@ -46,7 +46,7 @@ int	update_pwd_and_oldpwd(t_env *my_envp, char *new_path,t_shell *shell)
 	env_node = search_env(my_envp, "PWD");
 	if (env_node == NULL)
 		return (-1);
-	new_oldpwd = ft_strdup(env_node->enva,shell->mallo);
+	new_oldpwd = ft_strdup(env_node->enva, shell->mallo);
 	strcpy(env_node->enva, new_path);
 	env_node = search_env(my_envp, "OLDPWD");
 	if (env_node == NULL)
