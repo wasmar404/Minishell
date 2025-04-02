@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   updated_tokenization.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hackme <hackme@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:02:23 by wasmar            #+#    #+#             */
-/*   Updated: 2025/04/01 09:11:03 by hackme           ###   ########.fr       */
+/*   Updated: 2025/04/02 07:47:25 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void	add_type(t_token *head, char **envp, t_shell *shell)
 		(head) = (head)->next;
 	}
 }
-
 
 t_token	*generate_token(char **splitted_input, int i, t_shell *shell)
 {
@@ -230,7 +229,3 @@ int	find_end_of_quotes(char *str, char quote, int start)
 	}
 	return (-1);
 }
-//  echo "'hello'""kkkm'
-// echo "'"ho'l'a"'"
-// 'hola'
-// echo "'"ho'l'a"'"
