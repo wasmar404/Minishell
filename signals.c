@@ -6,39 +6,38 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:53:50 by schaaban          #+#    #+#             */
-/*   Updated: 2025/03/19 12:43:48 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/04/02 08:11:37 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
-void ctrl_c(int sig)
+
+void	ctrl_c(int sig)
 {
-	 (void)sig; 
+	(void)sig;
 	printf("\n");
 	rl_on_new_line();
-	rl_replace_line("",0);
+	rl_replace_line("", 0);
 	rl_redisplay();
 	// exitcode -> exit_code = 148;
 }
-void ctrl_c_heredoc()
+void	ctrl_c_heredoc(void)
 {
-	
 }
-void main_signal()
+void	main_signal(void)
 {
-	signal(SIGINT,ctrl_c);
-	signal(SIGQUIT,SIG_IGN);
-}
-
-
-void ignore_signals()
-{
-	signal(SIGINT,SIG_IGN);
-	signal(SIGQUIT,SIG_IGN);
+	signal(SIGINT, ctrl_c);
+	signal(SIGQUIT, SIG_IGN);
 }
 
-void restore_signals()
+void	ignore_signals(void)
 {
-	signal(SIGINT,SIG_DFL);
-	signal(SIGQUIT,SIG_DFL);
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+}
+
+void	restore_signals(void)
+{
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 }

@@ -6,21 +6,21 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 15:13:08 by schaaban          #+#    #+#             */
-/*   Updated: 2025/04/01 21:36:56 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/04/02 08:11:54 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-int main_pwd()
+int	main_pwd(void)
 {
-    char cwd[10000];
+	char	cwd[10000];
 
-    if (getcwd(cwd, sizeof(cwd)) != NULL) {
-        printf("%s\n", cwd);
-    } else
-        return (1);
-    return (0);
-
+	if (getcwd(cwd, sizeof(cwd)) != NULL)
+	{
+		printf("%s\n", cwd);
+	}
+	else
+		return (1);
+	return (0);
 }
-

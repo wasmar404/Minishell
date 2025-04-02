@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/04/02 07:15:40 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/04/02 08:12:28 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,7 @@ int	pipe_count(t_token *head)
 	pipes = 0;
 	while (head != NULL)
 	{
-		if (head->type == PIPE) //|| head->type == AOUTPUT_REDIRECTION)
+		if (head->type == PIPE) 
 		{
 			pipes++;
 		}
@@ -439,7 +439,7 @@ void	heredoc(char *str, int fd, t_env *envp, t_shell *exitcode)
 	while (1)
 	{
 		input = readline("> ");
-		if (input == NULL)  // Handle EOF (Ctrl+D)
+		if (input == NULL)  
 			break ;
 		if (strcmp(str, input) == 0)
 		{
