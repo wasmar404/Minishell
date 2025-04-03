@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_helper.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/05 12:28:27 by wasmar            #+#    #+#             */
-/*   Updated: 2025/04/02 08:15:45 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/04/02 10:52:03 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,11 @@ int	update_pwd_and_oldpwd(t_env *my_envp, char *new_path, t_shell *shell)
 	if (env_node == NULL)
 		return (-1);
 	new_oldpwd = ft_strdup(env_node->enva, shell->mallo);
-	strcpy(env_node->enva, new_path);
+	ft_strcpy(env_node->enva, new_path);
 	env_node = search_env(my_envp, "OLDPWD");
 	if (env_node == NULL)
 		return (-1);
-	strcpy(env_node->enva, new_oldpwd);
+	ft_strcpy(env_node->enva, new_oldpwd);
 	return (1);
 }
 int	find_last_backslash(char *str)

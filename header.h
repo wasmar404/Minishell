@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   header.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/04/02 07:42:10 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/04/02 15:12:56 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # include "builtins/builtins.h"
 # include "expand_dollar/dollar.h"
+# include "dups/dups.h"
+# include "execution/execution.h"
 # include "libft/libft.h"
 # include <errno.h>
 # include <fcntl.h>
@@ -163,6 +165,9 @@ typedef struct t_export
 	char				*temp;
 	t_env_struct		*env;
 }						t_export;
+
+char *ft_strcpy(char *dest, const char *src);
+int ft_strncmp(const char *s1, const char *s2, size_t n);
 int						check_and_create_file_soutput_redirectio(t_token *head,
 							int *fd, int *dev_null);
 int						check_front_out_redirection_and_pipe(t_token **current_output,

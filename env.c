@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 21:54:01 by wasmar            #+#    #+#             */
-/*   Updated: 2025/04/01 21:26:15 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/04/02 10:51:23 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ char	**env_to_array(t_env *head, t_shell *shell)
 	{
 		str_len = ft_strlen(head->all);
 		my_envp[i] = ft_malloc(shell->mallo, (str_len + 1) * sizeof(char));
-		strcpy(my_envp[i], head->all);
+		ft_strcpy(my_envp[i], head->all);
 		head = head->next;
 		i++;
 	}

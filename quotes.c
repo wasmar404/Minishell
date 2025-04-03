@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:02:23 by wasmar            #+#    #+#             */
-/*   Updated: 2025/04/02 08:11:47 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/04/02 10:50:39 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	double_quotes_remove(t_token *head, t_shell *shell, t_rq *quotes)
 		quotes->copy = ft_strdup((head)->token, shell->mallo);
 		remove_quotes_and_replace(&head, quotes->i, shell);
 		quotes->double_quotes++;
-		quotes->len = strlen((head)->token);
+		quotes->len = ft_strlen((head)->token);
 		quotes->end = find_end_of_quotes(quotes->copy, '"', quotes->i);
 		if (quotes->end == -1)
 		{
@@ -83,7 +83,7 @@ int	single_quotes_remove(t_token *head, t_shell *shell, t_rq *quotes)
 		quotes->copy = ft_strdup((head)->token, shell->mallo);
 		remove_quotes_and_replace(&head, quotes->i, shell);
 		quotes->single_quotes++;
-		quotes->len = strlen((head)->token);
+		quotes->len = ft_strlen((head)->token);
 		quotes->end = find_end_of_quotes(quotes->copy, '\'', quotes->i);
 		if (quotes->end == -1)
 		{

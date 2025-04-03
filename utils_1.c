@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:07:34 by wasmar            #+#    #+#             */
-/*   Updated: 2025/02/13 13:31:34 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/04/02 13:35:02 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,26 @@ int	is_alphanumeric(char c)
 		return (1);
 	}
 	return (0);
+}
+char *ft_strcpy(char *dest, const char *src) 
+{
+    char *ptr = dest;
+    while (*src) {
+        *ptr++ = *src++;
+    }
+    *ptr = '\0';  // Null-terminate the destination string
+    return dest;
+}
+int ft_strncmp(const char *s1, const char *s2, size_t n)
+{
+    size_t i;
+
+    i = 0;
+    while (i < n && (s1[i] != '\0' || s2[i] != '\0'))
+    {
+        if (s1[i] != s2[i])
+            return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+        i++;
+    }
+    return (0);
 }

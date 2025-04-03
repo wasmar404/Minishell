@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 15:19:54 by schaaban          #+#    #+#             */
-/*   Updated: 2025/02/13 15:21:29 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/04/02 14:32:58 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,10 @@ void	check_quotes_till_end(char *str, t_quotes *quotes, int start, int end)
 	int i;
 
 	i = start;
-	while (i <= end)
-	{
-		update_quote_status(quotes, str[i]);
+	while (i <= end && str[i] != '\0')
+	{	
+		if(str[i])
+			update_quote_status(quotes, str[i]);
 		i++;
 	}
 }

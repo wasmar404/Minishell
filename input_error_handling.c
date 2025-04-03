@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_error_handling.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 10:14:57 by schaaban          #+#    #+#             */
-/*   Updated: 2025/04/02 08:19:54 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/04/02 10:56:58 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ int check_command(char *array,char **envp,t_shell *exitcode)
     {
         flag =1;
     }
-    if(flag == 1 && !(strcmp(array, ">") == 0 || strcmp(array, "<") == 0 || 
-                       strcmp(array, "<<") == 0 || strcmp(array, ">>") == 0 || strcmp(array,"|") == 0))
+    if(flag == 1 && !(ft_strcmp(array, ">") == 0 || ft_strcmp(array, "<") == 0 || 
+                       ft_strcmp(array, "<<") == 0 || ft_strcmp(array, ">>") == 0 || ft_strcmp(array,"|") == 0))
     {
             ft_putendl_fd_two("sw_shell: command not found: ",array,2);
             exitcode -> exit_code = 127;
@@ -317,7 +317,7 @@ int check_cd_command(t_token *head,t_shell *exitcode)
     {
         if(head -> type == COMMAND)
         {
-            if(head ->next && strcmp(head -> token,"cd") == 0 && (head -> next -> type == WORD))
+            if(head ->next && ft_strcmp(head -> token,"cd") == 0 && (head -> next -> type == WORD))
             {
                 exitcode -> exit_code = 1;
                 ft_putendl_fd("bash: cd: No such file or directory",2);

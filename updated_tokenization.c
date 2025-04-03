@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   updated_tokenization.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:02:23 by wasmar            #+#    #+#             */
-/*   Updated: 2025/04/02 07:47:25 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/04/02 11:00:42 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,15 +140,15 @@ int	check_if_cmd(char *input, char **envp, t_token *head, t_shell *shell)
 		return (1);
 	if (find_path_of_cmd(input, envp, shell))
 	{
-		if (head->prev == NULL || (head->prev && (strcmp(head->prev->token,
+		if (head->prev == NULL || (head->prev && (ft_strcmp(head->prev->token,
 						"|") == 0)))
 			return (1);
 		else if (count_ttoken_nodes(head) >= 2)
 		{
-			if (head->prev->prev && (strcmp(head->prev->prev->token, ">") == 0
-					|| strcmp(head->prev->prev->token, "<") == 0
-					|| strcmp(head->prev->prev->token, ">>") == 0
-					|| strcmp(head->prev->prev->token, "<<") == 0))
+			if (head->prev->prev && (ft_strcmp(head->prev->prev->token, ">") == 0
+					|| ft_strcmp(head->prev->prev->token, "<") == 0
+					|| ft_strcmp(head->prev->prev->token, ">>") == 0
+					|| ft_strcmp(head->prev->prev->token, "<<") == 0))
 				return (1);
 		}
 		return (0);
@@ -176,7 +176,7 @@ char	*new_string(char *str, int i, int j, t_shell *shell)
 	int		y;
 
 	x = 0;
-	len = strlen(str);
+	len = ft_strlen(str);
 	while (len > 0 && (str[len - 1] == ' '))
 	{
 		len--;
@@ -212,9 +212,9 @@ void	remove_quotes_and_replace(t_token **head, int start, t_shell *shell)
 		return ;
 	}
 	new = new_string((*head)->token, start, end, shell);
-	len = strlen(new);
+	len = ft_strlen(new);
 	(*head)->token = ft_malloc(shell->mallo, len + 1);
-	strcpy((*head)->token, new);
+	ft_strcpy((*head)->token, new);
 }
 int	find_end_of_quotes(char *str, char quote, int start)
 {

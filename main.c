@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/04/02 08:13:26 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/04/02 15:43:38 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	main(int ac, char **av, char **envp)
 			add_history(input);
 			main_helper(input, &shell, mallo);
 		}
-		if (strcmp(input, "stop") == 0)
+		if (ft_strcmp(input, "stop") == 0)
 			break ;
 	}
 	ft_free_all(mallo);
@@ -103,7 +103,7 @@ int	pipe_count_array(char **str)
 	i = 0;
 	while (str[i])
 	{
-		if (strcmp(str[i], "|") == 0)
+		if (ft_strcmp(str[i], "|") == 0)
 			count++;
 		i++;
 	}
@@ -116,7 +116,7 @@ void	main_helper(char *input, t_shell *shell, t_malloc *mallo)
 
 	if (check_if_null(input) == 0)
 		return ;
-	if (strcmp(input, "history -c") == 0)
+	if (ft_strcmp(input, "history -c") == 0)
 	{
 		rl_clear_history();
 		return ;
@@ -194,6 +194,7 @@ char	**array_complicated_execute(t_token *head, t_shell *shell)
 	current_command[i] = NULL;
 	return (current_command);
 }
+
 int	count_tokens_for_exec_array(t_token *head, t_shell *shell)
 {
 	t_token	*temp;
@@ -222,7 +223,7 @@ void	here_doc_first(char *s, t_token *head, int fd)
 	while (1)
 	{
 		input = readline("> ");
-		if (strcmp(s, input) == 0)
+		if (ft_strcmp(s, input) == 0)
 		{
 			break ;
 		}
@@ -300,14 +301,15 @@ void	change_value_in_envp(t_env *my_envp, char *new_value, t_shell *shell)
 		my_envp->all = ft_strjoin(my_envp->type, my_envp->enva, shell->mallo);
 	}
 }
+
 void	add_shell_level(t_env **my_envp, t_token *head, char ***envp,
 		t_shell *shelll)
 {
 	int		shell;
 	char	*a;
 
-	if (strcmp(head->token, "./minishell") == 0 || strcmp(head->token,
-			"minishell") == 0 || strcmp(head->token, "bash") == 0)
+	if (ft_strcmp(head->token, "./minishell") == 0 || ft_strcmp(head->token,
+			"minishell") == 0 || ft_strcmp(head->token, "bash") == 0)
 	{
 		search_and_find_a_type_my_envp((my_envp), "SHLVL");
 		if ((*my_envp)->enva)
@@ -338,20 +340,20 @@ int	find_var_name_return(t_env *my_envp, char *var_name)
 void	run_built_ins_helper(t_token *head, t_env **my_envp, t_shell *exitcode)
 {
 	t_env *env_copy = (*my_envp); // so the var  my_envp does not become null
-	if ((strcmp(head->token, "env") == 0))
+	if ((ft_strcmp(head->token, "env") == 0))
 	{
 		if (find_var_name_return((*my_envp), "PATH") == 1)
 			exitcode->exit_code = print_listt((*my_envp));
 		else
 			exitcode->exit_code = 1;
 	}
-	if (strcmp(head->token, "echo") == 0)
+	if (ft_strcmp(head->token, "echo") == 0)
 		echo_main(head, exitcode);
-	if (strcmp(head->token, "pwd") == 0)
+	if (ft_strcmp(head->token, "pwd") == 0)
 		exitcode->exit_code = main_pwd();
-	if (strcmp(head->token, "cd") == 0)
+	if (ft_strcmp(head->token, "cd") == 0)
 		main_cd(head, &env_copy, exitcode);
-	if (strcmp(head->token, "export") == 0)
+	if (ft_strcmp(head->token, "export") == 0)
 		export_main(my_envp, head, exitcode);
 }
 void	run_built_ins(t_token *head, t_env **my_envp, int flag, t_exe *exe,
@@ -359,7 +361,7 @@ void	run_built_ins(t_token *head, t_env **my_envp, int flag, t_exe *exe,
 {
 	super_complicated_handle_dups(head, exe, (*my_envp), exitcode);
 	run_built_ins_helper(head, my_envp, exitcode);
-	if (strcmp(head->token, "unset") == 0)
+	if (ft_strcmp(head->token, "unset") == 0)
 	{
 		if (head->next == NULL || head->next->token == NULL
 			|| head->next->token[0] == '\0')
@@ -403,7 +405,7 @@ int	path_exists(char **envp)
 	i = 0;
 	while (envp[i])
 	{
-		if (strncmp(envp[i], "PATH=", 5) == 0)
+		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
 			return (1);
 		i++;
 	}
@@ -446,7 +448,7 @@ void	heredoc(char *str, int fd, t_env *envp, t_shell *exitcode)
 		input = readline("> ");
 		if (input == NULL)
 			break ;
-		if (strcmp(str, input) == 0)
+		if (ft_strcmp(str, input) == 0)
 		{
 			break ;
 		}
@@ -454,7 +456,7 @@ void	heredoc(char *str, int fd, t_env *envp, t_shell *exitcode)
 			process_dolloris_heredoc(&input, envp, exitcode);
 		// remove_quotes_main()
 		// remove_quotes_main_h(input);
-		write(fd, input, strlen(input));
+		write(fd, input, ft_strlen(input));
 		write(fd, "\n", 1);
 	}
 }

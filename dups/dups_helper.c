@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   dups_helper.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 00:55:44 by wasmar            #+#    #+#             */
-/*   Updated: 2025/04/01 16:16:11 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/04/02 15:20:38 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
+#include "../header.h"
+#include "dups.h"
 
 void	check_front_heredoc(t_token *head, t_env *envp, t_shell *shell)
 {
@@ -97,36 +98,6 @@ int	if__check_front_out_redirection_pipe(t_token **current_output,
 		&& (*flag == 0))
 		return (1);
 	return (0);
-}
-
-int	check_and_create_file_soutput_redirectio(t_token *head, int *fd,
-		int *dev_null)
-{
-	if (head->next->type == DIRECTORY && access(head->next->token, W_OK) == -1)
-	{
-		(*dev_null) = open("/dev/null", O_WRONLY);
-		dup2((*dev_null), STDOUT_FILENO);
-		return (0);
-	}
-	(*fd) = open(head->next->token, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	dup2((*fd), 1);
-	ft_close((*fd));
-	return (1);
-}
-
-int	check_and_create_file_aoutput_redirection(t_token *head, int *fd,
-		int *dev_null)
-{
-	if (head->next->type == DIRECTORY && access(head->next->token, W_OK) == -1)
-	{
-		(*dev_null) = open("/dev/null", O_WRONLY);
-		dup2((*dev_null), STDOUT_FILENO);
-		return (0);
-	}
-	(*fd) = open(head->next->token, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	dup2((*fd), 1);
-	ft_close((*fd));
-	return (1);
 }
 
 void	check_back_sinput_redirection(t_token *head, t_shell *shell)

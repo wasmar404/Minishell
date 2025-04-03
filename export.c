@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 21:04:03 by wasmar            #+#    #+#             */
-/*   Updated: 2025/04/02 07:37:57 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/04/02 10:51:43 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ void	find_type_helper(t_export *export, t_token *head, t_env **my_envp,
 {
 	export->env->equal = check_equal(head->token);
 	export->env->type = ft_malloc(shell->mallo, ft_strlen(export->type) + 1);
-	strcpy(export->env->type, export->type);
+	ft_strcpy(export->env->type, export->type);
 	export->tail = find_tail(*my_envp);
 	export->len = ft_strlen(head->token);
 	export->enva = ft_strdupp(head->token + export->i + 1, export->len
@@ -144,7 +144,7 @@ void	find_type_helper_1(t_export *export, t_token *head, t_env **my_envp,
 	export->len = ft_strlen(head->token);
 	export->enva = ft_strdupp(head->token + export->i + 1, export->len
 			- (export->i + 1), shell);
-	strcpy(export->a->enva, export->enva);
+	ft_strcpy(export->a->enva, export->enva);
 	export->a->equal = true;
 	export->all = ft_strjoin(export->a->type, "=", shell->mallo);
 	export->temp = ft_strjoin(export->all, export->a->enva, shell->mallo);
