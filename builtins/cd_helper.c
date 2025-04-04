@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/05 12:28:27 by wasmar            #+#    #+#             */
-/*   Updated: 2025/04/02 10:52:03 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/04/04 16:49:04 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,19 +56,35 @@ int	update_pwd_and_oldpwd(t_env *my_envp, char *new_path, t_shell *shell)
 }
 int	find_last_backslash(char *str)
 {
-	int i = 0;
-	// int j = 0;
-	int old = 0;
-	int new = 0;
+	int i;
+	int last;
+
+	i = 0;
+	last = 0; 
+
 	while (str[i])
 	{
-		if (str[i] == '/')
-		{
-			old = new;
-			new = i;
-			// j = i;
-		}
+		if (str[i] == '/' && str[i + 1] != '\0')
+			last = i;
 		i++;
 	}
-	return (old);
+	return (last);
 }
+// int	find_last_backslash(char *str)
+// {
+// 	int i = 0;
+// 	// int j = 0;
+// 	int old = 0;
+// 	int new = 0;
+// 	while (str[i])
+// 	{
+// 		if (str[i] == '/')
+// 		{
+// 			old = new;
+// 			new = i;
+// 			// j = i;
+// 		}
+// 		i++;
+// 	}
+// 	return (old);
+// }

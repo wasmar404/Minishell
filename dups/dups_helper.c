@@ -6,38 +6,73 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 00:55:44 by wasmar            #+#    #+#             */
-/*   Updated: 2025/04/02 15:20:38 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/04/04 16:50:33 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header.h"
 #include "dups.h"
 
-void	check_front_heredoc(t_token *head, t_env *envp, t_shell *shell)
-{
-	t_token	*temp;
-	int		fd;
+// void	check_front_heredoc(t_token *head, t_env *envp, t_shell *shell)
+// {
+// 	t_token	*temp;
+// 	int		fd;
 
-	temp = head->next;
-	while (temp != NULL)
-	{
-		if (temp->type == HERE_DOC)
-		{
-			fd = open("temp", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-			if (fd < 0)
-			{
-				perror("open");
-				return ;
-			}
-			heredoc(temp->next->token, fd, envp, shell);
-			ft_close(fd);
-		}
-		temp = temp->next;
-	}
-	fd = open("temp", O_RDONLY);
-	dup2(fd, 0);
-	ft_close(fd);
-	unlink("temp");
+// 	temp = head->next;
+// 	while (temp != NULL)
+// 	{
+// 		if (temp->type == HERE_DOC)
+// 		{
+// 			fd = open("temp", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+// 			if (fd < 0)
+// 			{
+// 				perror("open");
+// 				return ;
+// 			}
+// 			heredoc(temp->next->token, fd, envp, shell);
+// 			ft_close(fd);
+// 		}
+// 		temp = temp->next;
+// 	}
+// 	fd = open("temp", O_RDONLY);
+// 	dup2(fd, 0);
+// 	ft_close(fd);
+// 	unlink("temp");
+// }
+void check_front_heredoc(t_token *head, t_env *envp, t_shell *shell)
+{
+    t_token *temp;
+    int     fd;
+    int     heredoc_count = 0;
+    temp = head;
+    // First pass: count heredocs to know if we need to process them
+    while (temp != NULL) {
+        if (temp->type == HERE_DOC)
+            heredoc_count++;
+        temp = temp->next;
+    }
+    if (heredoc_count == 0)
+        return;
+    // Only create the temp file once for all heredocs
+    fd = open("temp", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+    if (fd < 0) {
+        perror("open");
+        return;
+    }
+    // Process all heredocs in sequence
+    temp = head;
+    while (temp != NULL) {
+        if (temp->type == HERE_DOC) {
+            heredoc(temp->next->token, fd, envp, shell);
+        }
+        temp = temp->next;
+    }
+    ft_close(fd);
+    // Set up stdin to read from the temp file
+    fd = open("temp", O_RDONLY);
+    dup2(fd, 0);
+    ft_close(fd);
+    unlink("temp");
 }
 
 void	check_front_sinput_redirection(t_token *head, t_shell *shell)
