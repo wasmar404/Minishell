@@ -6,7 +6,7 @@
 /*   By: hackme <hackme@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/04/04 05:03:02 by hackme           ###   ########.fr       */
+/*   Updated: 2025/04/04 05:08:46 by hackme           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,6 +224,11 @@ void	here_doc_first(char *s, t_token *head, int fd)
 	while (1)
 	{
 		input = readline("> ");
+		if (!input) // Ctrl+D
+		{
+			write(1, "warning: here-document delimited by end-of-file\n", 48);
+			break ;
+		}
 		if (ft_strcmp(s, input) == 0)
 		{
 			break ;
