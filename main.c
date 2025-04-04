@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hackme <hackme@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/04/02 15:43:38 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/04/04 05:03:02 by hackme           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ int	main(int ac, char **av, char **envp)
 		}
 		if (ft_strcmp(input, "stop") == 0)
 			break ;
+		free(input);
 	}
 	ft_free_all(mallo);
 	return (0);
