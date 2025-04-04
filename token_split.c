@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_split.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hackme <hackme@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:00:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/04/02 08:10:37 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/04/04 05:00:13 by hackme           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,7 +207,7 @@ char	**token_split(char *str, t_shell *shell, t_malloc *mallo)
 	tokens = ft_malloc(mallo, sizeof(char *) * (count + 2));
 	while (str[i])
 	{
-		while (str[i] == ' ')
+		while (str[i] == ' ' || str[i] == '\t')
 			i++;
 		if (check_double_sep(str, i))
 		{
