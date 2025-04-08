@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dups_helper.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 00:55:44 by wasmar            #+#    #+#             */
-/*   Updated: 2025/04/04 16:50:33 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/04/09 02:51:11 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void check_front_heredoc(t_token *head, t_env *envp, t_shell *shell)
     temp = head;
     while (temp != NULL) {
         if (temp->type == HERE_DOC) {
+			fd = open("temp", O_WRONLY | O_CREAT | O_TRUNC, 0644);
             heredoc(temp->next->token, fd, envp, shell);
         }
         temp = temp->next;
