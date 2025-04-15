@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   header.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/04/02 15:12:56 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/04/15 07:27:11 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,7 +212,7 @@ void					check_back_sinput_redirection(t_token *head,
 							t_shell *shell);
 
 void					super_complicated_handle_dups(t_token *head, t_exe *exe,
-							t_env *envp, t_shell *exitcode);
+							t_env *envp, t_shell *exitcode,int test);
 int						check_double_sep(char *input, int i);
 int						check_single_sep(char input);
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hackme <hackme@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/04/04 05:08:46 by hackme           ###   ########.fr       */
+/*   Updated: 2025/04/15 07:26:52 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -365,7 +365,7 @@ void	run_built_ins_helper(t_token *head, t_env **my_envp, t_shell *exitcode)
 void	run_built_ins(t_token *head, t_env **my_envp, int flag, t_exe *exe,
 		t_shell *exitcode)
 {
-	super_complicated_handle_dups(head, exe, (*my_envp), exitcode);
+	super_complicated_handle_dups(head, exe, (*my_envp), exitcode,exe->fork_flag);
 	run_built_ins_helper(head, my_envp, exitcode);
 	if (ft_strcmp(head->token, "unset") == 0)
 	{
@@ -396,7 +396,7 @@ void	external_commands(t_token *head, t_env *my_envp, t_exe *exe,
 	if (find_var_name_return((my_envp), "PATH"))
 	{
 		(void)my_envp;
-		super_complicated_handle_dups(head, exe, my_envp, exitcode);
+		super_complicated_handle_dups(head, exe, my_envp, exitcode,exe->pipe_flag);
 		path = find_path_of_cmd(head->token, exe->envp, exitcode);
 		if (execve(path, current_command, exe->envp) == -1)
 			printf("execve failed");

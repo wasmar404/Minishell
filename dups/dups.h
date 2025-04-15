@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dups.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 11:14:54 by schaaban          #+#    #+#             */
-/*   Updated: 2025/04/02 15:24:05 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/04/15 07:27:01 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void						check_back_sinput_redirection(t_token *head,
 								t_shell *shell);
 void						init_dups_struct(t_dups *dups, t_token *head);
 void						super_complicated_handle_dups(t_token *head,
-								t_exe *exe, t_env *envp, t_shell *shell);
+								t_exe *exe, t_env *envp, t_shell *shell,int test);
 void						check_and_create_file(t_token *head);
 void						check_front(t_dups *dups, t_env *envp,
 								t_shell *exitcode);
