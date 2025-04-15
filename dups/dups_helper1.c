@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 11:31:57 by schaaban          #+#    #+#             */
-/*   Updated: 2025/04/15 07:42:46 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/04/15 07:45:39 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	check_back(t_token *head, t_dups *dups, t_shell *exitcode)
 	while(temp && temp != COMMAND)
 	{
 		if(temp->type == HERE_DOC)
-			dups->current_input = head;
+			dups->current_input = temp;
 		temp = temp ->prev;
 	}
 	while (head && head->type != PIPE)
