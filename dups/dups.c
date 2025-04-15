@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 00:55:44 by wasmar            #+#    #+#             */
-/*   Updated: 2025/04/15 07:27:20 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/04/15 07:39:36 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	super_complicated_handle_dups(t_token *head, t_exe *exe, t_env *envp,
 	check_front(dups, envp, shell);
 	dups1(dups, exe->pipefd, envp, shell);
 	dups2(dups->current_input, dups->current_output, exe->input_fd, head);
-	if (test == 1 && exe->pipefd)
+	if (test == 1)// && exe->pipefd
 	{
 		if (exe->pipefd[0] >= 0)
 			ft_close(exe->pipefd[0]);
