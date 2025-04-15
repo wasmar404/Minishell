@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dups_helper1.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 11:31:57 by schaaban          #+#    #+#             */
-/*   Updated: 2025/04/02 15:23:24 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/04/15 07:42:46 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,13 @@ void	check_back(t_token *head, t_dups *dups, t_shell *exitcode)
 	int fd;
 
 	fd = -1;
+	t_token *temp = head;
+	while(temp && temp != COMMAND)
+	{
+		if(temp->type == HERE_DOC)
+			dups->current_input = head;
+		temp = temp ->prev;
+	}
 	while (head && head->type != PIPE)
 	{
 		if (head->type == SINPUT_REDIRECTION)
@@ -101,10 +108,6 @@ void	check_back(t_token *head, t_dups *dups, t_shell *exitcode)
 			fd = open(head->next->token, O_RDONLY, 0644);
 			dup2(fd, 0);
 			ft_close(fd);
-		}
-		if (head->type == PIPE || head->type == HERE_DOC)
-		{
-			dups->current_input = head;
 		}
 		if (head->type == AOUTPUT_REDIRECTION
 			|| head->type == SOUTPUT_REDIRECTION)
