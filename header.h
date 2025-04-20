@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   header.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hackme <hackme@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/04/15 07:27:11 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/04/20 16:46:57 by hackme           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ typedef enum token_type
 	TILDE,
 	MINUS,
 	TWO_POINTS,
-	DIRECTORY
+	DIRECTORY,
+	HEREDOC_INFILE
 }						token_type;
 typedef enum dollar_type
 {
@@ -333,4 +334,6 @@ void					return_env_to_beginning(t_env **my_envp);
 
 void					restore_signals(void);
 void					ignore_signals(void);
+void main_heredoc(t_token *head,t_env *envp,t_shell *shell);
+
 #endif

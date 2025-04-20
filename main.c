@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hackme <hackme@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/04/15 07:26:52 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/04/20 16:47:04 by hackme           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,8 @@ void	main_helper(char *input, t_shell *shell, t_malloc *mallo)
 			if (check_command(head->token, shell->env_array, shell) == 0)
 				return ;
 		}
+		main_heredoc(head,shell->env,shell);
+
 		complicated_execute((&shell->env), head, shell);
 	}
 }
@@ -464,5 +466,38 @@ void	heredoc(char *str, int fd, t_env *envp, t_shell *exitcode)
 		// remove_quotes_main_h(input);
 		write(fd, input, ft_strlen(input));
 		write(fd, "\n", 1);
+	}
+}
+void main_heredoc(t_token *head,t_env *envp,t_shell *shell)
+{
+	int fd;
+	int i;
+	char *file_name;
+	char *num_str;
+
+
+	
+	fd = -42;
+	i= 0;
+	file_name = NULL;
+	while(head)
+	{
+		if(head && head->type == HERE_DOC)
+		{
+			if(head->next)
+			{
+				num_str = ft_itoa(i,shell->mallo);
+				file_name = ft_strjoin("temp",num_str,shell->mallo);
+				fd = open(file_name, O_WRONLY | O_CREAT | O_APPEND, 0644);
+				heredoc(head->next->token,fd,envp,shell);
+				ft_close(fd);
+				strcpy(head->token,"<");
+				strcpy(head->next->token,file_name);
+				head->type = 4;
+				head->next->type = 11; 
+			}
+			i++;
+		}
+		head = head ->next ;
 	}
 }

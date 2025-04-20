@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dups_helper1.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hackme <hackme@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 11:31:57 by schaaban          #+#    #+#             */
-/*   Updated: 2025/04/15 07:45:39 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/04/20 16:54:36 by hackme           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	check_front(t_dups *dups, t_env *envp, t_shell *exitcode)
 {
 	int	fd;
 
-	check_front_heredoc(dups->current, envp, exitcode);
+	// check_front_heredoc(dups->current, envp, exitcode);
 	dups->current = dups->current->next;
 	while (dups->current != NULL && dups->current->type != COMMAND)
 	{
@@ -83,6 +83,10 @@ void	check_front(t_dups *dups, t_env *envp, t_shell *exitcode)
 			fd = open(dups->current->next->token, O_RDONLY, 0644);
 			dup2(fd, 0);
 			ft_close(fd);
+			if(dups->current->next->type == 11)
+			{
+				unlink(dups->current->next->token);
+			}
 		}
 		dups->current = dups->current->next;
 	}
@@ -93,13 +97,6 @@ void	check_back(t_token *head, t_dups *dups, t_shell *exitcode)
 	int fd;
 
 	fd = -1;
-	t_token *temp = head;
-	while(temp && temp != COMMAND)
-	{
-		if(temp->type == HERE_DOC)
-			dups->current_input = temp;
-		temp = temp ->prev;
-	}
 	while (head && head->type != PIPE)
 	{
 		if (head->type == SINPUT_REDIRECTION)

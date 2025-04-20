@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dups.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hackme <hackme@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 00:55:44 by wasmar            #+#    #+#             */
-/*   Updated: 2025/04/15 07:39:36 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/04/20 16:54:56 by hackme           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,17 +62,6 @@ void	dups2(t_token *current_input, t_token *current_output, int input_fd,
 void	dups1(t_dups *dups, int *pipefd, t_env *envp, t_shell *exitcode)
 {
 	int	fd;
-
-	if (dups->current_input && dups->current_input->type == HERE_DOC)
-	{
-		fd = open("temp", O_WRONLY | O_CREAT | O_APPEND, 0644);
-		heredoc(dups->current_input->next->token, fd, envp, exitcode);
-		ft_close(fd);
-		fd = open("temp", O_RDONLY);
-		dup2(fd, 0);
-		ft_close(fd);
-		unlink("temp");
-	}
 	if (dups->current_output && dups->current_output->type == PIPE)
 	{
 		dup2(pipefd[1], 1);
