@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hackme <hackme@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/04/20 16:47:04 by hackme           ###   ########.fr       */
+/*   Updated: 2025/04/20 21:47:43 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	init_shell_struct(t_shell *shell, char **envp)
 	shell->env = env_to_linked_list(envp, shell);
 	shell->env_array = env_to_array(shell->env, shell);
 	shell->pid = -1;
+	shell->heredoc_count =0;
 }
 
 void	print_malloc(t_malloc *gc)
@@ -500,4 +501,19 @@ void main_heredoc(t_token *head,t_env *envp,t_shell *shell)
 		}
 		head = head ->next ;
 	}
+}
+void delete_temp_files(t_shell *shell)
+{
+	int i = 0;
+	char *file_name = NULL;
+	char *num_str;
+	while (i <=shell->heredoc_count)
+	{
+		num_str = ft_itoa(i,shell->mallo);
+		file_name = ft_strjoin("temp",num_str,shell->mallo);
+		unlink(file_name);
+		i++;
+	}
+	shell->heredoc_count = 0;
+
 }
