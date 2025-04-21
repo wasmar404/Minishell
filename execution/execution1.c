@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 19:03:54 by wasmar            #+#    #+#             */
-/*   Updated: 2025/04/20 21:48:11 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/04/21 07:12:35 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,6 @@ void	complicated_execute(t_env **my_envp, t_token *head, t_shell *shell)
 		}
 		current = current->next;
 	}
-	delete_temp_files(shell);
 	manage_wait_status(&exe, shell);
+	delete_temp_files(shell);
 }

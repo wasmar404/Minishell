@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dups_helper1.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hackme <hackme@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 11:31:57 by schaaban          #+#    #+#             */
-/*   Updated: 2025/04/20 16:54:36 by hackme           ###   ########.fr       */
+/*   Updated: 2025/04/21 07:13:01 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,10 +83,10 @@ void	check_front(t_dups *dups, t_env *envp, t_shell *exitcode)
 			fd = open(dups->current->next->token, O_RDONLY, 0644);
 			dup2(fd, 0);
 			ft_close(fd);
-			if(dups->current->next->type == 11)
-			{
-				unlink(dups->current->next->token);
-			}
+			// if(dups->current->next->type == 11)
+			// {
+			// 	unlink(dups->current->next->token);
+			// }
 		}
 		dups->current = dups->current->next;
 	}

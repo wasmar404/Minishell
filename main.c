@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/04/20 21:47:43 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/04/21 07:15:59 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,14 +131,21 @@ void	main_helper(char *input, t_shell *shell, t_malloc *mallo)
 	// //  print_list(head);
 	if (head)
 	{
+		main_heredoc(head,shell->env,shell);
+
 		if (input_check(head, splitted_input, shell->env_array, shell) == 0)
+		{
+			delete_temp_files(shell);
 			return ;
+		}
 		if (pipe_count_array(splitted_input) == 0)
 		{
 			if (check_command(head->token, shell->env_array, shell) == 0)
+			{
+				delete_temp_files(shell);
 				return ;
+			}
 		}
-		main_heredoc(head,shell->env,shell);
 
 		complicated_execute((&shell->env), head, shell);
 	}
@@ -498,6 +505,7 @@ void main_heredoc(t_token *head,t_env *envp,t_shell *shell)
 				head->next->type = 11; 
 			}
 			i++;
+			shell->heredoc_count++;
 		}
 		head = head ->next ;
 	}
