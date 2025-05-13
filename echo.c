@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 11:27:21 by schaaban          #+#    #+#             */
-/*   Updated: 2025/04/01 17:13:25 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/13 09:45:50 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	echo_sinput_redirection(t_token **head)
 
 int	echo_helper(t_token **head, int *flag, int *flag1, t_shell *shell)
 {
-	if (check_n((*head)) == 1 && (*flag1) == 0)
+	if (check_n((*head)) == 1 && (*flag1) == 0 && (*head) -> prev -> type != WORD)
 	{
 		(*flag) = 1;
 		(*head) = (*head)->next;
