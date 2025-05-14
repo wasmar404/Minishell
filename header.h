@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   header.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/04/20 21:47:59 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/14 09:56:13 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,18 +168,18 @@ typedef struct t_export
 }						t_export;
 void delete_temp_files(t_shell *shell);
 char *ft_strcpy(char *dest, const char *src);
+void exit_command_helper1(t_token *head,t_shell *exitcode);
 int ft_strncmp(const char *s1, const char *s2, size_t n);
 int						check_and_create_file_soutput_redirectio(t_token *head,
 							int *fd, int *dev_null);
 int						check_front_out_redirection_and_pipe(t_token **current_output,
-							t_token *head, t_token **current_input, int *flag);
+							t_token *head, int *flag);
 int						if__check_front_out_redirection_pipe(t_token **current_output,
 							t_token *head, int *flag);
 void					check_and_create_file(t_token *head);
 void					check_front_sinput_redirection(t_token *head,
 							t_shell *shell);
-int						count_tokens_for_exec_array(t_token *head,
-							t_shell *shell);
+int						count_tokens_for_exec_array(t_token *head);
 void					exit_command_helper(t_token *head, t_shell *shell);
 void					exit_command_helper2(t_token *head, t_shell *shell);
 int						check_if_pipe_is_valid_helper(t_token *head,
@@ -213,13 +213,12 @@ void					check_back_sinput_redirection(t_token *head,
 							t_shell *shell);
 
 void					super_complicated_handle_dups(t_token *head, t_exe *exe,
-							t_env *envp, t_shell *exitcode,int test);
+							t_shell *exitcode,int test);
 int						check_double_sep(char *input, int i);
 int						check_single_sep(char input);
 
 int						token_count(char *input);
-char					**token_split(char *str, t_shell *shell,
-							t_malloc *mallo);
+char					**token_split(char *str, t_malloc *mallo);
 void					single_sep_case(int *count, int *i, int *in_token,
 							char *input);
 void					check_quotes(char *input, int *i, int *count,
@@ -260,10 +259,8 @@ void					run_command_helper(t_token *head, t_env **my_envp,
 							t_shell *shell, t_exe *exe);
 void					check_back(t_token *head, t_dups *dups,
 							t_shell *exitcode);
-void					dups1(t_dups *dups, int *pipefd, t_env *envp,
-							t_shell *exitcode);
-void					dups2(t_token *current_input, t_token *current_output,
-							int input_fd, t_token *head);
+void					dups1(t_dups *dups, int *pipefd);
+void					dups2(t_token *current_input, int input_fd);
 void					main_cd(t_token *head, t_env **my_envp,
 							t_shell *exitcode);
 int						main_pwd(void);
@@ -315,8 +312,7 @@ t_env					*search_and_find_a_type_my_envpp(t_env *envp,
 int						check_if_null(char *input);
 void					remove_empty_nodes(t_token **head);
 char					*check_access_for_files(t_token *head);
-int						input_check(t_token *head, char **array, char **envp,
-							t_shell *exitcode);
+int						input_check(t_token *head, t_shell *exitcode);
 int						main_quote_check(char *str, t_shell *exitcode);
 void					ft_putendl_fd_two(char *s, char *str, int fd);
 void					add_type(t_token *head, char **envp, t_shell *shell);

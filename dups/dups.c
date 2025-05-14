@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dups.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hackme <hackme@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 00:55:44 by wasmar            #+#    #+#             */
-/*   Updated: 2025/04/20 16:54:56 by hackme           ###   ########.fr       */
+/*   Updated: 2025/05/13 11:25:17 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	init_dups_struct(t_dups *dups, t_token *head)
 	dups->flag1 = 0;
 }
 //test is a flag, i shuld pass a flag to know what var to use forrk flag or pipe flag
-void	super_complicated_handle_dups(t_token *head, t_exe *exe, t_env *envp,
+void	super_complicated_handle_dups(t_token *head, t_exe *exe,
 		t_shell *shell,int test)
 {
 	t_dups	*dups;
@@ -35,9 +35,9 @@ void	super_complicated_handle_dups(t_token *head, t_exe *exe, t_env *envp,
 		ft_close(exe->input_fd);
 	}
 	check_back(head, dups, shell);
-	check_front(dups, envp, shell);
-	dups1(dups, exe->pipefd, envp, shell);
-	dups2(dups->current_input, dups->current_output, exe->input_fd, head);
+	check_front(dups, shell);
+	dups1(dups, exe->pipefd);
+	dups2(dups->current_input, exe->input_fd);
 	if (test == 1)// && exe->pipefd
 	{
 		if (exe->pipefd[0] >= 0)
@@ -47,10 +47,8 @@ void	super_complicated_handle_dups(t_token *head, t_exe *exe, t_env *envp,
 	}
 }
 
-void	dups2(t_token *current_input, t_token *current_output, int input_fd,
-		t_token *head)
+void	dups2(t_token *current_input, int input_fd)
 {
-	int	fd;
 
 	if (current_input && current_input->type == PIPE)
 	{
@@ -59,9 +57,8 @@ void	dups2(t_token *current_input, t_token *current_output, int input_fd,
 	}
 }
 
-void	dups1(t_dups *dups, int *pipefd, t_env *envp, t_shell *exitcode)
+void	dups1(t_dups *dups, int *pipefd)
 {
-	int	fd;
 	if (dups->current_output && dups->current_output->type == PIPE)
 	{
 		dup2(pipefd[1], 1);

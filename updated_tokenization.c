@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:02:23 by wasmar            #+#    #+#             */
-/*   Updated: 2025/04/02 11:00:42 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/05/13 11:09:51 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,6 @@ int	count_ttoken_nodes(t_token *head)
 int	check_if_cmd(char *input, char **envp, t_token *head, t_shell *shell)
 {
 	char		*a;
-	struct stat	path_stat;
 
 	a = find_path_of_cmd(input, envp, shell);
 	if (head->token[0] == '.' && head->token[1] == '/' && access(head->token,
@@ -153,6 +152,7 @@ int	check_if_cmd(char *input, char **envp, t_token *head, t_shell *shell)
 		}
 		return (0);
 	}
+	return (0);
 }
 t_token	*create_node_token(char *str, int i, bool built_in_or_not,
 		t_shell *shell)

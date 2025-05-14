@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dups.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 11:14:54 by schaaban          #+#    #+#             */
-/*   Updated: 2025/04/15 07:27:01 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/13 11:26:00 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,7 @@ void						check_front_heredoc(t_token *head, t_env *envp,
 void						check_front_sinput_redirection(t_token *head,
 								t_shell *shell);
 int							check_front_out_redirection_and_pipe(t_token **current_output,
-								t_token *head, t_token **current_input,
-								int *flag);
+								t_token *head, int *flag);
 int							if__check_front_out_redirection_pipe(t_token **current_output,
 								t_token *head, int *flag);
 int							check_and_create_file_soutput_redirectio(t_token *head,
@@ -39,16 +38,12 @@ void						check_back_sinput_redirection(t_token *head,
 								t_shell *shell);
 void						init_dups_struct(t_dups *dups, t_token *head);
 void						super_complicated_handle_dups(t_token *head,
-								t_exe *exe, t_env *envp, t_shell *shell,int test);
+								t_exe *exe, t_shell *shell,int test);
 void						check_and_create_file(t_token *head);
-void						check_front(t_dups *dups, t_env *envp,
-								t_shell *exitcode);
+void						check_front(t_dups *dups, t_shell *exitcode);
 void						check_back(t_token *head, t_dups *dups,
 								t_shell *exitcode);
-void						dups2(t_token *current_input,
-								t_token *current_output, int input_fd,
-								t_token *head);
-void						dups1(t_dups *dups, int *pipefd, t_env *envp,
-								t_shell *exitcode);
+void						dups2(t_token *current_input, int input_fd);
+void						dups1(t_dups *dups, int *pipefd);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 11:27:21 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/13 09:45:50 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/05/14 10:34:05 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int	check_n(t_token *head)
 	int	i;
 
 	i = 0;
+
 	if (head->token[i] == '-' && head->token[i + 1] == 'n')
 		i += 2;
 	else
@@ -81,7 +82,7 @@ int	echo_helper(t_token **head, int *flag, int *flag1, t_shell *shell)
 	{
 		flag1++;
 		printf("%s", (*head)->token);
-		if ((*head)->next && (*head)->next->type == WORD)
+		if ((*head)->next && ((*head)->next->type == WORD || (*head)->next->type == TILDE || (*head)->next->type == MINUS || (*head)->next->type == TWO_POINTS))
 			printf(" ");
 		(*head) = (*head)->next;
 	}
@@ -122,7 +123,7 @@ void	echo_main(t_token *head, t_shell *exitcode)
 		return ;
 	while (head != NULL && (head->type == WORD || head->type == DIRECTORY
 			|| head->type == SINPUT_REDIRECTION
-			|| head->type == SOUTPUT_REDIRECTION))
+			|| head->type == SOUTPUT_REDIRECTION || head->type == TILDE || head->type == MINUS || head->type == TWO_POINTS))
 	{
 		ints.x = echo_sinput_redirection(&head);
 		if (ints.x == 0)

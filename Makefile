@@ -1,7 +1,8 @@
 # Compiler and flags
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-
+# CC = gcc
+# CFLAGS =  -g
 NAME = minishell
 
 LIBS = -lreadline -Llibft -lft  # Link to the libft library (-lft) and readline
@@ -34,7 +35,7 @@ SRC = cd.c \
       execution/execution2.c \
       expand_dollar/dollar.c \
       expand_dollar/dollar1.c \
-      expand_dollar/dollar2.c
+      expand_dollar/dollar2.c \
 
 # $(wildcard *.c) $(wildcard expand_dollar/*.c builtins/*.c dups/*.c execution/*.c)
 OBJ = $(SRC:.c=.o)

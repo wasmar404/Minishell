@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/05 12:28:27 by wasmar            #+#    #+#             */
-/*   Updated: 2025/04/04 16:49:31 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/05/13 11:13:57 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,6 @@ void	cd_two_points(t_token *head, t_env **my_envp, t_shell *shell)
 {
 	t_env	*env_node;
 	char	*new_path;
-	char	*new_old;
 	int		j;
 
 	j = 0;
@@ -168,9 +167,7 @@ void	cd_two_points(t_token *head, t_env **my_envp, t_shell *shell)
 
 void	cd_minus(t_token *head, t_env **my_envp, t_shell *shell)
 {
-	char	*oldpwd;
 	t_env	*env_node;
-	char	*new_oldpwd;
 
 	if (head->next && head->next->type == MINUS)
 	{

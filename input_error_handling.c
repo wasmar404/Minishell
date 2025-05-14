@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 10:14:57 by schaaban          #+#    #+#             */
-/*   Updated: 2025/04/02 10:56:58 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/05/13 10:52:38 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -312,7 +312,6 @@ int check_if_dir_after_redirections(t_token *head,t_shell *exitcode)
 }
 int check_cd_command(t_token *head,t_shell *exitcode)
 {
-    struct stat path_stat;
     while (head)
     {
         if(head -> type == COMMAND)
@@ -335,10 +334,8 @@ void    ft_putendl_fd_two(char *s,char *str, int fd)
     write(fd, str, ft_strlen(str));
     write(fd, "\n", 1);
 }
-int input_check(t_token *head,char **array,char **envp,t_shell *exitcode)
+int input_check(t_token *head, t_shell *exitcode)
 {
-    int i = 0;
-
     // if(check_command(head -> token,envp) == 0)
     //        return (0);
     if(check_if_pipe_is_valid(head,exitcode) == 0)

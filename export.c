@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 21:04:03 by wasmar            #+#    #+#             */
-/*   Updated: 2025/04/02 10:51:43 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/05/13 10:32:56 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ int	check_equall(t_token *head)
 }
 
 
-void	init_t_export(t_export *exp, t_shell *shell)
+void	init_t_export(t_export *exp)
 {
 	exp->i = 0;
 	exp->type = NULL;
@@ -138,8 +138,7 @@ void	find_type_helper(t_export *export, t_token *head, t_env **my_envp,
 	export->new_node->next = NULL;
 	export->new_node->prev = export->tail;
 }
-void	find_type_helper_1(t_export *export, t_token *head, t_env **my_envp,
-		t_shell *shell)
+void	find_type_helper_1(t_export *export, t_token *head, t_shell *shell)
 {
 	export->len = ft_strlen(head->token);
 	export->enva = ft_strdupp(head->token + export->i + 1, export->len
@@ -168,7 +167,7 @@ void	find_type(t_token *head, t_env **my_envp, t_shell *shell)
 		}
 		else
 		{
-			find_type_helper_1(export, head, my_envp, shell);
+			find_type_helper_1(export, head, shell);
 		}
 		head = head->next;
 	}

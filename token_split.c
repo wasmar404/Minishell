@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_split.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hackme <hackme@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:00:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/04/04 05:00:13 by hackme           ###   ########.fr       */
+/*   Updated: 2025/05/13 11:06:53 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,7 +192,7 @@ void	parse_non_delimiter(char **tokens, int *token, char *str, int *i,
 	add_token(tokens, token, str, start, *i - start, mallo);
 }
 
-char	**token_split(char *str, t_shell *shell, t_malloc *mallo)
+char	**token_split(char *str, t_malloc *mallo)
 {
 	int		token;
 	int i;

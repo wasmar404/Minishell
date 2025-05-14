@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dups_helper1.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 11:31:57 by schaaban          #+#    #+#             */
-/*   Updated: 2025/04/21 07:13:01 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/13 11:23:54 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	check_and_create_file(t_token *head)
 	}
 }
 
-void	check_front(t_dups *dups, t_env *envp, t_shell *exitcode)
+void	check_front(t_dups *dups, t_shell *exitcode)
 {
 	int	fd;
 
@@ -73,7 +73,7 @@ void	check_front(t_dups *dups, t_env *envp, t_shell *exitcode)
 				dups->current, &(dups->flag1)) == 1)
 		{
 			if (check_front_out_redirection_and_pipe(&(dups->current_output),
-					dups->current, &(dups->current_input), &(dups->flag1)) == 0)
+					dups->current, &(dups->flag1)) == 0)
 				break ;
 		}
 		else if (dups->current->type == SINPUT_REDIRECTION)

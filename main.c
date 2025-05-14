@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/04/21 07:15:59 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/14 10:14:25 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,13 @@ void	print_malloc(t_malloc *gc)
 	}
 }
 
-int	main(int ac, char **av, char **envp)
+int	main(int ac,char **av, char **envp)
 {
 	char		*input;
 	t_shell		shell;
 	t_malloc	*mallo;
+	(void)ac;
+	(void)av;
 
 	input = NULL;
 	mallo = malloc(sizeof(t_malloc));
@@ -125,15 +127,15 @@ void	main_helper(char *input, t_shell *shell, t_malloc *mallo)
 	}
 	if (main_quote_check(input, shell) == 0)
 		return ;
-	splitted_input = token_split(input, shell, mallo);
+	splitted_input = token_split(input, mallo);
 	// print_array(splitted_input);
 	head = parse_input_to_tokens(splitted_input, shell);
-	// //  print_list(head);
+	// print_list(head);
 	if (head)
 	{
 		main_heredoc(head,shell->env,shell);
 
-		if (input_check(head, splitted_input, shell->env_array, shell) == 0)
+		if (input_check(head, shell) == 0)
 		{
 			delete_temp_files(shell);
 			return ;
@@ -187,7 +189,7 @@ char	**array_complicated_execute(t_token *head, t_shell *shell)
 
 	len = 0;
 	i = 0;
-	len = count_tokens_for_exec_array(head, shell);
+	len = count_tokens_for_exec_array(head);
 	current_command = ft_malloc(shell->mallo, (len + 1) * sizeof(char *));
 	temp = head;
 	while (temp != NULL && temp->type != PIPE)
@@ -206,7 +208,7 @@ char	**array_complicated_execute(t_token *head, t_shell *shell)
 	return (current_command);
 }
 
-int	count_tokens_for_exec_array(t_token *head, t_shell *shell)
+int	count_tokens_for_exec_array(t_token *head)
 {
 	t_token	*temp;
 	int		len;
@@ -227,7 +229,7 @@ int	count_tokens_for_exec_array(t_token *head, t_shell *shell)
 	return (len);
 }
 
-void	here_doc_first(char *s, t_token *head, int fd)
+void	here_doc_first(char *s, int fd)
 {
 	char	*input;
 
@@ -261,7 +263,7 @@ void	heredoc_dup(t_token *head)
 	{
 		fd = open("temp", O_WRONLY | O_CREAT | O_APPEND, 0644);
 		// heredoc(head->next->token,fd);
-		here_doc_first(head->next->token, head, fd);
+		here_doc_first(head->next->token, fd);
 		ft_close(fd);
 		fd = open("temp", O_RDONLY);
 		// dup2(fd,0);
@@ -375,7 +377,7 @@ void	run_built_ins_helper(t_token *head, t_env **my_envp, t_shell *exitcode)
 void	run_built_ins(t_token *head, t_env **my_envp, int flag, t_exe *exe,
 		t_shell *exitcode)
 {
-	super_complicated_handle_dups(head, exe, (*my_envp), exitcode,exe->fork_flag);
+	super_complicated_handle_dups(head, exe, exitcode,exe->fork_flag);
 	run_built_ins_helper(head, my_envp, exitcode);
 	if (ft_strcmp(head->token, "unset") == 0)
 	{
@@ -406,7 +408,7 @@ void	external_commands(t_token *head, t_env *my_envp, t_exe *exe,
 	if (find_var_name_return((my_envp), "PATH"))
 	{
 		(void)my_envp;
-		super_complicated_handle_dups(head, exe, my_envp, exitcode,exe->pipe_flag);
+		super_complicated_handle_dups(head, exe, exitcode,exe->pipe_flag);
 		path = find_path_of_cmd(head->token, exe->envp, exitcode);
 		if (execve(path, current_command, exe->envp) == -1)
 			printf("execve failed");

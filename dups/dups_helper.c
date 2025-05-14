@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dups_helper.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hackme <hackme@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 00:55:44 by wasmar            #+#    #+#             */
-/*   Updated: 2025/04/20 16:52:17 by hackme           ###   ########.fr       */
+/*   Updated: 2025/05/13 11:22:15 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	check_front_sinput_redirection(t_token *head, t_shell *shell)
 }
 
 int	check_front_out_redirection_and_pipe(t_token **current_output,
-		t_token *head, t_token **current_input, int *flag)
+		t_token *head, int *flag)
 {
 	if ((head->type == AOUTPUT_REDIRECTION || head->type == SOUTPUT_REDIRECTION)
 		&& (*flag == 0))
