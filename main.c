@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/14 10:14:25 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/05/15 15:31:46 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -374,6 +374,21 @@ void	run_built_ins_helper(t_token *head, t_env **my_envp, t_shell *exitcode)
 	if (ft_strcmp(head->token, "export") == 0)
 		export_main(my_envp, head, exitcode);
 }
+bool	find_var_name_first(t_env **my_envp, char *var_name)
+{
+	while ((*my_envp) != NULL)
+	{
+		if (ft_strcmp((*my_envp)->type, var_name) == 0)
+		{
+			return (true);
+		}
+		if ((*my_envp)->next != NULL)
+		{
+			(*my_envp) = (*my_envp)->next;
+		}
+	}
+	return (false);
+}
 void	run_built_ins(t_token *head, t_env **my_envp, int flag, t_exe *exe,
 		t_shell *exitcode)
 {
@@ -392,7 +407,12 @@ void	run_built_ins(t_token *head, t_env **my_envp, int flag, t_exe *exe,
 			exitcode->exit_code = 1;
 			return ;
 		}
-		main_unset1(my_envp, head->next->token, exitcode);
+		while(head -> next)
+		{
+			if(find_var_name_first(my_envp,head -> next -> token) == true)
+				main_unset1(my_envp, head->next->token, exitcode);
+			head = head -> next;
+		}
 	}
 	if (flag == 1)
 	{

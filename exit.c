@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 12:57:39 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/14 10:38:26 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/05/15 12:04:33 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	is_digit_string(char *str)
 			return (-1);
 		if (str[i] == '+')
 			return (2);
-		if (!ft_isdigit(str[i]) || )
+		if (!ft_isdigit(str[i]))
 			return (0);
 		i++;
 	}
@@ -78,7 +78,6 @@ void	exit_command_helper(t_token *head, t_shell *shell)
 	{
 		shell->exit_code = ft_atoll(head -> next -> token) % 256;
 		printf("exit\n");
-		// ft_putendl_fd("bash: numeric argument required",2);
 		ft_free_all(shell->mallo);
 		exit(shell->exit_code);
 	}
@@ -100,6 +99,7 @@ void	exit_command_helper2(t_token *head, t_shell *shell)
 		num = ft_atoll(head->next->token);
 		printf("exit\n");
 		shell->exit_code = num;
+		printf("%lld",num);
 		ft_free_all(shell->mallo);
 		exit(shell->exit_code);
 	}
