@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/16 09:53:28 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/05/16 10:25:39 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,6 @@ void	main_helper(char *input, t_shell *shell, t_malloc *mallo)
 	if (head)
 	{
 		main_heredoc(head,shell->env,shell);
-
 		if (input_check(head, shell) == 0)
 		{
 			delete_temp_files(shell);
@@ -521,8 +520,12 @@ void main_heredoc(t_token *head,t_env *envp,t_shell *shell)
 				fd = open(file_name, O_WRONLY | O_CREAT | O_APPEND, 0644);
 				heredoc(head->next->token,fd,envp,shell);
 				ft_close(fd);
-				strcpy(head->token,"<");
-				strcpy(head->next->token,file_name);
+				if (head->token)
+					free(head->token);
+				head->token = ft_strdup("<", shell->mallo);
+				if (head->next->token)
+					free(head->next->token);
+				head->next->token = ft_strdup(file_name, shell->mallo);
 				head->type = 4;
 				head->next->type = 11; 
 			}
