@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:16:26 by wasmar            #+#    #+#             */
-/*   Updated: 2025/04/02 08:06:33 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/16 19:51:42 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,12 @@ char	*find_path_of_cmd(char *command, char **envp, t_shell *shell)
 		getcwd(cwd, sizeof(cwd));
 		cmd_path = ft_strjoin(cwd, command + 1, shell->mallo);
 		return (cmd_path);
+	}
+	if (command[0] == '/' && command[1] == 'b'&& command[2] == 'i'&& command[3] == 'n' && access(command, X_OK) == 0)
+	{
+		getcwd(cwd, sizeof(cwd));
+		cmd_path = ft_strjoin(cwd, command + 1, shell->mallo);
+		return (command);
 	}
 	if (command == NULL || envp == NULL)
 		return (NULL);

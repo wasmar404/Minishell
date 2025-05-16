@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   updated_tokenization.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:02:23 by wasmar            #+#    #+#             */
-/*   Updated: 2025/05/13 11:09:51 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/05/16 19:49:00 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,9 @@ int	check_if_cmd(char *input, char **envp, t_token *head, t_shell *shell)
 
 	a = find_path_of_cmd(input, envp, shell);
 	if (head->token[0] == '.' && head->token[1] == '/' && access(head->token,
+			X_OK) == 0)
+		return (1);
+	if (head->token[0] == '/' && head->token[1] == 'b' &&head->token[2] =='i' && head->token[3] == 'n'  && access(head->token,
 			X_OK) == 0)
 		return (1);
 	if (find_path_of_cmd(input, envp, shell))
