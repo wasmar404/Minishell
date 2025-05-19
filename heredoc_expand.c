@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 12:23:12 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/16 10:38:13 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/05/19 11:53:49 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,19 +143,9 @@ void	process_dolloris_heredoc(char **input, t_env *env, t_shell *exitcode)
 {
 	int		i;
 	char	*str;
-	int		end;
-	char	*to_expand;
-	int		start;
-	char	*expanded;
-	int		len;
 
 	i = 0;
 	str = NULL;
-	end = 0;
-	to_expand = NULL;
-	start = 0;
-	len = 0;
-	expanded = NULL;
 	while (input[i])
 	{
 		process_dolloris_helper_h(&i, input, &str, env, exitcode);
@@ -202,11 +192,9 @@ void	remove_quotes_and_replace_h(char **str, int start, t_shell *shell)
 void	remove_quotes_main_heredoc(char **str, t_shell *shell)
 {
 	int		i = 0, end = 0, single_quotes = 0, double_quotes;
-	int		len;
 	char	*copy;
 
 	i = 0, end = 0, single_quotes = 0, double_quotes = 0;
-	len = 0;
 	while ((*str)[i])
 	{
 		if ((*str)[i] == '"' && single_quotes == 0)

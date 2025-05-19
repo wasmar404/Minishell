@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 10:14:57 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/13 10:52:38 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/05/19 11:54:04 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,8 +133,6 @@ int count_redirections(t_token *head)
 }
 int check_if_file_exists(t_token *head,t_shell *exitcode)
 {
-    t_token *temp;
-    temp = head;
     int count = 0;
     while(head)
     {

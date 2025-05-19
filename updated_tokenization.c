@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   updated_tokenization.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:02:23 by wasmar            #+#    #+#             */
-/*   Updated: 2025/05/16 19:49:00 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/19 11:54:41 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,9 +131,6 @@ int	count_ttoken_nodes(t_token *head)
 
 int	check_if_cmd(char *input, char **envp, t_token *head, t_shell *shell)
 {
-	char		*a;
-
-	a = find_path_of_cmd(input, envp, shell);
 	if (head->token[0] == '.' && head->token[1] == '/' && access(head->token,
 			X_OK) == 0)
 		return (1);

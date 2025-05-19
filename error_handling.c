@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_handling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 09:48:15 by schaaban          #+#    #+#             */
-/*   Updated: 2025/04/02 08:18:20 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/19 11:53:03 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,8 @@ int	valid_identifier_helper(t_token *head)
 }
 int	valid_identifier(t_token *head)
 {
-	int	i;
 	int	count;
 
-	i = 1;
 	head = head->next;
 	count = 0;
 	while (head && head->type == WORD)

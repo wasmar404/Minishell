@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/16 19:53:27 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/19 11:56:09 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -520,11 +520,13 @@ void main_heredoc(t_token *head,t_env *envp,t_shell *shell)
 				fd = open(file_name, O_WRONLY | O_CREAT | O_APPEND, 0644);
 				heredoc(head->next->token,fd,envp,shell);
 				ft_close(fd);
-				if (head->token)
-					free(head->token);
+				// if (head->token)
+				// 	free(head->token);
+				// head->token = ft_strdup("<", shell->mallo);
+				// if (head->next->token)
+				// 	free(head->next->token);
 				head->token = ft_strdup("<", shell->mallo);
-				if (head->next->token)
-					free(head->next->token);
+				head->next->token = ft_strdup(file_name, shell->mallo);
 				head->next->token = ft_strdup(file_name, shell->mallo);
 				head->type = 4;
 				head->next->type = 11; 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:29:11 by wasmar            #+#    #+#             */
-/*   Updated: 2025/04/02 07:47:49 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/19 11:54:25 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,17 +33,11 @@ void	find_var_name(t_env **my_envp, char *var_name)
 }
 void	delete_first_node(t_env **my_envp)
 {
-	t_env	*node_to_delete;
-
-	node_to_delete = (*my_envp);
 	(*my_envp) = (*my_envp)->next;
 	(*my_envp)->prev = NULL;
 }
 void	delete_last_node(t_env **my_envp)
 {
-	t_env	*node_to_delete;
-
-	node_to_delete = (*my_envp);
 	(*my_envp) = (*my_envp)->prev;
 	(*my_envp)->next = NULL;
 }
@@ -51,9 +45,7 @@ void	delete_middle_node(t_env **my_envp)
 {
 	t_env	*before;
 	t_env	*after;
-	t_env	*node_to_delete;
 
-	node_to_delete = (*my_envp);
 	before = (*my_envp)->prev;
 	after = (*my_envp)->next;
 	if (before != NULL)
