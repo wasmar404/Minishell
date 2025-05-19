@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 12:23:12 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/19 11:53:49 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/05/19 14:10:53 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,14 @@ void	expand_and_replace_heredoc(char **mainstr, char *str, int end,
 
 	if (!str[0])
 	{
-		(*mainstr) = "";
+		(*mainstr) = ft_strdup("", shell->mallo); // Allocate empty string instead of assigning literal
 		return ;
 	}
 	i = 0;
 	x = 0;
 	s = ft_strdup((*mainstr) + end, shell->mallo);
-	len = ft_strlen(str) + ft_strlen(s);
-	(*mainstr) = ft_malloc(shell->mallo, len + 1);
+	len = ft_strlen(str) + ft_strlen(s) + 1;
+	(*mainstr) = ft_malloc(shell->mallo, len);
 	while (str[i])
 	{
 		(*mainstr)[x] = str[i];
@@ -146,7 +146,7 @@ void	process_dolloris_heredoc(char **input, t_env *env, t_shell *exitcode)
 
 	i = 0;
 	str = NULL;
-	while (input[i])
+	while ((*input)[i])
 	{
 		process_dolloris_helper_h(&i, input, &str, env, exitcode);
 		if(!str)
