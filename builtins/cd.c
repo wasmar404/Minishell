@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/05 12:28:27 by wasmar            #+#    #+#             */
-/*   Updated: 2025/05/13 11:13:57 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/05/19 17:17:44 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,11 +139,32 @@ void	cd_directory(t_token *head, t_env **my_envp, t_shell *shell)
 		shell->exit_code = 0;
 	}
 }
+void add_node_cd(t_env **my_envp,char *type, char *value,t_shell *shell)
+{
+	t_env *new_node;
+
+	new_node = ft_malloc(shell -> mallo,sizeof(t_env));
+	new_node -> type = type;
+	new_node -> enva = value;
+	new_node -> equal = true;
+	new_node -> next = NULL;
+	new_node -> all = ft_strjoin(type,"=",shell -> mallo);
+	new_node -> all = ft_strjoin(new_node -> all,value,shell -> mallo);
+	while((*my_envp) -> next != NULL)
+	{
+		(*my_envp) = (*my_envp) -> next;
+	}
+	
+	(*my_envp) -> next = new_node;
+	new_node -> prev = (*my_envp);
+}
 void	cd_two_points(t_token *head, t_env **my_envp, t_shell *shell)
 {
 	t_env	*env_node;
 	char	*new_path;
 	int		j;
+	int flag = 0;
+	char cwd[1000];
 
 	j = 0;
 	if (head->next && head->next->type == TWO_POINTS)
@@ -151,9 +172,15 @@ void	cd_two_points(t_token *head, t_env **my_envp, t_shell *shell)
 		env_node = search_env((*my_envp), "PWD");
 		if (env_node == NULL)
 		{
-			ft_putendl_fd("cd: PWD not set\n", 2);
-			shell->exit_code = 1;
-			return ;
+			if (getcwd(cwd, sizeof(cwd)) != NULL)
+			{
+				add_node_cd(my_envp,"PWD",cwd,shell);
+				flag = 1;
+			}
+			env_node = search_env((*my_envp), "PWD");
+			// ft_putendl_fd("cd: PWD not set\n", 2);
+			// shell->exit_code = 1;
+			// return ;
 		}
 		j = find_last_backslash(env_node->enva);
 		new_path = ft_strndup(env_node->enva, j, shell);
