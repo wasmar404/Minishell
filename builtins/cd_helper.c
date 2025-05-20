@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_helper.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/05 12:28:27 by wasmar            #+#    #+#             */
-/*   Updated: 2025/04/04 16:49:04 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/05/20 08:40:53 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ t_env	*search_env(t_env *envp, char *to_find)
 	{
 		if (ft_strcmp(to_find, (envp)->type) == 0)
 		{
-			// printf("envp: %s",envp->enva);
 			return (envp);
 		}
 		(envp) = (envp)->next;
@@ -54,14 +53,14 @@ int	update_pwd_and_oldpwd(t_env *my_envp, char *new_path, t_shell *shell)
 	ft_strcpy(env_node->enva, new_oldpwd);
 	return (1);
 }
+
 int	find_last_backslash(char *str)
 {
-	int i;
-	int last;
+	int	i;
+	int	last;
 
 	i = 0;
-	last = 0; 
-
+	last = 0;
 	while (str[i])
 	{
 		if (str[i] == '/' && str[i + 1] != '\0')
@@ -70,21 +69,3 @@ int	find_last_backslash(char *str)
 	}
 	return (last);
 }
-// int	find_last_backslash(char *str)
-// {
-// 	int i = 0;
-// 	// int j = 0;
-// 	int old = 0;
-// 	int new = 0;
-// 	while (str[i])
-// 	{
-// 		if (str[i] == '/')
-// 		{
-// 			old = new;
-// 			new = i;
-// 			// j = i;
-// 		}
-// 		i++;
-// 	}
-// 	return (old);
-// }
