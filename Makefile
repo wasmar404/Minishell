@@ -28,7 +28,9 @@ SRC = cd.c \
       builtins/pwd.c \
       quotes.c \
       signals.c \
-      token_split.c \
+      token_split/token_split.c \
+      token_split/token_split_helper1.c \
+      token_split/token_split_helper2.c \
       tokenization/tokenization.c \
       tokenization/delimeter_check.c\
       tokenization/main_tokenization.c\

@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 11:08:50 by wasmar            #+#    #+#             */
-/*   Updated: 2025/05/20 09:19:37 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/20 10:22:49 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,9 @@ int	is_fd_open(int fd)
 
 	if (fstat(fd, &statbuf) == -1)
 	{
-		return (0); // fd is closed
+		return (0);
 	}
-	return (1); // fd is open
+	return (1);
 }
 
 void	ft_close(int fd)
