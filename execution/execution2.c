@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 15:03:11 by schaaban          #+#    #+#             */
-/*   Updated: 2025/04/02 15:29:52 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/05/20 10:10:09 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,10 @@ void	handle_heredoc_and_redirections_no_cmd(t_token *head, t_token *current)
 		else if (current->type == AOUTPUT_REDIRECTION)
 			a_out_redirection(current);
 	}
+}
+
+void	complicated_execute_helper(t_exe *exe, t_shell *shell)
+{
+	manage_wait_status(exe, shell);
+	delete_temp_files(shell);
 }
