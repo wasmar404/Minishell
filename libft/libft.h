@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 14:58:10 by wasmar            #+#    #+#             */
-/*   Updated: 2025/05/13 10:45:45 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/05/20 09:51:17 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <limits.h>
 # include <stdlib.h>
 # include <unistd.h>
+
 typedef struct s_garbage_collector	t_malloc;
 typedef struct s_list
 {
@@ -23,7 +24,7 @@ typedef struct s_list
 	struct s_list					*next;
 }									t_list;
 
-int								ft_strlen(const char *s);
+int									ft_strlen(const char *s);
 int									ft_isdigit(int c);
 char								*ft_strnstr(const char *big,
 										const char *little, size_t len);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 19:42:25 by wasmar            #+#    #+#             */
-/*   Updated: 2025/05/13 10:45:41 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/05/20 09:51:32 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 char	*ft_strjoin(char const *s1, char const *s2, t_malloc *mallo)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
 	char	*a;
 
 	i = 0;
