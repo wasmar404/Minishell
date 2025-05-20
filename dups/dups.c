@@ -3,14 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   dups.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 00:55:44 by wasmar            #+#    #+#             */
-/*   Updated: 2025/05/13 11:25:17 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/05/20 10:16:39 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header.h"
 #include "dups.h"
 
 void	init_dups_struct(t_dups *dups, t_token *head)
@@ -21,9 +20,11 @@ void	init_dups_struct(t_dups *dups, t_token *head)
 	dups->current_output = NULL;
 	dups->flag1 = 0;
 }
-//test is a flag, i shuld pass a flag to know what var to use forrk flag or pipe flag
+//test is a flag, i shuld pass a flag to
+//know what var to use forrk flag or pipe flag
+
 void	super_complicated_handle_dups(t_token *head, t_exe *exe,
-		t_shell *shell,int test)
+		t_shell *shell, int test)
 {
 	t_dups	*dups;
 
@@ -38,7 +39,7 @@ void	super_complicated_handle_dups(t_token *head, t_exe *exe,
 	check_front(dups, shell);
 	dups1(dups, exe->pipefd);
 	dups2(dups->current_input, exe->input_fd);
-	if (test == 1)// && exe->pipefd
+	if (test == 1)
 	{
 		if (exe->pipefd[0] >= 0)
 			ft_close(exe->pipefd[0]);
@@ -49,7 +50,6 @@ void	super_complicated_handle_dups(t_token *head, t_exe *exe,
 
 void	dups2(t_token *current_input, int input_fd)
 {
-
 	if (current_input && current_input->type == PIPE)
 	{
 		dup2(input_fd, 0);

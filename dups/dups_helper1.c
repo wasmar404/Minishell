@@ -3,14 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   dups_helper1.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 11:31:57 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/13 11:23:54 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/05/20 10:15:13 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header.h"
 #include "dups.h"
 
 int	check_and_create_file_soutput_redirectio(t_token *head, int *fd,
@@ -42,6 +41,7 @@ int	check_and_create_file_aoutput_redirection(t_token *head, int *fd,
 	ft_close((*fd));
 	return (1);
 }
+
 void	check_and_create_file(t_token *head)
 {
 	int	fd;
@@ -65,7 +65,6 @@ void	check_front(t_dups *dups, t_shell *exitcode)
 {
 	int	fd;
 
-	// check_front_heredoc(dups->current, envp, exitcode);
 	dups->current = dups->current->next;
 	while (dups->current != NULL && dups->current->type != COMMAND)
 	{
@@ -83,10 +82,6 @@ void	check_front(t_dups *dups, t_shell *exitcode)
 			fd = open(dups->current->next->token, O_RDONLY, 0644);
 			dup2(fd, 0);
 			ft_close(fd);
-			// if(dups->current->next->type == 11)
-			// {
-			// 	unlink(dups->current->next->token);
-			// }
 		}
 		dups->current = dups->current->next;
 	}
@@ -94,7 +89,7 @@ void	check_front(t_dups *dups, t_shell *exitcode)
 
 void	check_back(t_token *head, t_dups *dups, t_shell *exitcode)
 {
-	int fd;
+	int	fd;
 
 	fd = -1;
 	while (head && head->type != PIPE)

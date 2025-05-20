@@ -3,21 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   dups_helper.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 00:55:44 by wasmar            #+#    #+#             */
-/*   Updated: 2025/05/13 11:22:15 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/05/20 10:15:18 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header.h"
 #include "dups.h"
-
-
 
 void	check_front_sinput_redirection(t_token *head, t_shell *shell)
 {
-	if (head->next && head->next->type != DIRECTORY && head->next->type != HEREDOC_INFILE)
+	if (head->next && head->next->type != DIRECTORY
+		&& head->next->type != HEREDOC_INFILE)
 	{
 		ft_putendl_fd_two("bash: no such file or directory: ",
 			head->next->token, 2);

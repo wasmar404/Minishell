@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dups.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 11:14:54 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/13 11:26:00 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/05/20 10:19:32 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define DUPS_H
 
 # include "../header.h"
+
 typedef struct t_token		t_token;
 typedef struct t_shell		t_shell;
 typedef struct t_quotes		t_quotes;
@@ -26,19 +27,23 @@ void						check_front_heredoc(t_token *head, t_env *envp,
 								t_shell *shell);
 void						check_front_sinput_redirection(t_token *head,
 								t_shell *shell);
-int							check_front_out_redirection_and_pipe(t_token **current_output,
+int							check_front_out_redirection_and_pipe(
+								t_token **current_output,
 								t_token *head, int *flag);
-int							if__check_front_out_redirection_pipe(t_token **current_output,
+int							if__check_front_out_redirection_pipe(
+								t_token **current_output,
 								t_token *head, int *flag);
-int							check_and_create_file_soutput_redirectio(t_token *head,
-								int *fd, int *dev_null);
-int							check_and_create_file_aoutput_redirection(t_token *head,
-								int *fd, int *dev_null);
+int							check_and_create_file_soutput_redirectio(
+								t_token *head, int *fd,
+								int *dev_null);
+int							check_and_create_file_aoutput_redirection(
+								t_token *head, int *fd,
+								int *dev_null);
 void						check_back_sinput_redirection(t_token *head,
 								t_shell *shell);
 void						init_dups_struct(t_dups *dups, t_token *head);
 void						super_complicated_handle_dups(t_token *head,
-								t_exe *exe, t_shell *shell,int test);
+								t_exe *exe, t_shell *shell, int test);
 void						check_and_create_file(t_token *head);
 void						check_front(t_dups *dups, t_shell *exitcode);
 void						check_back(t_token *head, t_dups *dups,
