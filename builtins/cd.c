@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/05 12:28:27 by wasmar            #+#    #+#             */
-/*   Updated: 2025/05/19 17:17:44 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/05/20 08:41:52 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,8 @@ void	cd(t_token *head, t_env **my_envp, t_shell *shell)
 // 		shell->exit_code = 0;
 // 	}
 // }
-char	*ft_strjoin_three(const char *s1, const char *s2, const char *s3, t_shell *shell)
+char	*ft_strjoin_three(const char *s1, const char *s2, const char *s3,
+		t_shell *shell)
 {
 	char	*result;
 	size_t	len1;
@@ -93,20 +94,17 @@ char	*ft_strjoin_three(const char *s1, const char *s2, const char *s3, t_shell *
 
 	if (!s1 || !s2 || !s3)
 		return (NULL);
-
 	len1 = ft_strlen(s1);
 	len2 = ft_strlen(s2);
 	len3 = ft_strlen(s3);
-
-	result = ft_malloc(shell->mallo, len1 + len2 + len3 + 1); // Corrected argument order
+	result = ft_malloc(shell->mallo, len1 + len2 + len3 + 1);
+		// Corrected argument order
 	if (!result)
 		return (NULL);
-
 	ft_strcpy(result, s1);
 	ft_strcpy(result + len1, s2);
 	ft_strcpy(result + len1 + len2, s3);
 	result[len1 + len2 + len3] = '\0';
-
 	return (result);
 }
 void	cd_directory(t_token *head, t_env **my_envp, t_shell *shell)
@@ -129,9 +127,11 @@ void	cd_directory(t_token *head, t_env **my_envp, t_shell *shell)
 		// 	new_pwd = ft_strjoin(new_pwd, head->next->token, shell->mallo);
 		// }
 		if (env_node->enva[ft_strlen(env_node->enva) - 1] == '/')
-			new_pwd = ft_strjoin(env_node->enva, head->next->token, shell->mallo);
+			new_pwd = ft_strjoin(env_node->enva, head->next->token,
+					shell->mallo);
 		else
-			new_pwd = ft_strjoin_three(env_node->enva, "/", head->next->token, shell);
+			new_pwd = ft_strjoin_three(env_node->enva, "/", head->next->token,
+					shell);
 		if (change_dir(new_pwd, shell) == -1)
 			return ;
 		if (update_pwd_and_oldpwd((*my_envp), new_pwd, shell) == -1)
@@ -139,33 +139,33 @@ void	cd_directory(t_token *head, t_env **my_envp, t_shell *shell)
 		shell->exit_code = 0;
 	}
 }
-void add_node_cd(t_env **my_envp,char *type, char *value,t_shell *shell)
+void	add_node_cd(t_env **my_envp, char *type, char *value, t_shell *shell)
 {
-	t_env *new_node;
+	t_env	*new_node;
 
-	new_node = ft_malloc(shell -> mallo,sizeof(t_env));
-	new_node -> type = type;
-	new_node -> enva = value;
-	new_node -> equal = true;
-	new_node -> next = NULL;
-	new_node -> all = ft_strjoin(type,"=",shell -> mallo);
-	new_node -> all = ft_strjoin(new_node -> all,value,shell -> mallo);
-	while((*my_envp) -> next != NULL)
+	new_node = ft_malloc(shell->mallo, sizeof(t_env));
+	new_node->type = type;
+	new_node->enva = value;
+	new_node->equal = true;
+	new_node->next = NULL;
+	new_node->all = ft_strjoin(type, "=", shell->mallo);
+	new_node->all = ft_strjoin(new_node->all, value, shell->mallo);
+	while ((*my_envp)->next != NULL)
 	{
-		(*my_envp) = (*my_envp) -> next;
+		(*my_envp) = (*my_envp)->next;
 	}
-	
-	(*my_envp) -> next = new_node;
-	new_node -> prev = (*my_envp);
+	(*my_envp)->next = new_node;
+	new_node->prev = (*my_envp);
 }
 void	cd_two_points(t_token *head, t_env **my_envp, t_shell *shell)
 {
 	t_env	*env_node;
 	char	*new_path;
 	int		j;
-	int flag = 0;
-	char cwd[1000];
+	int		flag;
+	char	cwd[1000];
 
+	flag = 0;
 	j = 0;
 	if (head->next && head->next->type == TWO_POINTS)
 	{
@@ -174,7 +174,7 @@ void	cd_two_points(t_token *head, t_env **my_envp, t_shell *shell)
 		{
 			if (getcwd(cwd, sizeof(cwd)) != NULL)
 			{
-				add_node_cd(my_envp,"PWD",cwd,shell);
+				add_node_cd(my_envp, "PWD", cwd, shell);
 				flag = 1;
 			}
 			env_node = search_env((*my_envp), "PWD");
