@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_expand.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 12:23:12 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/19 14:10:53 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/05/20 09:06:52 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ void	expand_and_replace_heredoc(char **mainstr, char *str, int end,
 
 	if (!str[0])
 	{
-		(*mainstr) = ft_strdup("", shell->mallo); // Allocate empty string instead of assigning literal
+		(*mainstr) = ft_strdup("", shell->mallo);
+			// Allocate empty string instead of assigning literal
 		return ;
 	}
 	i = 0;
@@ -84,10 +85,9 @@ char	*check_char_after_dollar_and_expand1(char *str, t_env *envp,
 		new_string = ft_strdup(str, exitcode->mallo);
 	}
 	else if ((is_alphanumeric(str[1]) == 1 || (str[1] == '_')))
-	{ // check ffirst charr
+	{
 		new_string = expand_dollar(str, envp, exitcode);
 	}
-	//  printf("null1");
 	return (new_string);
 }
 int	check_if_quotes_exit(char *input)
@@ -120,7 +120,7 @@ void	process_dolloris_helper_h(int *i, char **input, char **str, t_env *env,
 		(*str) = create_array_till_dollar_h((*input), (*i), exitcode);
 		start = (*i);
 		end = find_end_variable((*input), (*i));
-		to_expand = ft_strndup((*input) + start, end - start,exitcode);
+		to_expand = ft_strndup((*input) + start, end - start, exitcode);
 		expanded = check_char_after_dollar_and_expand1(to_expand, env,
 				exitcode);
 		if (expanded == NULL)
@@ -149,8 +149,8 @@ void	process_dolloris_heredoc(char **input, t_env *env, t_shell *exitcode)
 	while ((*input)[i])
 	{
 		process_dolloris_helper_h(&i, input, &str, env, exitcode);
-		if(!str)
-			break;
+		if (!str)
+			break ;
 		i++;
 	}
 }
@@ -159,7 +159,6 @@ int	find_end_of_quotes_h(char *str, char quote, int start)
 	int	x;
 
 	x = start + 1;
-	// printf("\n%s\n",str);
 	while (str[x])
 	{
 		if (str[x] == quote)
@@ -183,7 +182,6 @@ void	remove_quotes_and_replace_h(char **str, int start, t_shell *shell)
 		return ;
 	}
 	new = new_string((*str), start - 1, end + 1, shell);
-	// printf("%s",new);
 	len = ft_strlen(new);
 	(*str) = ft_malloc(shell->mallo, len + 1);
 	ft_strcpy((*str), new);
@@ -191,16 +189,21 @@ void	remove_quotes_and_replace_h(char **str, int start, t_shell *shell)
 
 void	remove_quotes_main_heredoc(char **str, t_shell *shell)
 {
-	int		i = 0, end = 0, single_quotes = 0, double_quotes;
+	int		i;
+	int		end;
+	int		single_quotes;
+	int		double_quotes;
 	char	*copy;
 
-	i = 0, end = 0, single_quotes = 0, double_quotes = 0;
+	i = 0;
+	end = 0;
+	single_quotes = 0;
+	double_quotes = 0;
 	while ((*str)[i])
 	{
 		if ((*str)[i] == '"' && single_quotes == 0)
 		{
 			copy = ft_strdup((*str), shell->mallo);
-				// Make a copy before modifying
 			end = find_end_of_quotes_h(copy, '"', i);
 			if (end == -1 || end >= ft_strlen(*str))
 				break ;

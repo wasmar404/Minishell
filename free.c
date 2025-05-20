@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 11:08:50 by wasmar            #+#    #+#             */
-/*   Updated: 2025/04/02 07:40:35 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/20 09:19:37 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,16 +51,15 @@ void	ft_free_all(t_malloc *gc)
 	free(gc);
 }
 
-
 int	is_fd_open(int fd)
 {
 	struct stat	statbuf;
 
 	if (fstat(fd, &statbuf) == -1)
 	{
-		return (0);//fd is closed
+		return (0); // fd is closed
 	}
-	return (1);//fd is open
+	return (1); // fd is open
 }
 
 void	ft_close(int fd)

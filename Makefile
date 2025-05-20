@@ -11,10 +11,13 @@ OBJDIR = obj
 
 # Source files
 SRC = cd.c \
-      echo.c \
-      env.c \
+      builtins/echo.c \
+      builtins/echo_helper.c \
+      builtins/env.c \
+      builtins/env_helper.c\
       error_handling.c \
-      exit.c \
+      builtins/exit.c \
+      builtins/main_exit.c\
       builtins/export.c \
       builtins/main_export.c \
       builtins/export_helper.c \
@@ -22,7 +25,7 @@ SRC = cd.c \
       heredoc_expand.c \
       input_error_handling.c \
       main.c \
-      pwd.c \
+      builtins/pwd.c \
       quotes.c \
       signals.c \
       token_split.c \
@@ -31,7 +34,7 @@ SRC = cd.c \
       tokenization/main_tokenization.c\
       tokenization/token_type.c\
       tokenization/tokenization_helper.c\
-      unset.c \
+      builtins/unset.c \
       tokenization/updated_tokenization.c \
       utils_1.c \
       builtins/cd_helper.c \

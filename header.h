@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   header.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/14 09:56:13 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/05/20 09:04:11 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 # define HEADER_H
 
 # include "builtins/builtins.h"
-# include "expand_dollar/dollar.h"
 # include "dups/dups.h"
 # include "execution/execution.h"
+# include "expand_dollar/dollar.h"
 # include "libft/libft.h"
 # include <errno.h>
 # include <fcntl.h>
@@ -107,7 +107,7 @@ typedef struct t_shell
 	int					input_file_flag;
 	t_env				*env;
 	t_malloc			*mallo;
-	int heredoc_count;
+	int					heredoc_count;
 	char				**env_array;
 
 }						t_shell;
@@ -166,10 +166,10 @@ typedef struct t_export
 	char				*temp;
 	t_env_struct		*env;
 }						t_export;
-void delete_temp_files(t_shell *shell);
-char *ft_strcpy(char *dest, const char *src);
-void exit_command_helper1(t_token *head,t_shell *exitcode);
-int ft_strncmp(const char *s1, const char *s2, size_t n);
+void					delete_temp_files(t_shell *shell);
+char					*ft_strcpy(char *dest, const char *src);
+void					exit_command_helper1(t_token *head, t_shell *exitcode);
+int						ft_strncmp(const char *s1, const char *s2, size_t n);
 int						check_and_create_file_soutput_redirectio(t_token *head,
 							int *fd, int *dev_null);
 int						check_front_out_redirection_and_pipe(t_token **current_output,
@@ -213,7 +213,7 @@ void					check_back_sinput_redirection(t_token *head,
 							t_shell *shell);
 
 void					super_complicated_handle_dups(t_token *head, t_exe *exe,
-							t_shell *exitcode,int test);
+							t_shell *exitcode, int test);
 int						check_double_sep(char *input, int i);
 int						check_single_sep(char input);
 
@@ -330,6 +330,7 @@ void					return_env_to_beginning(t_env **my_envp);
 
 void					restore_signals(void);
 void					ignore_signals(void);
-void main_heredoc(t_token *head,t_env *envp,t_shell *shell);
+void					main_heredoc(t_token *head, t_env *envp,
+							t_shell *shell);
 
 #endif
