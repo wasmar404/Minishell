@@ -24,9 +24,13 @@ SRC = cd.c \
       quotes.c \
       signals.c \
       token_split.c \
-      tokenization.c \
+      tokenization/tokenization.c \
+      tokenization/delimeter_check.c\
+      tokenization/main_tokenization.c\
+      tokenization/token_type.c\
+      tokenization/tokenization_helper.c\
       unset.c \
-      updated_tokenization.c \
+      tokenization/updated_tokenization.c \
       utils_1.c \
       builtins/cd_helper.c \
       builtins/cd.c \
