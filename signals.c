@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:53:50 by schaaban          #+#    #+#             */
-/*   Updated: 2025/04/02 08:11:37 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/20 07:55:19 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,8 @@ void	ctrl_c(int sig)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
-	// exitcode -> exit_code = 148;
 }
-void	ctrl_c_heredoc(void)
-{
-}
+
 void	main_signal(void)
 {
 	signal(SIGINT, ctrl_c);

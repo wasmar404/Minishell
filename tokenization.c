@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:16:26 by wasmar            #+#    #+#             */
-/*   Updated: 2025/05/16 19:51:42 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/20 07:53:21 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,6 @@ int	ft_strcmp(char *str1, char *str2)
 	}
 	return (str1[i] - str2[i]);
 }
-
-// WHERE IS THE ECHOOOOOOOOOOOOOOOOOOOOOOOOOOOOO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 char	*find_path_of_cmd_helper(char *command)
 {
@@ -110,7 +105,8 @@ char	*find_path_of_cmd(char *command, char **envp, t_shell *shell)
 		cmd_path = ft_strjoin(cwd, command + 1, shell->mallo);
 		return (cmd_path);
 	}
-	if (command[0] == '/' && command[1] == 'b'&& command[2] == 'i'&& command[3] == 'n' && access(command, X_OK) == 0)
+	if (command[0] == '/' && command[1] == 'b' && command[2] == 'i'
+		&& command[3] == 'n' && access(command, X_OK) == 0)
 	{
 		getcwd(cwd, sizeof(cwd));
 		cmd_path = ft_strjoin(cwd, command + 1, shell->mallo);

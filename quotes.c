@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:02:23 by wasmar            #+#    #+#             */
-/*   Updated: 2025/04/02 10:50:39 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/05/20 07:55:52 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	init_remove_quotes_struct(t_rq *quotes)
 	quotes->len = 0;
 	quotes->copy = NULL;
 }
+
 int	do_not_remove_quotes_for_heredoc_delimiter(t_token *head)
 {
 	if (ft_strcmp((head)->token, "<<") == 0)
@@ -48,6 +49,7 @@ int	do_not_remove_quotes_for_heredoc_delimiter(t_token *head)
 	}
 	return (-1);
 }
+
 int	double_quotes_remove(t_token *head, t_shell *shell, t_rq *quotes)
 {
 	if ((head)->token[quotes->i] == '"' && quotes->single_quotes == 0)

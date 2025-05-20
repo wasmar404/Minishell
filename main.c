@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/19 14:02:22 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/05/20 07:58:36 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	init_shell_struct(t_shell *shell, char **envp)
 	shell->env = env_to_linked_list(envp, shell);
 	shell->env_array = env_to_array(shell->env, shell);
 	shell->pid = -1;
-	shell->heredoc_count =0;
+	shell->heredoc_count = 0;
 }
 
 void	print_malloc(t_malloc *gc)
@@ -36,14 +36,14 @@ void	print_malloc(t_malloc *gc)
 	}
 }
 
-int	main(int ac,char **av, char **envp)
+int	main(int ac, char **av, char **envp)
 {
 	char		*input;
 	t_shell		shell;
 	t_malloc	*mallo;
+
 	(void)ac;
 	(void)av;
-
 	input = NULL;
 	mallo = malloc(sizeof(t_malloc));
 	mallo->head = NULL;
@@ -93,7 +93,6 @@ void	print_list(t_token *head)
 	while (head)
 	{
 		printf("\"%s\"%d\n", head->token, head->type);
-		// fflush(stdout);
 		head = head->next;
 	}
 }
@@ -128,12 +127,10 @@ void	main_helper(char *input, t_shell *shell, t_malloc *mallo)
 	if (main_quote_check(input, shell) == 0)
 		return ;
 	splitted_input = token_split(input, mallo);
-	// print_array(splitted_input);
 	head = parse_input_to_tokens(splitted_input, shell);
-	// print_list(head);
 	if (head)
 	{
-		main_heredoc(head,shell->env,shell);
+		main_heredoc(head, shell->env, shell);
 		if (input_check(head, shell) == 0)
 		{
 			delete_temp_files(shell);
@@ -147,7 +144,6 @@ void	main_helper(char *input, t_shell *shell, t_malloc *mallo)
 				return ;
 			}
 		}
-
 		complicated_execute((&shell->env), head, shell);
 	}
 }
@@ -235,7 +231,7 @@ void	here_doc_first(char *s, int fd)
 	while (1)
 	{
 		input = readline("> ");
-		if (!input) // Ctrl+D
+		if (!input)
 		{
 			write(1, "warning: here-document delimited by end-of-file\n", 48);
 			break ;
@@ -244,14 +240,9 @@ void	here_doc_first(char *s, int fd)
 		{
 			break ;
 		}
-		write(fd, input, ft_strlen(input)); // strlenn
+		write(fd, input, ft_strlen(input));
 		write(fd, "\n", 1);
 	}
-	// if(head -> next -> next)
-	// {
-	//     printf("%s : command not found\n",head -> next -> next -> token);
-	//     exit_code = 127;
-	// }
 }
 void	heredoc_dup(t_token *head)
 {
@@ -261,11 +252,9 @@ void	heredoc_dup(t_token *head)
 	if (head && head->type == HERE_DOC)
 	{
 		fd = open("temp", O_WRONLY | O_CREAT | O_APPEND, 0644);
-		// heredoc(head->next->token,fd);
 		here_doc_first(head->next->token, fd);
 		ft_close(fd);
 		fd = open("temp", O_RDONLY);
-		// dup2(fd,0);
 		ft_close(fd);
 		unlink("temp");
 	}
@@ -356,7 +345,9 @@ int	find_var_name_return(t_env *my_envp, char *var_name)
 }
 void	run_built_ins_helper(t_token *head, t_env **my_envp, t_shell *exitcode)
 {
-	t_env *env_copy = (*my_envp); // so the var  my_envp does not become null
+	t_env	*env_copy;
+
+	env_copy = (*my_envp);
 	if ((ft_strcmp(head->token, "env") == 0))
 	{
 		if (find_var_name_return((*my_envp), "PATH") == 1)
@@ -374,10 +365,11 @@ void	run_built_ins_helper(t_token *head, t_env **my_envp, t_shell *exitcode)
 		export_main(my_envp, head, exitcode);
 }
 
-bool find_var_name_first(t_env **my_envp, char *var_name)
+bool	find_var_name_first(t_env **my_envp, char *var_name)
 {
-	t_env *temp;
-	temp= *my_envp;
+	t_env	*temp;
+
+	temp = *my_envp;
 	while (temp != NULL)
 	{
 		if (ft_strcmp(temp->type, var_name) == 0)
@@ -390,7 +382,9 @@ bool find_var_name_first(t_env **my_envp, char *var_name)
 void	run_built_ins(t_token *head, t_env **my_envp, int flag, t_exe *exe,
 		t_shell *exitcode)
 {
-	super_complicated_handle_dups(head, exe, exitcode,exe->fork_flag);
+	t_token	*tokenn;
+
+	super_complicated_handle_dups(head, exe, exitcode, exe->fork_flag);
 	run_built_ins_helper(head, my_envp, exitcode);
 	if (ft_strcmp(head->token, "unset") == 0)
 	{
@@ -405,12 +399,12 @@ void	run_built_ins(t_token *head, t_env **my_envp, int flag, t_exe *exe,
 			exitcode->exit_code = 1;
 			return ;
 		}
-		t_token *tokenn = head->next;
-		while(tokenn)
+		tokenn = head->next;
+		while (tokenn)
 		{
-			if(find_var_name_first(my_envp,tokenn -> token) == true)
+			if (find_var_name_first(my_envp, tokenn->token) == true)
 				main_unset1(my_envp, tokenn->token, exitcode);
-			tokenn = tokenn -> next;
+			tokenn = tokenn->next;
 		}
 	}
 	if (flag == 1)
@@ -427,7 +421,7 @@ void	external_commands(t_token *head, t_env *my_envp, t_exe *exe,
 	if (find_var_name_return((my_envp), "PATH"))
 	{
 		(void)my_envp;
-		super_complicated_handle_dups(head, exe, exitcode,exe->pipe_flag);
+		super_complicated_handle_dups(head, exe, exitcode, exe->pipe_flag);
 		path = find_path_of_cmd(head->token, exe->envp, exitcode);
 		if (execve(path, current_command, exe->envp) == -1)
 			printf("execve failed");
@@ -464,9 +458,6 @@ void	run_command_helper(t_token *head, t_env **my_envp, t_shell *shell,
 	else
 	{
 		shell->exit_code = 127;
-		// ft_putendl_fd("bash: No such file or directory",2);
-		// ft_close(STDIN_FILENO);
-		// exit(exit_code);
 	}
 }
 void	heredoc(char *str, int fd, t_env *envp, t_shell *exitcode)
@@ -476,9 +467,7 @@ void	heredoc(char *str, int fd, t_env *envp, t_shell *exitcode)
 
 	flag = 0;
 	if (check_if_quotes_exit(str) == 0)
-	{
 		flag = 1;
-	}
 	remove_quotes_main_heredoc(&str, exitcode);
 	while (1)
 	{
@@ -491,64 +480,58 @@ void	heredoc(char *str, int fd, t_env *envp, t_shell *exitcode)
 		}
 		if (flag == 1)
 			process_dolloris_heredoc(&input, envp, exitcode);
-		// remove_quotes_main()
-		// remove_quotes_main_h(input);
 		write(fd, input, ft_strlen(input));
 		write(fd, "\n", 1);
 	}
 }
-void main_heredoc(t_token *head,t_env *envp,t_shell *shell)
+void	main_heredoc(t_token *head, t_env *envp, t_shell *shell)
 {
-	int fd;
-	int i;
-	char *file_name;
-	char *num_str;
+	int		fd;
+	int		i;
+	char	*file_name;
+	char	*num_str;
 
-
-	
 	fd = -42;
-	i= 0;
+	i = 0;
 	file_name = NULL;
-	while(head)
+	while (head)
 	{
-		if(head && head->type == HERE_DOC)
+		if (head && head->type == HERE_DOC)
 		{
-			if(head->next)
+			if (head->next)
 			{
-				num_str = ft_itoa(i,shell->mallo);
-				file_name = ft_strjoin("temp",num_str,shell->mallo);
+				num_str = ft_itoa(i, shell->mallo);
+				file_name = ft_strjoin("temp", num_str, shell->mallo);
 				fd = open(file_name, O_WRONLY | O_CREAT | O_APPEND, 0644);
-				heredoc(head->next->token,fd,envp,shell);
+				heredoc(head->next->token, fd, envp, shell);
 				ft_close(fd);
-				// if (head->token)
-				// 	free(head->token);
-				// head->token = ft_strdup("<", shell->mallo);
-				// if (head->next->token)
-				// 	free(head->next->token);
 				head->token = ft_strdup("<", shell->mallo);
 				head->next->token = ft_strdup(file_name, shell->mallo);
 				head->next->token = ft_strdup(file_name, shell->mallo);
 				head->type = 4;
-				head->next->type = 11; 
+				head->next->type = 11;
 			}
 			i++;
 			shell->heredoc_count++;
 		}
-		head = head ->next ;
+		head = head->next;
 	}
 }
-void delete_temp_files(t_shell *shell)
+
+void	delete_temp_files(t_shell *shell)
 {
-	int i = 0;
-	char *file_name = NULL;
-	char *num_str;
-	while (i <=shell->heredoc_count)
+	int		i;
+	char	*file_name;
+	char	*num_str;
+
+	file_name = NULL;
+	i = 0;
+	while (i <= shell->heredoc_count)
 	{
-		num_str = ft_itoa(i,shell->mallo);
-		file_name = ft_strjoin("temp",num_str,shell->mallo);
+		num_str = ft_itoa(i, shell->mallo);
+		file_name = ft_strjoin("temp", num_str, shell->mallo);
 		unlink(file_name);
 		i++;
 	}
 	shell->heredoc_count = 0;
-
 }

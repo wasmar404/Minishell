@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_split.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:00:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/13 11:06:53 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/05/20 07:54:39 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,7 +195,7 @@ void	parse_non_delimiter(char **tokens, int *token, char *str, int *i,
 char	**token_split(char *str, t_malloc *mallo)
 {
 	int		token;
-	int i;
+	int		i;
 	int		count;
 	char	**tokens;
 

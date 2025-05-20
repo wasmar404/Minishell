@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   updated_tokenization.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:02:23 by wasmar            #+#    #+#             */
-/*   Updated: 2025/05/19 11:54:41 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/05/20 07:52:21 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ t_token	*parse_input_to_tokens(char **splitted_input, t_shell *shell)
 	add_type(head1, shell->env_array, shell);
 	return (head1);
 }
+
 void	add_type(t_token *head, char **envp, t_shell *shell)
 {
 	while ((head) != NULL)
@@ -116,6 +117,7 @@ token_type	check_if_twopoints_dir_cmd_word(char *input, char **envp,
 	else
 		return (WORD);
 }
+
 int	count_ttoken_nodes(t_token *head)
 {
 	int	i;
@@ -134,8 +136,8 @@ int	check_if_cmd(char *input, char **envp, t_token *head, t_shell *shell)
 	if (head->token[0] == '.' && head->token[1] == '/' && access(head->token,
 			X_OK) == 0)
 		return (1);
-	if (head->token[0] == '/' && head->token[1] == 'b' &&head->token[2] =='i' && head->token[3] == 'n'  && access(head->token,
-			X_OK) == 0)
+	if (head->token[0] == '/' && head->token[1] == 'b' && head->token[2] == 'i'
+		&& head->token[3] == 'n' && access(head->token, X_OK) == 0)
 		return (1);
 	if (find_path_of_cmd(input, envp, shell))
 	{
@@ -144,16 +146,18 @@ int	check_if_cmd(char *input, char **envp, t_token *head, t_shell *shell)
 			return (1);
 		else if (count_ttoken_nodes(head) >= 2)
 		{
-			if (head->prev->prev && (ft_strcmp(head->prev->prev->token, ">") == 0
-					|| ft_strcmp(head->prev->prev->token, "<") == 0
-					|| ft_strcmp(head->prev->prev->token, ">>") == 0
-					|| ft_strcmp(head->prev->prev->token, "<<") == 0))
+			if (head->prev->prev && (ft_strcmp(head->prev->prev->token,
+						">") == 0 || ft_strcmp(head->prev->prev->token,
+						"<") == 0 || ft_strcmp(head->prev->prev->token,
+						">>") == 0 || ft_strcmp(head->prev->prev->token,
+						"<<") == 0))
 				return (1);
 		}
 		return (0);
 	}
 	return (0);
 }
+
 t_token	*create_node_token(char *str, int i, bool built_in_or_not,
 		t_shell *shell)
 {
@@ -216,6 +220,7 @@ void	remove_quotes_and_replace(t_token **head, int start, t_shell *shell)
 	(*head)->token = ft_malloc(shell->mallo, len + 1);
 	ft_strcpy((*head)->token, new);
 }
+
 int	find_end_of_quotes(char *str, char quote, int start)
 {
 	int	x;
