@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 12:23:12 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/20 09:06:52 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/20 10:40:11 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	expand_and_replace_heredoc(char **mainstr, char *str, int end,
 	if (!str[0])
 	{
 		(*mainstr) = ft_strdup("", shell->mallo);
-			// Allocate empty string instead of assigning literal
 		return ;
 	}
 	i = 0;
@@ -46,6 +45,7 @@ void	expand_and_replace_heredoc(char **mainstr, char *str, int end,
 	}
 	(*mainstr)[x] = '\0';
 }
+
 char	*create_array_till_dollar_h(char *input, int index, t_shell *shell)
 {
 	char	*new_string;
@@ -62,6 +62,7 @@ char	*create_array_till_dollar_h(char *input, int index, t_shell *shell)
 	new_string[i] = '\0';
 	return (new_string);
 }
+
 char	*check_char_after_dollar_and_expand1(char *str, t_env *envp,
 		t_shell *exitcode)
 {
@@ -90,6 +91,7 @@ char	*check_char_after_dollar_and_expand1(char *str, t_env *envp,
 	}
 	return (new_string);
 }
+
 int	check_if_quotes_exit(char *input)
 {
 	int	count;
@@ -105,6 +107,7 @@ int	check_if_quotes_exit(char *input)
 	}
 	return (count);
 }
+
 void	process_dolloris_helper_h(int *i, char **input, char **str, t_env *env,
 		t_shell *exitcode)
 {
@@ -139,6 +142,7 @@ void	process_dolloris_helper_h(int *i, char **input, char **str, t_env *env,
 			(*i) = end;
 	}
 }
+
 void	process_dolloris_heredoc(char **input, t_env *env, t_shell *exitcode)
 {
 	int		i;
@@ -154,6 +158,7 @@ void	process_dolloris_heredoc(char **input, t_env *env, t_shell *exitcode)
 		i++;
 	}
 }
+
 int	find_end_of_quotes_h(char *str, char quote, int start)
 {
 	int	x;
@@ -167,6 +172,7 @@ int	find_end_of_quotes_h(char *str, char quote, int start)
 	}
 	return (-1);
 }
+
 void	remove_quotes_and_replace_h(char **str, int start, t_shell *shell)
 {
 	int		end;

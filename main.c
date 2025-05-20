@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/20 07:58:36 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/20 10:38:04 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,20 +20,6 @@ void	init_shell_struct(t_shell *shell, char **envp)
 	shell->env_array = env_to_array(shell->env, shell);
 	shell->pid = -1;
 	shell->heredoc_count = 0;
-}
-
-void	print_malloc(t_malloc *gc)
-{
-	t_mem_node	*current;
-
-	current = gc->head;
-	while (current)
-	{
-		printf("sufuf0");
-		fflush(stdout);
-		printf("Allocated pointer: %p\n", current->ptr);
-		current = current->next;
-	}
 }
 
 int	main(int ac, char **av, char **envp)
@@ -60,8 +46,6 @@ int	main(int ac, char **av, char **envp)
 			add_history(input);
 			main_helper(input, &shell, mallo);
 		}
-		if (ft_strcmp(input, "stop") == 0)
-			break ;
 		free(input);
 	}
 	ft_free_all(mallo);
@@ -145,18 +129,6 @@ void	main_helper(char *input, t_shell *shell, t_malloc *mallo)
 			}
 		}
 		complicated_execute((&shell->env), head, shell);
-	}
-}
-
-void	find_a_node_move_pointer(t_token **head, int i)
-{
-	while (*head)
-	{
-		if ((*head)->node_count == i)
-		{
-			break ;
-		}
-		(*head) = (*head)->next;
 	}
 }
 
