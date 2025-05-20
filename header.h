@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/20 09:04:11 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/20 11:59:55 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,15 @@ typedef struct s_garbage_collector
 {
 	t_mem_node			*head;
 }						t_malloc;
+
+
+typedef struct t_token_split
+{
+		int		token;
+	int		i;
+char	**tokens;	
+int		count;
+}t_token_split;
 typedef struct t_token
 {
 	char				*token;

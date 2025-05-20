@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 10:26:57 by wasmar            #+#    #+#             */
-/*   Updated: 2025/05/20 10:30:01 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/20 12:01:19 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,4 +80,12 @@ void	token_count_helper(char *input, int *i, int *count, int *in_token)
 			&& input[(*i)] != '"' && input[(*i)] != '\'')
 			(*i)++;
 	}
+}
+
+void	init_token_split_struct(t_token_split *split, char *str)
+{
+	split->token = 0;
+	split->i = 0;
+	split->tokens = NULL;
+	split->count = token_count(str);
 }
