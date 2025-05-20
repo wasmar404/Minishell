@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dollar2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 15:19:54 by schaaban          #+#    #+#             */
-/*   Updated: 2025/04/02 14:32:58 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/05/20 09:54:00 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int	find_end_variable(char *str, int j)
 		i++;
 	return (i);
 }
+
 int	find_dollar_position1(char *str, int j)
 {
 	int	i;
@@ -38,6 +39,7 @@ int	find_dollar_position1(char *str, int j)
 	}
 	return (-42);
 }
+
 int	handle_empty_variable(t_token **head, char *str)
 {
 	if (!str[0])
@@ -47,14 +49,15 @@ int	handle_empty_variable(t_token **head, char *str)
 	}
 	return (1);
 }
+
 void	check_quotes_till_end(char *str, t_quotes *quotes, int start, int end)
 {
-	int i;
+	int	i;
 
 	i = start;
 	while (i <= end && str[i] != '\0')
-	{	
-		if(str[i])
+	{
+		if (str[i])
 			update_quote_status(quotes, str[i]);
 		i++;
 	}

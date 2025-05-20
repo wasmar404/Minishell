@@ -46,7 +46,8 @@ SRC = cd.c \
       execution/execution2.c \
       expand_dollar/dollar.c \
       expand_dollar/dollar1.c \
-      expand_dollar/dollar2.c
+      expand_dollar/dollar2.c \
+      expand_dollar/dollar3.c
 
 # Object files
 OBJ = $(addprefix $(OBJDIR)/, $(SRC:.c=.o))

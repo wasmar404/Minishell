@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:23:48 by schaaban          #+#    #+#             */
-/*   Updated: 2025/04/02 08:15:35 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/20 10:01:07 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define DOLLAR_H
 
 # include "../header.h"
+
 typedef struct t_token		t_token;
 typedef struct t_shell		t_shell;
 typedef struct t_quotes		t_quotes;
@@ -40,5 +41,7 @@ void						if_expanded(t_variables *var, int *i,
 								t_token **head, t_shell *shell);
 char						*expand_dollar(char *str, t_env *envp,
 								t_shell *shell);
+void						update_quote_status_helper(t_quotes *quotes,
+								char c);
 
 #endif

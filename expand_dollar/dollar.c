@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dollar.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 10:37:55 by wasmar            #+#    #+#             */
-/*   Updated: 2025/04/02 14:36:38 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/05/20 09:58:59 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,20 +40,12 @@ void	process_dolloris(t_token *head, t_shell *shell)
 		(head) = (head)->next;
 	}
 }
+
 void	update_quote_status(t_quotes *quotes, char c)
 {
 	if ((c == '"' || c == '\'') && (quotes->inside_quote) == 0)
 	{
-		if (c == '"')
-		{
-			(quotes->inside_quote) = 1;
-			(quotes->d_start) = 1;
-		}
-		if (c == '\'')
-		{
-			(quotes->inside_quote) = 2;
-			(quotes->s_start) = 1;
-		}
+		update_quote_status_helper(quotes, c);
 	}
 	else if ((c == '"' || c == '\'') && ((quotes->inside_quote) == 1
 			|| (quotes->inside_quote) == 2))
@@ -77,15 +69,19 @@ void	update_quote_status(t_quotes *quotes, char c)
 		we store the string before the first occurance of a dollar in it
 	// var.i = 0;            // it stores the end of a variable,
 		which means from the dollar till the end
-	-int *i is the index that we check in the following function to know if its a dollar or not
+	-int *i is the index that we check in the following 
+	function to know if its a dollar or not
 	- secondary stores the extracted var that should be expanded
-	- primary stores the expanded string to replace the variable that should be expanded,
+	- primary stores the expanded string to replace the
+	 variable that should be expanded,
 		after checking what char comes after the dollar
-	- if the var wasnt expanded "primary == NULL",we remove it while storing what comes before,
+	- if the var wasnt expanded "primary == NULL",we remove 
+	it while storing what comes before,
 		and then set i to the start of what comes after primary
 	- if primamry was expanded,
 		we expand it in the node and check the quotes in all cases
 */
+
 void	process_dolloris_helper(int *i, t_token **head, t_quotes *quotes,
 		t_shell *shell)
 {
@@ -114,6 +110,7 @@ void	process_dolloris_helper(int *i, t_token **head, t_quotes *quotes,
 		(*i) = var.i;
 	check_quotes_till_end((*head)->token, quotes, start, var.i);
 }
+
 void	initialize_variable(t_variables *var)
 {
 	var->primary = NULL;
@@ -123,6 +120,7 @@ void	initialize_variable(t_variables *var)
 	var->j = 0;
 	var->array = NULL;
 }
+
 char	*check_char_after_dollar_and_expand(char *str, int inside_quote,
 		t_shell *shell)
 {
@@ -133,7 +131,7 @@ char	*check_char_after_dollar_and_expand(char *str, int inside_quote,
 			|| inside_quote == 1))
 		new_string = ft_itoa(shell->exit_code, shell->mallo);
 	else if (str[0] == '$' && (str[1] == '"' || str[1] == '\'')
-			&& (inside_quote == 0))
+		&& (inside_quote == 0))
 		new_string = ft_strdup(str + 1, shell->mallo);
 	else if (str[0] == '$' && (str[1] >= '0' && str[1] <= '9')
 		&& (inside_quote == 0 || inside_quote == 1))

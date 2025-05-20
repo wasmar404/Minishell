@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 15:18:18 by schaaban          #+#    #+#             */
-/*   Updated: 2025/04/02 08:16:01 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/20 09:54:14 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ void	if_expanded(t_variables *var, int *i, t_token **head, t_shell *shell)
 
 	temp = NULL;
 	temp = ft_strjoin(var->tertiary, var->primary, shell->mallo);
-	// add a malloccccc!!!!!!!!!!!
 	var->tertiary = temp;
 	expand_variable(head, var->tertiary, var->i, shell);
 	(*i) = ft_strlen(var->tertiary) - 1;
 }
+
 char	*create_array_till_dollar(t_token *head, int index, t_shell *shell)
 {
 	char	*new_string;
@@ -53,6 +53,7 @@ char	*expand_dollar(char *str, t_env *envp, t_shell *shell)
 		new_string = ft_strdup(to_replace->enva, shell->mallo);
 	return (new_string);
 }
+
 void	expand_variable(t_token **head, char *str, int end, t_shell *shell)
 {
 	t_variables	var;
