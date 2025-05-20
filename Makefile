@@ -15,7 +15,9 @@ SRC = cd.c \
       env.c \
       error_handling.c \
       exit.c \
-      export.c \
+      builtins/export.c \
+      builtins/main_export.c \
+      builtins/export_helper.c \
       free.c \
       heredoc_expand.c \
       input_error_handling.c \

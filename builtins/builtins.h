@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:23:48 by schaaban          #+#    #+#             */
-/*   Updated: 2025/04/02 08:15:40 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/20 08:38:12 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ typedef struct t_shell		t_shell;
 typedef struct t_quotes		t_quotes;
 typedef struct t_variables	t_variables;
 typedef struct t_env		t_env;
+typedef struct t_export		t_export;
 
 // cd.c
 void						main_cd(t_token *head, t_env **my_envp,
@@ -40,4 +41,19 @@ int							update_pwd_and_oldpwd(t_env *my_envp,
 								char *new_path, t_shell *shell);
 int							find_last_backslash(char *str);
 
+//export_helper.c
+t_env	*find_tail(t_env *my_envp);
+int	check_equall(t_token *head);
+void	init_t_export(t_export *exp);
+t_env	*check_if_var_exists(t_env *my_envp, char *type);
+void	reset_bool_printed(t_env *head);
+
+//export.c
+char	*ft_strdupp(char *str, int i, t_shell *shell);
+void	print_env_sorted(t_env *head);
+void	find_type_helper(t_export *export, t_token *head, t_env **my_envp,
+		t_shell *shell);
+void	find_type_helper_1(t_export *export, t_token *head, t_shell *shell);
+void	find_type(t_token *head, t_env **my_envp, t_shell *shell);
+//main_export.c
 #endif
