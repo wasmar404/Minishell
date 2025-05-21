@@ -6,13 +6,13 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 09:11:44 by wasmar            #+#    #+#             */
-/*   Updated: 2025/05/21 09:25:26 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/21 17:31:12 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "heredoc_expand.h"
 
-void	handle_double_quotes(char **str, int *i, t_shell *shell)
+int	handle_double_quotes(char **str, int *i, t_shell *shell)
 {
 	char	*copy;
 	int		end;
@@ -20,12 +20,12 @@ void	handle_double_quotes(char **str, int *i, t_shell *shell)
 	copy = ft_strdup(*str, shell->mallo);
 	end = find_end_of_quotes_h(copy, '"', *i);
 	if (end == -1 || end >= ft_strlen(*str))
-		return ;
+		return (-2);
 	remove_quotes_and_replace_h(str, *i, shell);
 	*i = end - 1;
 }
 
-void	handle_single_quotes(char **str, int *i, t_shell *shell)
+int	handle_single_quotes(char **str, int *i, t_shell *shell)
 {
 	char	*copy;
 	int		end;
@@ -33,9 +33,15 @@ void	handle_single_quotes(char **str, int *i, t_shell *shell)
 	copy = ft_strdup(*str, shell->mallo);
 	end = find_end_of_quotes_h(copy, '\'', *i);
 	if (end == -1 || end >= ft_strlen(*str))
-		return ;
+		return (-2);
 	remove_quotes_and_replace_h(str, *i, shell);
 	*i = end - 1;
+}
+
+void	set_value_to_zero(int *single_quotes, int *double_quotes)
+{
+	(*single_quotes) = 0;
+	(*double_quotes) = 0;
 }
 
 void	remove_quotes_main_heredoc(char **str, t_shell *shell)
@@ -45,22 +51,21 @@ void	remove_quotes_main_heredoc(char **str, t_shell *shell)
 	int	double_quotes;
 
 	i = 0;
-	single_quotes = 0;
-	double_quotes = 0;
+	set_value_to_zero(&single_quotes, &double_quotes);
 	while ((*str)[i])
 	{
 		if ((*str)[i] == '"' && single_quotes == 0)
 		{
-			handle_double_quotes(str, &i, shell);
-			single_quotes = 0;
-			double_quotes = 0;
+			if (handle_double_quotes(str, &i, shell) == -2)
+				break ;
+			set_value_to_zero(&single_quotes, &double_quotes);
 			continue ;
 		}
 		if ((*str)[i] == '\'' && double_quotes == 0)
 		{
-			handle_single_quotes(str, &i, shell);
-			single_quotes = 0;
-			double_quotes = 0;
+			if (handle_single_quotes(str, &i, shell) == -2)
+				break ;
+			set_value_to_zero(&single_quotes, &double_quotes);
 			continue ;
 		}
 		i++;

@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:23:48 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/21 09:24:48 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/21 17:31:16 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ char						*check_char_after_dollar_and_expand1(char *str,
 								t_env *envp, t_shell *exitcode);
 int							check_if_quotes_exit(char *input);
 // heredoc_expand_helper2.c
-void						handle_double_quotes(char **str, int *i,
+int							handle_double_quotes(char **str, int *i,
 								t_shell *shell);
-void						handle_single_quotes(char **str, int *i,
+int							handle_single_quotes(char **str, int *i,
 								t_shell *shell);
 void						remove_quotes_main_heredoc(char **str,
 								t_shell *shell);
