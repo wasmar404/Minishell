@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 09:11:44 by wasmar            #+#    #+#             */
-/*   Updated: 2025/05/21 09:13:54 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/21 09:25:26 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	handle_double_quotes(char **str, int *i, t_shell *shell)
 	remove_quotes_and_replace_h(str, *i, shell);
 	*i = end - 1;
 }
+
 void	handle_single_quotes(char **str, int *i, t_shell *shell)
 {
 	char	*copy;

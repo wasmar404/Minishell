@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 09:10:25 by wasmar            #+#    #+#             */
-/*   Updated: 2025/05/21 09:10:45 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/21 09:25:21 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	expand_and_replace_heredoc_helper1(char **mainstr, char *str, char *s)
 	}
 	(*mainstr)[x] = '\0';
 }
+
 void	expand_and_replace_heredoc(char **mainstr, char *str, int end,
 		t_shell *shell)
 {
