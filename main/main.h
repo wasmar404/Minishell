@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:23:48 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/21 12:39:42 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/21 12:46:44 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,14 +64,19 @@ void						write_two(int fd, char *input);
 void						run_command_helper(t_token *head, t_shell *shell,
 								t_exe *exe);
 int							path_exists(char **envp);
-void						external_commands(t_token *head,
-								t_exe *exe, char **current_command,
-								t_shell *exitcode);
+void						external_commands(t_token *head, t_exe *exe,
+								char **current_command, t_shell *exitcode);
 // main_helper_6.c
 void						main_heredoc_helper(t_token *head, t_shell *shell,
 								int *i);
 void						main_heredoc(t_token *head, t_env *envp,
 								t_shell *shell);
 void						delete_temp_files(t_shell *shell);
+
+// main
+int							main_helper_helper(char *input, t_shell *shell,
+								char ***splitted_input, t_malloc *mallo);
+void						main_helper(char *input, t_shell *shell,
+								t_malloc *mallo);
 
 #endif
