@@ -27,7 +27,13 @@ SRC = cd.c \
       expand_heredoc/heredoc_expand_helper1.c \
       expand_heredoc/heredoc_expand_helper2.c \
       input_error_handling.c \
-      main.c \
+      main/main.c \
+      main/main_helper_1.c\
+            main/main_helper_2.c\
+      main/main_helper_3.c\
+      main/main_helper_4.c\
+      main/main_helper_5.c\
+      main/main_helper_6.c\
       builtins/pwd.c \
       quotes.c \
       signals.c \

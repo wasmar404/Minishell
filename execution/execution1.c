@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 19:03:54 by wasmar            #+#    #+#             */
-/*   Updated: 2025/05/20 10:10:48 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/21 10:45:08 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	handle_fork(t_exe *exe, t_token *current, t_env **my_envp,
 	{
 		restore_signals();
 		add_shell_level(my_envp, current, &(exe->envp), shell);
-		run_command_helper(current, my_envp, shell, exe);
+		run_command_helper(current, shell, exe);
 	}
 	else if (shell->pid > 0)
 	{

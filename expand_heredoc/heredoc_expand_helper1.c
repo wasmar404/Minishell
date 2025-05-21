@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 09:10:25 by wasmar            #+#    #+#             */
-/*   Updated: 2025/05/21 09:25:21 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/21 12:06:18 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,18 @@ void	expand_and_replace_heredoc(char **mainstr, char *str, int end,
 {
 	char	*s;
 	int		len;
+	char	*original;
 
+	original = *mainstr;
 	if (!str[0])
 	{
+		free(original);
 		(*mainstr) = ft_strdup("", shell->mallo);
 		return ;
 	}
 	s = ft_strdup((*mainstr) + end, shell->mallo);
 	len = ft_strlen(str) + ft_strlen(s) + 1;
+	free(original);
 	(*mainstr) = ft_malloc(shell->mallo, len);
 	expand_and_replace_heredoc_helper1(mainstr, str, s);
 }

@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 15:03:11 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/20 10:10:09 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/21 10:38:57 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	builtin_and_no_pipe(t_exe *exe, t_token *current, t_env **my_envp,
 		t_shell *shell)
 {
 	exe->fork_flag = 1;
-	run_built_ins(current, my_envp, 0, exe, shell);
+	run_built_ins(current, 0, exe, shell);
 	restore_terminal_file_descriptor(exe);
 }
 
