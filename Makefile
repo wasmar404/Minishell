@@ -1,16 +1,12 @@
-# Compiler and flags
 CC = gcc
-# CFLAGS = -Wall -Wextra -Werror
 CFLAGS = -g
 
 NAME = minishell
 
 LIBS = -lreadline -Llibft -lft
 
-# Object directory
 OBJDIR = obj
 
-# Source files
 SRC = builtins/echo.c \
       builtins/echo_helper.c \
       builtins/env.c \
@@ -65,34 +61,26 @@ SRC = builtins/echo.c \
       expand_dollar/dollar2.c \
       expand_dollar/dollar3.c
 
-# Object files
 OBJ = $(addprefix $(OBJDIR)/, $(SRC:.c=.o))
 
-# Default rule
 all: $(NAME)
 
-# Link the binary
 $(NAME): $(OBJ) libft/libft.a
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBS)
 
-# Compile object files into OBJDIR
 $(OBJDIR)/%.o: %.c
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Build libft
 libft/libft.a:
 	make -C libft
 
-# Clean object files
 clean:
 	rm -rf $(OBJDIR)
 	make -C libft clean
 
-# Clean everything
 fclean: clean
 	rm -f $(NAME)
 	make -C libft fclean
 
-# Rebuild everything
 re: fclean all

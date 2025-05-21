@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 12:23:12 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/21 09:13:48 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/21 21:51:52 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void	remove_quotes_and_replace_h(char **str, int start, t_shell *shell)
 	{
 		return ;
 	}
-	new = new_string((*str), start - 1, end + 1, shell);
+	new = new_string((*str), start, end, shell);
 	len = ft_strlen(new);
 	(*str) = ft_malloc(shell->mallo, len + 1);
 	ft_strcpy((*str), new);
