@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 12:57:39 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/21 13:43:53 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/21 16:53:09 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,7 @@ long long	ft_atoll(const char *nptr)
 	while (nptr[i] >= '0' && nptr[i] <= '9')
 	{
 		if (sum > (LLONG_MAX - (nptr[i] - '0')) / 10)
-		{
-			if (sign == 1)
-				return (LLONG_MAX);
-			else
-				return (LLONG_MIN);
-		}
+			return (-42);
 		sum = (sum * 10) + (nptr[i] - '0');
 		i++;
 	}
@@ -71,6 +66,12 @@ void	exit_command_helper2(t_token *head, t_shell *shell)
 	long long	num;
 
 	num = 0;
+	if (ft_atoll(head->next->token) == -42)
+	{
+		ft_putendl_fd("numberic argument required", 2);
+		ft_free_all(shell->mallo);
+		exit(2);
+	}
 	if (is_digit_string(head->next->token) == 2)
 	{
 		shell->exit_code = ft_atoll(head->next->token) % 256;
