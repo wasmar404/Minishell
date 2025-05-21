@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:00:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/20 12:16:42 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/21 08:30:48 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,11 @@ void	parse_non_delimiter(t_token_split *split, char *str, t_malloc *mallo)
 char	**token_split(char *str, t_malloc *mallo)
 {
 	t_token_split	split;
-	int				count;
 
 	if (!str)
 		return (NULL);
 	init_token_split_struct(&split, str);
-	split.tokens = ft_malloc(mallo, sizeof(char *) * (count + 2));
+	split.tokens = ft_malloc(mallo, sizeof(char *) * (split.count + 2));
 	while (str[split.i])
 	{
 		while (str[split.i] == ' ' || str[split.i] == '\t')

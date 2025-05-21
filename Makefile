@@ -1,6 +1,7 @@
 # Compiler and flags
 CC = gcc
 # CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -g
 
 NAME = minishell
 
