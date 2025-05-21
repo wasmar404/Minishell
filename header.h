@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/21 12:45:35 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/21 13:30:42 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ typedef struct t_exe
 	int					fork_flag;
 	int					pipe_flag;
 }						t_exe;
-typedef enum token_type
+typedef enum t_token_type
 {
 	COMMAND,
 	PIPE,
@@ -59,14 +59,14 @@ typedef enum token_type
 	TWO_POINTS,
 	DIRECTORY,
 	HEREDOC_INFILE
-}						token_type;
-typedef enum dollar_type
+}						t_token_type;
+typedef enum t_dollar_type
 {
 	QUOTES,
 	CHARACTERS,
 	NUMBERS,
 	STRING
-}						dollar_type;
+}						t_dollar_type;
 typedef struct s_mem_node
 {
 	void				*ptr;
@@ -180,9 +180,11 @@ void					exit_command_helper1(t_token *head, t_shell *exitcode);
 int						ft_strncmp(const char *s1, const char *s2, size_t n);
 int						check_and_create_file_soutput_redirectio(t_token *head,
 							int *fd, int *dev_null);
-int						check_front_out_redirection_and_pipe(t_token **current_output,
+int						check_front_out_redirection_and_pipe(
+							t_token **current_output,
 							t_token *head, int *flag);
-int						if__check_front_out_redirection_pipe(t_token **current_output,
+int						if__check_front_out_redirection_pipe(
+							t_token **current_output,
 							t_token *head, int *flag);
 void					check_and_create_file(t_token *head);
 void					check_front_sinput_redirection(t_token *head,
@@ -252,8 +254,8 @@ bool					built_in_or_not(char *cmd);
 void					find_the_word_path_in_envp(char ***envp);
 int						ft_strcmp(char *str1, char *str2);
 char					*find_path_of_cmd_helper(char *command);
-token_type				check_delimeter1(char *splitted_token);
-token_type				check_delimeter2(char *splitted_token);
+t_token_type			check_delimeter1(char *splitted_token);
+t_token_type			check_delimeter2(char *splitted_token);
 void					main_helper(char *input, t_shell *shell,
 							t_malloc *mallo);
 
@@ -280,17 +282,17 @@ void					main_unset1(t_env **my_envp, char *var_name,
 void					find_var_name(t_env **my_envp, char *var_name);
 int						valid_identifier(t_token *head);
 int						invalid_option(t_token *head);
-token_type				check_delimeter(char *splitted_token, char **envp,
+t_token_type			check_delimeter(char *splitted_token, char **envp,
 							t_shell *shelll);
-token_type				check_delimeter3(char *splitted_token, char **env,
+t_token_type			check_delimeter3(char *splitted_token, char **env,
 							t_shell *shell);
-token_type				check_if_heredoc_aoutput_minus_tilde(char *input);
-token_type				check_if_pipe_soutput_sinput(char *input);
-token_type				check_input_type(char *input, char **envp,
+t_token_type			check_if_heredoc_aoutput_minus_tilde(char *input);
+t_token_type			check_if_pipe_soutput_sinput(char *input);
+t_token_type			check_input_type(char *input, char **envp,
 							t_token *head, t_shell *shell);
 int						check_if_cmd(char *input, char **envp, t_token *head,
 							t_shell *shell);
-token_type				check_if_twopoints_dir_cmd_word(char *input,
+t_token_type			check_if_twopoints_dir_cmd_word(char *input,
 							char **envp, t_token *head, t_shell *shell);
 void					run_built_ins(t_token *head, int flag, t_exe *exe,
 							t_shell *exitcode);

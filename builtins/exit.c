@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 12:57:39 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/20 09:15:38 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/21 13:19:32 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,12 @@ long long	ft_atoll(const char *nptr)
 	while (nptr[i] >= '0' && nptr[i] <= '9')
 	{
 		if (sum > (LLONG_MAX - (nptr[i] - '0')) / 10)
-			return (sign == 1 ? LLONG_MAX : LLONG_MIN);
+		{
+			if (sign == 1)
+				return (LLONG_MAX);
+			else
+				return (LLONG_MIN);
+		}
 		sum = (sum * 10) + (nptr[i] - '0');
 		i++;
 	}

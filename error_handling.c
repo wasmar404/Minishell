@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_handling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 09:48:15 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/19 11:53:03 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/05/21 13:29:52 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	valid_identifier_helper(t_token *head)
 	int	i;
 
 	count = 0;
-	i = 0;
+	i = 1;
 	if (head->token[0] && !((head->token[0] >= 'a' && head->token[0] <= 'z')
 			|| (head->token[0] >= 'A' && head->token[0] <= 'Z')
 			|| (head->token[0] == '_')))
@@ -26,7 +26,6 @@ int	valid_identifier_helper(t_token *head)
 		ft_putendl_fd_two(head->token, ": not a valid identifier", 2);
 		count++;
 	}
-	i = 1;
 	while (head->token[i] && head->token[i] != '=')
 	{
 		if (!((head->token[i] >= 'a' && head->token[i] <= 'z')
@@ -41,6 +40,7 @@ int	valid_identifier_helper(t_token *head)
 	}
 	return (count);
 }
+
 int	valid_identifier(t_token *head)
 {
 	int	count;

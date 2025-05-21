@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/05 12:28:27 by wasmar            #+#    #+#             */
-/*   Updated: 2025/04/02 08:13:53 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/21 13:17:14 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	search_and_find_a_type_my_envp(t_env **envp, char *to_find)
 		(*envp) = (*envp)->next;
 	}
 }
+
 void	return_env_to_beginning(t_env **my_envp)
 {
 	while ((*my_envp)->prev)

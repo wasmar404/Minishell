@@ -6,15 +6,15 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 08:17:11 by wasmar            #+#    #+#             */
-/*   Updated: 2025/05/20 08:17:46 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/21 13:29:15 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokenization.h"
 
-token_type	check_delimeter1(char *splitted_token)
+t_token_type	check_delimeter1(char *splitted_token)
 {
-	token_type	type;
+	t_token_type	type;
 
 	if (ft_strcmp(splitted_token, ">>") == 0)
 	{
@@ -40,9 +40,9 @@ token_type	check_delimeter1(char *splitted_token)
 		return (0);
 }
 
-token_type	check_delimeter2(char *splitted_token)
+t_token_type	check_delimeter2(char *splitted_token)
 {
-	token_type	type;
+	t_token_type	type;
 
 	if (ft_strcmp(splitted_token, "|") == 0)
 	{
@@ -63,9 +63,10 @@ token_type	check_delimeter2(char *splitted_token)
 		return (0);
 }
 
-token_type	check_delimeter3(char *splitted_token, char **env, t_shell *shell)
+t_token_type	check_delimeter3(char *splitted_token, char **env,
+	t_shell *shell)
 {
-	token_type	type;
+	t_token_type	type;
 
 	if (ft_strcmp(splitted_token, "..") == 0)
 	{
@@ -89,9 +90,10 @@ token_type	check_delimeter3(char *splitted_token, char **env, t_shell *shell)
 	}
 }
 
-token_type	check_delimeter(char *splitted_token, char **envp, t_shell *shelll)
+t_token_type	check_delimeter(char *splitted_token, char **envp,
+	t_shell *shelll)
 {
-	token_type	type;
+	t_token_type	type;
 
 	if (check_delimeter1(splitted_token) != 0)
 	{

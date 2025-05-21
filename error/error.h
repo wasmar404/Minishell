@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:23:48 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/21 13:15:17 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/21 13:23:45 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,5 +51,6 @@ int							check_if_pipe_is_valid(t_token *head,
 								t_shell *exitcode);
 int							check_command(char *array, char **envp,
 								t_shell *exitcode);
-
+int							check_command_helper(char *array,
+								t_shell *exitcode);
 #endif

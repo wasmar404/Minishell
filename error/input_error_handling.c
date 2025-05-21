@@ -6,11 +6,11 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 10:14:57 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/21 13:15:27 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/21 13:23:22 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
+#include "error.h"
 
 /* check if the first node is a command
  if there is a pipe, check if the node before and the node after is a command

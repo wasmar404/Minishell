@@ -11,8 +11,7 @@ LIBS = -lreadline -Llibft -lft
 OBJDIR = obj
 
 # Source files
-SRC = cd.c \
-      builtins/echo.c \
+SRC = builtins/echo.c \
       builtins/echo_helper.c \
       builtins/env.c \
       builtins/env_helper.c\
@@ -26,7 +25,10 @@ SRC = cd.c \
       expand_heredoc/heredoc_expand.c \
       expand_heredoc/heredoc_expand_helper1.c \
       expand_heredoc/heredoc_expand_helper2.c \
-      input_error_handling.c \
+      error/input_error_handling.c \
+      error/input_error_handling_1.c \
+      error/input_error_handling_2.c \
+      error/input_error_handling_3.c \
       main/main.c \
       main/main_helper_1.c\
       main/main_helper_2.c\
@@ -48,6 +50,7 @@ SRC = cd.c \
       builtins/unset.c \
       tokenization/updated_tokenization.c \
       utils_1.c \
+      utils_2.c \
       builtins/cd_helper.c \
       builtins/cd.c \
       builtins/cd1.c\

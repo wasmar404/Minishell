@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:23:48 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/20 08:07:56 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/21 13:27:49 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@ void						add_type(t_token *head, char **envp,
 								t_shell *shell);
 t_token						*generate_token(char **splitted_input, int i,
 								t_shell *shell);
-token_type					check_input_type(char *input, char **envp,
+t_token_type				check_input_type(char *input, char **envp,
 								t_token *head, t_shell *shell);
-token_type					check_if_heredoc_aoutput_minus_tilde(char *input);
-token_type					check_if_pipe_soutput_sinput(char *input);
-token_type					check_if_twopoints_dir_cmd_word(char *input,
+t_token_type				check_if_heredoc_aoutput_minus_tilde(char *input);
+t_token_type				check_if_pipe_soutput_sinput(char *input);
+t_token_type				check_if_twopoints_dir_cmd_word(char *input,
 								char **envp, t_token *head, t_shell *shell);
 int							count_ttoken_nodes(t_token *head);
 int							check_if_cmd(char *input, char **envp,
@@ -53,11 +53,11 @@ char						*find_path_of_cmd_main_helper(char **all_path,
 								char *cmd_path, t_shell *shell, char *command);
 char						*find_path_of_cmd(char *command, char **envp,
 								t_shell *shell);
-token_type					check_delimeter1(char *splitted_token);
-token_type					check_delimeter2(char *splitted_token);
-token_type					check_delimeter3(char *splitted_token, char **env,
+t_token_type				check_delimeter1(char *splitted_token);
+t_token_type				check_delimeter2(char *splitted_token);
+t_token_type				check_delimeter3(char *splitted_token, char **env,
 								t_shell *shell);
-token_type					check_delimeter(char *splitted_token, char **envp,
+t_token_type				check_delimeter(char *splitted_token, char **envp,
 								t_shell *shelll);
 void						append_token_node(t_token **head, t_token *new);
 int							remove_node(t_token **head, t_token *current);

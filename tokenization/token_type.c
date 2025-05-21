@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 08:09:18 by wasmar            #+#    #+#             */
-/*   Updated: 2025/05/20 08:10:38 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/21 13:28:41 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	add_type(t_token *head, char **envp, t_shell *shell)
 	}
 }
 
-token_type	check_input_type(char *input, char **envp, t_token *head,
+t_token_type	check_input_type(char *input, char **envp, t_token *head,
 		t_shell *shell)
 {
 	if (check_if_heredoc_aoutput_minus_tilde(input) != 0)
@@ -38,7 +38,7 @@ token_type	check_input_type(char *input, char **envp, t_token *head,
 	}
 }
 
-token_type	check_if_heredoc_aoutput_minus_tilde(char *input)
+t_token_type	check_if_heredoc_aoutput_minus_tilde(char *input)
 {
 	if (ft_strcmp(input, ">>") == 0)
 		return (AOUTPUT_REDIRECTION);
@@ -52,7 +52,7 @@ token_type	check_if_heredoc_aoutput_minus_tilde(char *input)
 		return (0);
 }
 
-token_type	check_if_pipe_soutput_sinput(char *input)
+t_token_type	check_if_pipe_soutput_sinput(char *input)
 {
 	if (ft_strcmp(input, "|") == 0)
 		return (PIPE);
@@ -64,7 +64,7 @@ token_type	check_if_pipe_soutput_sinput(char *input)
 		return (0);
 }
 
-token_type	check_if_twopoints_dir_cmd_word(char *input, char **envp,
+t_token_type	check_if_twopoints_dir_cmd_word(char *input, char **envp,
 		t_token *head, t_shell *shell)
 {
 	if (ft_strcmp(input, "..") == 0)
