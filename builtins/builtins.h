@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:23:48 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/21 12:51:56 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/21 13:44:50 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,8 @@ void						exit_command_helper(t_token *head, t_shell *shell);
 void						exit_command_helper2(t_token *head, t_shell *shell);
 void						exit_command_helper1(t_token *head,
 								t_shell *exitcode);
-
+void						ft_atoll_helper(const char *nptr, int *i,
+								int *sign);
 // main_exit.c
 void						exit_command(t_token *head, t_shell *exitcode);
 

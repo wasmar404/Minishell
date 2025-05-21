@@ -21,6 +21,7 @@ SRC = builtins/echo.c \
       builtins/export.c \
       builtins/main_export.c \
       builtins/export_helper.c \
+      builtins/exit_helper.c \
       free.c \
       expand_heredoc/heredoc_expand.c \
       expand_heredoc/heredoc_expand_helper1.c \
