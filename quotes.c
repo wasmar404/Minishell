@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:02:23 by wasmar            #+#    #+#             */
-/*   Updated: 2025/05/20 07:55:52 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/21 21:48:01 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,15 +110,28 @@ void	remove_quotes_main(t_token *head, t_shell *shell)
 {
 	t_rq	*quotes;
 	int		flag;
+	int		skip_quotes;
 
+	skip_quotes = 0;
 	quotes = ft_malloc(shell->mallo, sizeof(t_rq));
 	init_remove_quotes_struct(quotes);
-	while ((head))
+	while (head)
 	{
 		quotes->i = 0;
-		while ((head)->token && (head)->token[quotes->i])
+		if (skip_quotes)
 		{
-			flag = 5;
+			skip_quotes = 0;
+			head = head->next;
+			continue ;
+		}
+		if (ft_strcmp(head->token, "<<") == 0)
+		{
+			skip_quotes = 1;
+			head = head->next;
+			continue ;
+		}
+		while (head->token && head->token[quotes->i])
+		{
 			flag = double_quotes_remove(head, shell, quotes);
 			if (flag == 0)
 				break ;
@@ -129,8 +142,8 @@ void	remove_quotes_main(t_token *head, t_shell *shell)
 				break ;
 			else if (flag == 1)
 				continue ;
-			(quotes->i)++;
+			quotes->i++;
 		}
-		(head) = (head)->next;
+		head = head->next;
 	}
 }
