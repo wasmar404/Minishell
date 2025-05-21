@@ -29,7 +29,7 @@ SRC = cd.c \
       input_error_handling.c \
       main/main.c \
       main/main_helper_1.c\
-            main/main_helper_2.c\
+      main/main_helper_2.c\
       main/main_helper_3.c\
       main/main_helper_4.c\
       main/main_helper_5.c\
@@ -50,6 +50,7 @@ SRC = cd.c \
       utils_1.c \
       builtins/cd_helper.c \
       builtins/cd.c \
+      builtins/cd1.c\
       dups/dups.c \
       dups/dups_helper.c \
       dups/dups_helper1.c \

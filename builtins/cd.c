@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/05 12:28:27 by wasmar            #+#    #+#             */
-/*   Updated: 2025/05/20 08:41:52 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/20 16:33:56 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,90 +58,39 @@ void	cd(t_token *head, t_env **my_envp, t_shell *shell)
 	}
 }
 
-// void	cd_directory(t_token *head, t_env **my_envp, t_shell *shell)
-// {
-// 	char	*new_pwd;
-// 	t_env	*env_node;
-
-// 	if (head->next && head->next->type == DIRECTORY)
-// 	{
-// 		env_node = search_env((*my_envp), "PWD");
-// 		if (env_node == NULL)
-// 		{
-// 			ft_putendl_fd("cd: PWD not set\n", 2);
-// 			shell->exit_code = 1;
-// 			return ;
-// 		}
-// 		new_pwd = ft_strjoin(env_node->enva, "/", shell->mallo);
-// 		if (ft_strcmp(head->next->token, env_node->enva) != 0)
-// 		{
-// 			new_pwd = ft_strjoin(new_pwd, head->next->token, shell->mallo);
-// 		}
-// 		if (change_dir(new_pwd, shell) == -1)
-// 			return ;
-// 		if (update_pwd_and_oldpwd((*my_envp), new_pwd, shell) == -1)
-// 			return ;
-// 		shell->exit_code = 0;
-// 	}
-// }
-char	*ft_strjoin_three(const char *s1, const char *s2, const char *s3,
-		t_shell *shell)
-{
-	char	*result;
-	size_t	len1;
-	size_t	len2;
-	size_t	len3;
-
-	if (!s1 || !s2 || !s3)
-		return (NULL);
-	len1 = ft_strlen(s1);
-	len2 = ft_strlen(s2);
-	len3 = ft_strlen(s3);
-	result = ft_malloc(shell->mallo, len1 + len2 + len3 + 1);
-		// Corrected argument order
-	if (!result)
-		return (NULL);
-	ft_strcpy(result, s1);
-	ft_strcpy(result + len1, s2);
-	ft_strcpy(result + len1 + len2, s3);
-	result[len1 + len2 + len3] = '\0';
-	return (result);
-}
 void	cd_directory(t_token *head, t_env **my_envp, t_shell *shell)
 {
 	char	*new_pwd;
 	t_env	*env_node;
+	char	cwd[10000];
 
 	if (head->next && head->next->type == DIRECTORY)
 	{
 		env_node = search_env((*my_envp), "PWD");
 		if (env_node == NULL)
 		{
-			ft_putendl_fd("cd: PWD not set\n", 2);
-			shell->exit_code = 1;
-			return ;
+			if (getcwd(cwd, sizeof(cwd)) != NULL)
+				add_node_cd(my_envp, "PWD", cwd, shell);
+			env_node = search_env((*my_envp), "PWD");
 		}
 		new_pwd = ft_strjoin(env_node->enva, "/", shell->mallo);
-		// if (ft_strcmp(head->next->token, env_node->enva) != 0)
-		// {
-		// 	new_pwd = ft_strjoin(new_pwd, head->next->token, shell->mallo);
-		// }
 		if (env_node->enva[ft_strlen(env_node->enva) - 1] == '/')
 			new_pwd = ft_strjoin(env_node->enva, head->next->token,
 					shell->mallo);
 		else
 			new_pwd = ft_strjoin_three(env_node->enva, "/", head->next->token,
 					shell);
-		if (change_dir(new_pwd, shell) == -1)
-			return ;
-		if (update_pwd_and_oldpwd((*my_envp), new_pwd, shell) == -1)
+		if (change_dir(new_pwd, shell) == -1
+			|| update_pwd_and_oldpwd((*my_envp), new_pwd, shell) == -1)
 			return ;
 		shell->exit_code = 0;
 	}
 }
+
 void	add_node_cd(t_env **my_envp, char *type, char *value, t_shell *shell)
 {
 	t_env	*new_node;
+	t_env	*temp;
 
 	new_node = ft_malloc(shell->mallo, sizeof(t_env));
 	new_node->type = type;
@@ -150,22 +99,22 @@ void	add_node_cd(t_env **my_envp, char *type, char *value, t_shell *shell)
 	new_node->next = NULL;
 	new_node->all = ft_strjoin(type, "=", shell->mallo);
 	new_node->all = ft_strjoin(new_node->all, value, shell->mallo);
-	while ((*my_envp)->next != NULL)
+	temp = *my_envp;
+	while (temp->next != NULL)
 	{
-		(*my_envp) = (*my_envp)->next;
+		temp = temp->next;
 	}
-	(*my_envp)->next = new_node;
-	new_node->prev = (*my_envp);
+	temp->next = new_node;
+	new_node->prev = temp;
 }
+
 void	cd_two_points(t_token *head, t_env **my_envp, t_shell *shell)
 {
 	t_env	*env_node;
 	char	*new_path;
 	int		j;
-	int		flag;
 	char	cwd[1000];
 
-	flag = 0;
 	j = 0;
 	if (head->next && head->next->type == TWO_POINTS)
 	{
@@ -175,12 +124,8 @@ void	cd_two_points(t_token *head, t_env **my_envp, t_shell *shell)
 			if (getcwd(cwd, sizeof(cwd)) != NULL)
 			{
 				add_node_cd(my_envp, "PWD", cwd, shell);
-				flag = 1;
 			}
 			env_node = search_env((*my_envp), "PWD");
-			// ft_putendl_fd("cd: PWD not set\n", 2);
-			// shell->exit_code = 1;
-			// return ;
 		}
 		j = find_last_backslash(env_node->enva);
 		new_path = ft_strndup(env_node->enva, j, shell);
@@ -189,50 +134,5 @@ void	cd_two_points(t_token *head, t_env **my_envp, t_shell *shell)
 		shell->exit_code = 0;
 		if (update_pwd_and_oldpwd((*my_envp), new_path, shell) == -1)
 			return ;
-	}
-}
-
-void	cd_minus(t_token *head, t_env **my_envp, t_shell *shell)
-{
-	t_env	*env_node;
-
-	if (head->next && head->next->type == MINUS)
-	{
-		env_node = search_env((*my_envp), "OLDPWD");
-		if (env_node == NULL)
-		{
-			ft_putendl_fd("cd: OLDPWD not set\n", 2);
-			shell->exit_code = 1;
-			return ;
-		}
-		if (change_dir(env_node->enva, shell) == -1)
-			return ;
-		if (update_pwd_and_oldpwd((*my_envp), env_node->enva, shell) == -1)
-			return ;
-		shell->exit_code = 0;
-	}
-}
-
-void	cd_tilde(t_token *head, t_env **my_envp, t_shell *shell)
-{
-	t_env	*env_node;
-	char	*new_path;
-
-	env_node = NULL;
-	if (head->next && head->next->type == TILDE)
-	{
-		env_node = search_env((*my_envp), "HOME");
-		if (env_node == NULL)
-		{
-			ft_putendl_fd("cd: HOME not set\n", 2);
-			shell->exit_code = 1;
-			return ;
-		}
-		new_path = ft_strdup((env_node)->enva, shell->mallo);
-		if (change_dir(new_path, shell) == -1)
-			return ;
-		if (update_pwd_and_oldpwd((*my_envp), new_path, shell) == -1)
-			return ;
-		shell->exit_code = 0;
 	}
 }

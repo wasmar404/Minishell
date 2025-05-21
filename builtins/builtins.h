@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:23:48 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/20 09:18:53 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/21 12:51:56 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,10 @@ typedef struct t_export		t_export;
 typedef struct t_ints		t_ints;
 typedef struct t_env_struct	t_env_struct;
 
+// cd1.h
+char						*ft_strjoin_three(const char *s1, const char *s2,
+								const char *s3, t_shell *shell);
+char						*cd_tilde_helper(void);
 // cd.c
 void						main_cd(t_token *head, t_env **my_envp,
 								t_shell *shell);
@@ -36,7 +40,8 @@ void						cd_minus(t_token *head, t_env **my_envp,
 								t_shell *shell);
 void						cd_tilde(t_token *head, t_env **my_envp,
 								t_shell *shell);
-
+void						add_node_cd(t_env **my_envp, char *type,
+								char *value, t_shell *shell);
 // cd_helper.c
 int							change_dir(char *tochange, t_shell *shell);
 t_env						*search_env(t_env *envp, char *to_find);

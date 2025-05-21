@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_helper.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/05 12:28:27 by wasmar            #+#    #+#             */
-/*   Updated: 2025/05/20 08:40:53 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/20 16:08:18 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,15 @@ int	update_pwd_and_oldpwd(t_env *my_envp, char *new_path, t_shell *shell)
 	if (env_node == NULL)
 		return (-1);
 	new_oldpwd = ft_strdup(env_node->enva, shell->mallo);
-	ft_strcpy(env_node->enva, new_path);
+	env_node->enva = new_path;
+	env_node->all = ft_strjoin(env_node->type, "=", shell->mallo);
+	env_node->all = ft_strjoin(env_node->all, env_node->enva, shell->mallo);
 	env_node = search_env(my_envp, "OLDPWD");
 	if (env_node == NULL)
 		return (-1);
-	ft_strcpy(env_node->enva, new_oldpwd);
+	env_node->enva = new_oldpwd;
+	env_node->all = ft_strjoin(env_node->type, "=", shell->mallo);
+	env_node->all = ft_strjoin(env_node->all, env_node->enva, shell->mallo);
 	return (1);
 }
 

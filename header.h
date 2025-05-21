@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/21 10:44:55 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/21 12:45:35 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,14 +78,13 @@ typedef struct s_garbage_collector
 	t_mem_node			*head;
 }						t_malloc;
 
-
 typedef struct t_token_split
 {
-		int		token;
-	int		i;
-char	**tokens;	
-int		count;
-}t_token_split;
+	int					token;
+	int					i;
+	char				**tokens;
+	int					count;
+}						t_token_split;
 typedef struct t_token
 {
 	char				*token;
@@ -264,8 +263,8 @@ char					*find_path_of_cmd(char *command, char **envp,
 int						pipe_count(t_token *head);
 void					heredoc(char *str, int fd, t_env *envp,
 							t_shell *exitcode);
-void					run_command_helper(t_token *head,
-							t_shell *shell, t_exe *exe);
+void					run_command_helper(t_token *head, t_shell *shell,
+							t_exe *exe);
 void					check_back(t_token *head, t_dups *dups,
 							t_shell *exitcode);
 void					dups1(t_dups *dups, int *pipefd);
@@ -293,8 +292,8 @@ int						check_if_cmd(char *input, char **envp, t_token *head,
 							t_shell *shell);
 token_type				check_if_twopoints_dir_cmd_word(char *input,
 							char **envp, t_token *head, t_shell *shell);
-void					run_built_ins(t_token *head, int flag,
-							t_exe *exe, t_shell *exitcode);
+void					run_built_ins(t_token *head, int flag, t_exe *exe,
+							t_shell *exitcode);
 void					append_token_node(t_token **head, t_token *new);
 bool					built_in_or_not(char *cmd);
 t_token					*create_node_token(char *str, int i,
