@@ -23,7 +23,9 @@ SRC = cd.c \
       builtins/main_export.c \
       builtins/export_helper.c \
       free.c \
-      heredoc_expand.c \
+      expand_heredoc/heredoc_expand.c \
+      expand_heredoc/heredoc_expand_helper1.c \
+      expand_heredoc/heredoc_expand_helper2.c \
       input_error_handling.c \
       main.c \
       builtins/pwd.c \
