@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   header.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/21 13:30:42 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/23 13:11:16 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,7 +212,7 @@ char					**array_complicated_execute(t_token *head,
 							t_shell *shell);
 char					*ft_strndup(char *str, int i, t_shell *shell);
 int						is_alphanumeric(char c);
-void					process_dolloris_heredoc(char **input, t_env *env,
+void					process_dolloris_heredoc(char **input,
 							t_shell *exitcode);
 void					heredoc_dup(t_token *head);
 void					heredoc_dup(t_token *head);
@@ -263,8 +263,7 @@ char					*find_path_of_cmd(char *command, char **envp,
 							t_shell *shell);
 
 int						pipe_count(t_token *head);
-void					heredoc(char *str, int fd, t_env *envp,
-							t_shell *exitcode);
+void					heredoc(char *str, int fd, t_shell *exitcode);
 void					run_command_helper(t_token *head, t_shell *shell,
 							t_exe *exe);
 void					check_back(t_token *head, t_dups *dups,
@@ -340,7 +339,6 @@ void					return_env_to_beginning(t_env **my_envp);
 
 void					restore_signals(void);
 void					ignore_signals(void);
-void					main_heredoc(t_token *head, t_env *envp,
-							t_shell *shell);
+void					main_heredoc(t_token *head, t_shell *shell);
 
 #endif

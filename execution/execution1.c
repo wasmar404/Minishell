@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution1.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 19:03:54 by wasmar            #+#    #+#             */
-/*   Updated: 2025/05/21 10:45:08 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/23 11:43:31 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ void	complicated_execute(t_env **my_envp, t_token *head, t_shell *shell)
 			check_and_create_pipe(current->next, exe.pipefd, &(exe.pipe_flag),
 				shell);
 			if (pipe_count(head) == 0 && current->built_in_or_not == true)
-				builtin_and_no_pipe(&exe, current, my_envp, shell);
+				builtin_and_no_pipe(&exe, current, shell);
 			else
 				handle_fork(&exe, current, my_envp, shell);
 			if (exe.pipe_flag == 1)

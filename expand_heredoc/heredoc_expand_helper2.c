@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_expand_helper2.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 09:11:44 by wasmar            #+#    #+#             */
-/*   Updated: 2025/05/21 17:31:12 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/23 13:13:39 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	handle_double_quotes(char **str, int *i, t_shell *shell)
 		return (-2);
 	remove_quotes_and_replace_h(str, *i, shell);
 	*i = end - 1;
+	return (0);
 }
 
 int	handle_single_quotes(char **str, int *i, t_shell *shell)
@@ -36,6 +37,7 @@ int	handle_single_quotes(char **str, int *i, t_shell *shell)
 		return (-2);
 	remove_quotes_and_replace_h(str, *i, shell);
 	*i = end - 1;
+	return (0);
 }
 
 void	set_value_to_zero(int *single_quotes, int *double_quotes)

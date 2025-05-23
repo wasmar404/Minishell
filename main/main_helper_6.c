@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_helper_6.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 12:34:26 by wasmar            #+#    #+#             */
-/*   Updated: 2025/05/21 12:40:25 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/23 11:39:29 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	main_heredoc_helper(t_token *head, t_shell *shell, int *i)
 		num_str = ft_itoa((*i), shell->mallo);
 		file_name = ft_strjoin("temp", num_str, shell->mallo);
 		fd = open(file_name, O_WRONLY | O_CREAT | O_APPEND, 0644);
-		heredoc(head->next->token, fd, shell->env, shell);
+		heredoc(head->next->token, fd, shell);
 		ft_close(fd);
 		head->token = ft_strdup("<", shell->mallo);
 		head->next->token = ft_strdup(file_name, shell->mallo);
@@ -35,7 +35,7 @@ void	main_heredoc_helper(t_token *head, t_shell *shell, int *i)
 	}
 }
 
-void	main_heredoc(t_token *head, t_env *envp, t_shell *shell)
+void	main_heredoc(t_token *head, t_shell *shell)
 {
 	int	i;
 

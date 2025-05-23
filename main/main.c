@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/21 12:41:56 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/23 11:40:27 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	main_helper(char *input, t_shell *shell, t_malloc *mallo)
 	head = parse_input_to_tokens(splitted_input, shell);
 	if (head)
 	{
-		main_heredoc(head, shell->env, shell);
+		main_heredoc(head, shell);
 		if (input_check(head, shell) == 0)
 		{
 			delete_temp_files(shell);

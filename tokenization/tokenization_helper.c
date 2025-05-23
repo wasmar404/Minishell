@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenization_helper.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 08:24:32 by wasmar            #+#    #+#             */
-/*   Updated: 2025/05/20 08:25:19 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/23 11:41:15 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ char	*find_path_of_cmd(char *command, char **envp, t_shell *shell)
 {
 	char	**all_path;
 	char	*cmd_path;
-	char	cwd[10000];
 	char	*res;
 	char	*res1;
 
