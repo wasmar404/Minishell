@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 15:06:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/20 10:10:35 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/23 13:13:16 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,10 @@ void						check_and_create_pipe(t_token *current_next,
 void						init_exe_struct(t_exe *exe);
 void						restore_terminal_file_descriptor(t_exe *exe);
 void						builtin_and_no_pipe(t_exe *exe, t_token *current,
-								t_env **my_envp, t_shell *shell);
+								t_shell *shell);
 void						handle_heredoc_and_redirections_no_cmd(
-								t_token *head, t_token *current);
+								t_token *head,
+								t_token *current);
 void						manage_wait_status(t_exe *exe, t_shell *shell);
 void						handle_fork(t_exe *exe, t_token *current,
 								t_env **my_envp, t_shell *shell);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_expand.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 12:23:12 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/21 21:51:52 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/23 11:25:58 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	process_dolloris_helper_h(int *i, char **input, char **str,
 	}
 }
 
-void	process_dolloris_heredoc(char **input, t_env *env, t_shell *exitcode)
+void	process_dolloris_heredoc(char **input, t_shell *exitcode)
 {
 	int		i;
 	char	*str;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:23:48 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/21 12:46:44 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/23 11:40:43 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,7 @@ void						run_built_ins_unset(t_token *head, t_shell *shell,
 void						run_built_ins(t_token *head, int flag, t_exe *exe,
 								t_shell *shell);
 // main_helper_5.c
-void						heredoc(char *str, int fd, t_env *envp,
-								t_shell *exitcode);
+void						heredoc(char *str, int fd, t_shell *exitcode);
 void						write_two(int fd, char *input);
 void						run_command_helper(t_token *head, t_shell *shell,
 								t_exe *exe);
@@ -69,8 +68,7 @@ void						external_commands(t_token *head, t_exe *exe,
 // main_helper_6.c
 void						main_heredoc_helper(t_token *head, t_shell *shell,
 								int *i);
-void						main_heredoc(t_token *head, t_env *envp,
-								t_shell *shell);
+void						main_heredoc(t_token *head, t_shell *shell);
 void						delete_temp_files(t_shell *shell);
 
 // main

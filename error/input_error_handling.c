@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_error_handling.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 10:14:57 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/21 13:23:22 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/23 11:34:18 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,5 @@ int	check_command_helper(char *array, t_shell *exitcode)
 		ft_putendl_fd("bash: ./test: No such file or directory", 2);
 		return (0);
 	}
+	return (5);
 }

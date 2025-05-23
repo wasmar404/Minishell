@@ -1,5 +1,5 @@
-CC = gcc
-CFLAGS = -g
+CC = cc
+CFLAGS = -Wall -Wextra -Werror
 
 NAME = minishell
 
@@ -35,6 +35,7 @@ SRC = builtins/echo.c \
       main/main_helper_6.c\
       builtins/pwd.c \
       quotes.c \
+      quotes1.c \
       signals.c \
       token_split/token_split.c \
       token_split/token_split_helper1.c \

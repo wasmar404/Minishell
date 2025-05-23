@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 15:03:11 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/21 10:38:57 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/23 11:42:23 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,7 @@ void	restore_terminal_file_descriptor(t_exe *exe)
 	ft_close(exe->saved_stdout);
 }
 
-void	builtin_and_no_pipe(t_exe *exe, t_token *current, t_env **my_envp,
-		t_shell *shell)
+void	builtin_and_no_pipe(t_exe *exe, t_token *current, t_shell *shell)
 {
 	exe->fork_flag = 1;
 	run_built_ins(current, 0, exe, shell);

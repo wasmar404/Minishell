@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_helper_5.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 12:33:28 by wasmar            #+#    #+#             */
-/*   Updated: 2025/05/21 12:40:05 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/23 11:35:56 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	write_two(int fd, char *input)
 	write(fd, "\n", 1);
 }
 
-void	heredoc(char *str, int fd, t_env *envp, t_shell *exitcode)
+void	heredoc(char *str, int fd, t_shell *exitcode)
 {
 	char	*input;
 	int		flag;
@@ -88,7 +88,7 @@ void	heredoc(char *str, int fd, t_env *envp, t_shell *exitcode)
 		}
 		original_input = input;
 		if (flag == 1)
-			process_dolloris_heredoc(&input, envp, exitcode);
+			process_dolloris_heredoc(&input, exitcode);
 		write_two(fd, input);
 		if (input == original_input)
 			free(input);

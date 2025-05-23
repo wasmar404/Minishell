@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_expand.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:23:48 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/21 17:31:16 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/23 13:14:07 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void						remove_quotes_main_heredoc(char **str,
 // heredoc_expand.c
 void						process_dolloris_helper_h(int *i, char **input,
 								char **str, t_shell *shell);
-void						process_dolloris_heredoc(char **input, t_env *env,
+void						process_dolloris_heredoc(char **input,
 								t_shell *exitcode);
 int							find_end_of_quotes_h(char *str, char quote,
 								int start);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:02:23 by wasmar            #+#    #+#             */
-/*   Updated: 2025/05/21 21:48:01 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/23 13:10:19 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,19 +35,6 @@ void	init_remove_quotes_struct(t_rq *quotes)
 	quotes->double_quotes = 0;
 	quotes->len = 0;
 	quotes->copy = NULL;
-}
-
-int	do_not_remove_quotes_for_heredoc_delimiter(t_token *head)
-{
-	if (ft_strcmp((head)->token, "<<") == 0)
-	{
-		if ((head)->next->next)
-			(head) = (head)->next->next;
-		else
-			return (0);
-		return (1);
-	}
-	return (-1);
 }
 
 int	double_quotes_remove(t_token *head, t_shell *shell, t_rq *quotes)
@@ -106,10 +93,29 @@ int	single_quotes_remove(t_token *head, t_shell *shell, t_rq *quotes)
 	return (-1);
 }
 
+void	process_token_quotes(t_token *head, t_shell *shell, t_rq *quotes)
+{
+	int	flag;
+
+	while (head->token && head->token[quotes->i])
+	{
+		flag = double_quotes_remove(head, shell, quotes);
+		if (flag == 0)
+			break ;
+		else if (flag == 1)
+			continue ;
+		flag = single_quotes_remove(head, shell, quotes);
+		if (flag == 0)
+			break ;
+		else if (flag == 1)
+			continue ;
+		quotes->i++;
+	}
+}
+
 void	remove_quotes_main(t_token *head, t_shell *shell)
 {
 	t_rq	*quotes;
-	int		flag;
 	int		skip_quotes;
 
 	skip_quotes = 0;
@@ -130,20 +136,7 @@ void	remove_quotes_main(t_token *head, t_shell *shell)
 			head = head->next;
 			continue ;
 		}
-		while (head->token && head->token[quotes->i])
-		{
-			flag = double_quotes_remove(head, shell, quotes);
-			if (flag == 0)
-				break ;
-			else if (flag == 1)
-				continue ;
-			flag = single_quotes_remove(head, shell, quotes);
-			if (flag == 0)
-				break ;
-			else if (flag == 1)
-				continue ;
-			quotes->i++;
-		}
+		process_token_quotes(head, shell, quotes);
 		head = head->next;
 	}
 }
