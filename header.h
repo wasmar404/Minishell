@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   header.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/23 13:11:16 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/05/27 10:25:41 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,6 +174,15 @@ typedef struct t_export
 	char				*temp;
 	t_env_struct		*env;
 }						t_export;
+typedef struct t_remove_quotes
+{
+	int					i;
+	int					end;
+	int					single_quotes;
+	int					double_quotes;
+	int					len;
+	char				*copy;
+}						t_rq;
 void					delete_temp_files(t_shell *shell);
 char					*ft_strcpy(char *dest, const char *src);
 void					exit_command_helper1(t_token *head, t_shell *exitcode);

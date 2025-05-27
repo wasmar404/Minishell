@@ -3,29 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   quotes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:02:23 by wasmar            #+#    #+#             */
-/*   Updated: 2025/05/23 13:10:19 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/05/27 10:19:28 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
-
-typedef struct t_remove_quotes
-{
-	int		i;
-	int		end;
-	int		single_quotes;
-	int		double_quotes;
-	int		len;
-	char	*copy;
-}			t_rq;
-void		init_remove_quotes_struct(t_rq *quotes);
-int			do_not_remove_quotes_for_heredoc_delimiter(t_token *head);
-int			double_quotes_remove(t_token *head, t_shell *shell, t_rq *quotes);
-int			single_quotes_remove(t_token *head, t_shell *shell, t_rq *quotes);
-void		remove_quotes_main(t_token *head, t_shell *shell);
+#include "quotes.h"
 
 void	init_remove_quotes_struct(t_rq *quotes)
 {

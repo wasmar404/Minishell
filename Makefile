@@ -34,8 +34,6 @@ SRC = builtins/echo.c \
       main/main_helper_5.c\
       main/main_helper_6.c\
       builtins/pwd.c \
-      quotes.c \
-      quotes1.c \
       signals.c \
       token_split/token_split.c \
       token_split/token_split_helper1.c \
@@ -60,7 +58,9 @@ SRC = builtins/echo.c \
       expand_dollar/dollar.c \
       expand_dollar/dollar1.c \
       expand_dollar/dollar2.c \
-      expand_dollar/dollar3.c
+      expand_dollar/dollar3.c \
+      quotes/quotes.c         \
+      quotes/quotes1.c
 
 OBJ = $(addprefix $(OBJDIR)/, $(SRC:.c=.o))
 
