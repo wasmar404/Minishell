@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd1.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:29:57 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/27 10:32:02 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/27 10:41:40 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char	*cd_tilde_helper(void)
 	result = malloc(i + 1);
 	if (!result)
 		return (NULL);
-	strncpy(result, cwd, i);
+	ft_strncpy(result, cwd, i);
 	result[i] = '\0';
 	return (result);
 }

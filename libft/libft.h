@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 14:58:10 by wasmar            #+#    #+#             */
-/*   Updated: 2025/05/20 09:51:17 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/27 10:42:27 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,6 @@ char								**ft_split(char const *s, char c,
 										t_malloc *mallo);
 char								*ft_itoa(int n, t_malloc *mallo);
 void								ft_putendl_fd(char *s, int fd);
+char								*ft_strncpy(char *dest, const char *src,
+										size_t n);
 #endif
