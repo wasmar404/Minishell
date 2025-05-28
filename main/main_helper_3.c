@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_helper_3.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 12:30:14 by wasmar            #+#    #+#             */
-/*   Updated: 2025/05/21 12:37:21 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/28 16:50:48 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	s_out_redirection(t_token *head)
 	int	fd;
 
 	fd = 0;
-	if (head && head->type == SOUTPUT_REDIRECTION)
+	if (head && head -> next && head->type == SOUTPUT_REDIRECTION)
 	{
 		fd = open(head->next->token, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		ft_close(fd);
@@ -29,7 +29,7 @@ void	a_out_redirection(t_token *head)
 	int	fd;
 
 	fd = 0;
-	if (head && head->type == AOUTPUT_REDIRECTION)
+	if (head && head -> next && head->type == AOUTPUT_REDIRECTION)
 	{
 		fd = open(head->next->token, O_CREAT | O_WRONLY | O_APPEND, 0644);
 		ft_close(fd);

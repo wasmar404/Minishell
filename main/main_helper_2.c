@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_helper_2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 12:28:40 by wasmar            #+#    #+#             */
-/*   Updated: 2025/05/21 12:36:49 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/28 16:50:17 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void	heredoc_dup(t_token *head)
 	int	fd;
 
 	fd = 0;
-	if (head && head->type == HERE_DOC)
+	if (head && head -> next && head->type == HERE_DOC)
 	{
 		fd = open("temp", O_WRONLY | O_CREAT | O_APPEND, 0644);
 		here_doc_first(head->next->token, fd);
