@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_error_handling_1.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 13:05:51 by wasmar            #+#    #+#             */
-/*   Updated: 2025/05/21 13:06:40 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/28 10:24:22 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,11 +99,7 @@ int	input_check(t_token *head, t_shell *exitcode)
 		return (0);
 	if (check_if_dir_after_redirections(head, exitcode) == 0)
 		return (0);
-	if (check_aout_redirection(head, exitcode) == 0)
-		return (0);
 	if (check_if_file_exists(head, exitcode) == 0)
-		return (0);
-	if (check_sout_redirection(head, exitcode) == 0)
 		return (0);
 	if (check_here_doc(head, exitcode) == 0)
 		return (0);
