@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:02:23 by wasmar            #+#    #+#             */
-/*   Updated: 2025/05/27 10:19:28 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/28 17:18:43 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	double_quotes_remove(t_token *head, t_shell *shell, t_rq *quotes)
 		{
 			return (0);
 		}
-		if (quotes->end - 1 > quotes->len)
+		if (quotes->end > quotes->len)
 		{
 			quotes->double_quotes = 0;
 			return (0);
@@ -63,8 +63,9 @@ int	single_quotes_remove(t_token *head, t_shell *shell, t_rq *quotes)
 		{
 			return (0);
 		}
-		if (quotes->end - 1 >= quotes->len)
+		if (quotes->end > quotes->len)
 		{
+			quotes->single_quotes = 0;
 			return (0);
 		}
 		if ((head)->token[quotes->end])
