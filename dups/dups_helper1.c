@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 11:31:57 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/28 12:12:23 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/28 16:37:43 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,30 +15,38 @@
 int	check_and_create_file_soutput_redirectio(t_token *head, int *fd,
 		int *dev_null)
 {
-	if (head->next->type == DIRECTORY && access(head->next->token, W_OK) == -1)
+	if (head->next)
 	{
-		(*dev_null) = open("/dev/null", O_WRONLY);
-		dup2((*dev_null), STDOUT_FILENO);
-		return (0);
+		if (head->next->type == DIRECTORY && access
+			(head->next->token, W_OK) == -1)
+		{
+			(*dev_null) = open("/dev/null", O_WRONLY);
+			dup2((*dev_null), STDOUT_FILENO);
+			return (0);
+		}
+		(*fd) = open(head->next->token, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		dup2((*fd), 1);
+		ft_close((*fd));
 	}
-	(*fd) = open(head->next->token, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	dup2((*fd), 1);
-	ft_close((*fd));
 	return (1);
 }
 
 int	check_and_create_file_aoutput_redirection(t_token *head, int *fd,
 		int *dev_null)
 {
-	if (head->next->type == DIRECTORY && access(head->next->token, W_OK) == -1)
+	if (head->next)
 	{
-		(*dev_null) = open("/dev/null", O_WRONLY);
-		dup2((*dev_null), STDOUT_FILENO);
-		return (0);
+		if (head->next->type == DIRECTORY && access
+			(head->next->token, W_OK) == -1)
+		{
+			(*dev_null) = open("/dev/null", O_WRONLY);
+			dup2((*dev_null), STDOUT_FILENO);
+			return (0);
+		}
+		(*fd) = open(head->next->token, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		dup2((*fd), 1);
+		ft_close((*fd));
 	}
-	(*fd) = open(head->next->token, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	dup2((*fd), 1);
-	ft_close((*fd));
 	return (1);
 }
 
