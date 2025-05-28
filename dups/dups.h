@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 11:14:54 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/20 10:19:32 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/28 12:06:54 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,17 @@ int							if__check_front_out_redirection_pipe(
 								t_token **current_output,
 								t_token *head, int *flag);
 int							check_and_create_file_soutput_redirectio(
-								t_token *head, int *fd,
-								int *dev_null);
+								t_token *head,
+								int *fd, int *dev_null);
 int							check_and_create_file_aoutput_redirection(
-								t_token *head, int *fd,
-								int *dev_null);
+								t_token *head,
+								int *fd, int *dev_null);
 void						check_back_sinput_redirection(t_token *head,
 								t_shell *shell);
 void						init_dups_struct(t_dups *dups, t_token *head);
 void						super_complicated_handle_dups(t_token *head,
 								t_exe *exe, t_shell *shell, int test);
-void						check_and_create_file(t_token *head);
+int							check_and_create_file(t_token *head);
 void						check_front(t_dups *dups, t_shell *exitcode);
 void						check_back(t_token *head, t_dups *dups,
 								t_shell *exitcode);

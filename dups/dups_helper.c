@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 00:55:44 by wasmar            #+#    #+#             */
-/*   Updated: 2025/05/20 10:15:18 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/28 12:01:24 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,10 @@ int	check_front_out_redirection_and_pipe(t_token **current_output,
 		&& (*flag == 0))
 	{
 		(*current_output) = head;
-		check_and_create_file(head);
+		if (check_and_create_file(head) == 0)
+		{
+			return (0);
+		}
 	}
 	else if (head->type == PIPE && ((!(*current_output)
 				|| ((*current_output)->type != AOUTPUT_REDIRECTION

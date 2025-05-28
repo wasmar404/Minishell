@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/28 08:50:07 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/28 12:07:21 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,7 +197,7 @@ int						check_front_out_redirection_and_pipe(
 int						if__check_front_out_redirection_pipe(
 							t_token **current_output,
 							t_token *head, int *flag);
-void					check_and_create_file(t_token *head);
+int						check_and_create_file(t_token *head);
 void					check_front_sinput_redirection(t_token *head,
 							t_shell *shell);
 int						count_tokens_for_exec_array(t_token *head);

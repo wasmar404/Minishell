@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 11:31:57 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/20 10:15:13 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/28 12:12:23 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	check_and_create_file_aoutput_redirection(t_token *head, int *fd,
 	return (1);
 }
 
-void	check_and_create_file(t_token *head)
+int	check_and_create_file(t_token *head)
 {
 	int	fd;
 	int	dev_null;
@@ -51,14 +51,15 @@ void	check_and_create_file(t_token *head)
 	if (head->type == SOUTPUT_REDIRECTION)
 	{
 		if (check_and_create_file_soutput_redirectio(head, &fd, &dev_null) == 0)
-			return ;
+			return (0);
 	}
 	else if (head->type == AOUTPUT_REDIRECTION)
 	{
 		if (check_and_create_file_aoutput_redirection(head, &fd,
 				&dev_null) == 0)
-			return ;
+			return (0);
 	}
+	return (1);
 }
 
 void	check_front(t_dups *dups, t_shell *exitcode)
@@ -73,7 +74,10 @@ void	check_front(t_dups *dups, t_shell *exitcode)
 		{
 			if (check_front_out_redirection_and_pipe(&(dups->current_output),
 					dups->current, &(dups->flag1)) == 0)
-				break ;
+			{
+				ft_free_all(exitcode->mallo);
+				exit(1);
+			}
 		}
 		else if (dups->current->type == SINPUT_REDIRECTION)
 		{
