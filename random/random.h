@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   quotes.h                                           :+:      :+:    :+:   */
+/*   random.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:23:48 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/28 08:35:14 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/28 08:33:19 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef QUOTES_H
-# define QUOTES_H
+#ifndef RANDOM_H
+# define RANDOM_H
 
 # include "../header.h"
 
@@ -23,19 +23,26 @@ typedef struct t_env			t_env;
 typedef struct t_export			t_export;
 typedef struct t_ints			t_ints;
 typedef struct t_env_struct		t_env_struct;
-typedef struct t_remove_quotes	t_rq;
+typedef struct t_remove_quotes	t_remove_quotes;
 
-void							init_remove_quotes_struct(t_rq *quotes);
-int								do_not_remove_quotes_for_heredoc_delimiter(
-									t_token *head);
-int								double_quotes_remove(t_token *head,
-									t_shell *shell, t_rq *quotes);
-int								single_quotes_remove(t_token *head,
-									t_shell *shell, t_rq *quotes);
-void							remove_quotes_main(t_token *head,
-									t_shell *shell);
-
-int								do_not_remove_quotes_for_heredoc_delimiter(
-									t_token *head);
-
+int								valid_identifier_helper(t_token *head);
+int								valid_identifier(t_token *head);
+int								invalid_option(t_token *head);
+void							*ft_malloc(t_malloc *var, size_t size);
+void							ft_free_all(t_malloc *gc);
+int								is_fd_open(int fd);
+void							ft_close(int fd);
+void							ctrl_c(int sig);
+void							main_signal(void);
+void							ignore_signals(void);
+void							restore_signals(void);
+t_env							*search_and_find_a_type_my_envpp(t_env *envp,
+									char *to_find);
+int								is_alphanumeric(char c);
+char							*ft_strcpy(char *dest, const char *src);
+int								ft_strncmp(const char *s1, const char *s2,
+									size_t n);
+void							search_and_find_a_type_my_envp(t_env **envp,
+									char *to_find);
+void							return_env_to_beginning(t_env **my_envp);
 #endif

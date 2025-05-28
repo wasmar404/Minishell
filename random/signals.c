@@ -6,11 +6,11 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:53:50 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/20 07:55:19 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/28 08:33:01 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
+#include "random.h"
 
 void	ctrl_c(int sig)
 {

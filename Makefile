@@ -11,14 +11,14 @@ SRC = builtins/echo.c \
       builtins/echo_helper.c \
       builtins/env.c \
       builtins/env_helper.c\
-      error_handling.c \
+      random/error_handling.c \
       builtins/exit.c \
       builtins/main_exit.c\
       builtins/export.c \
       builtins/main_export.c \
       builtins/export_helper.c \
       builtins/exit_helper.c \
-      free.c \
+      random/free.c \
       expand_heredoc/heredoc_expand.c \
       expand_heredoc/heredoc_expand_helper1.c \
       expand_heredoc/heredoc_expand_helper2.c \
@@ -26,7 +26,7 @@ SRC = builtins/echo.c \
       error/input_error_handling_1.c \
       error/input_error_handling_2.c \
       error/input_error_handling_3.c \
-      main/main.c \
+      main.c \
       main/main_helper_1.c\
       main/main_helper_2.c\
       main/main_helper_3.c\
@@ -34,7 +34,7 @@ SRC = builtins/echo.c \
       main/main_helper_5.c\
       main/main_helper_6.c\
       builtins/pwd.c \
-      signals.c \
+      random/signals.c \
       token_split/token_split.c \
       token_split/token_split_helper1.c \
       token_split/token_split_helper2.c \
@@ -45,8 +45,8 @@ SRC = builtins/echo.c \
       tokenization/tokenization_helper.c\
       builtins/unset.c \
       tokenization/updated_tokenization.c \
-      utils_1.c \
-      utils_2.c \
+      random/utils_1.c \
+      random/utils_2.c \
       builtins/cd_helper.c \
       builtins/cd.c \
       builtins/cd1.c\

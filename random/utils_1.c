@@ -6,11 +6,11 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:07:34 by wasmar            #+#    #+#             */
-/*   Updated: 2025/05/20 07:51:31 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/28 08:33:04 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
+#include "random.h"
 
 t_env	*search_and_find_a_type_my_envpp(t_env *envp, char *to_find)
 {

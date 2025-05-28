@@ -6,11 +6,11 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 11:08:50 by wasmar            #+#    #+#             */
-/*   Updated: 2025/05/20 10:22:49 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/28 08:32:57 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
+#include "random.h"
 
 void	*ft_malloc(t_malloc *var, size_t size)
 {

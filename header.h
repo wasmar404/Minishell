@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/27 10:25:41 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/28 08:50:07 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # include "execution/execution.h"
 # include "expand_dollar/dollar.h"
 # include "libft/libft.h"
+# include "quotes/quotes.h"
+# include "main/main.h"
 # include <errno.h>
 # include <fcntl.h>
 # include <readline/history.h>
