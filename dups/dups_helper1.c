@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 11:31:57 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/28 16:37:43 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/29 16:39:27 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,12 +80,8 @@ void	check_front(t_dups *dups, t_shell *exitcode)
 		if (if__check_front_out_redirection_pipe(&(dups->current_output),
 				dups->current, &(dups->flag1)) == 1)
 		{
-			if (check_front_out_redirection_and_pipe(&(dups->current_output),
-					dups->current, &(dups->flag1)) == 0)
-			{
-				ft_free_all(exitcode->mallo);
-				exit(1);
-			}
+			if (check_front_helper42(dups, exitcode) == 0)
+				return ;
 		}
 		else if (dups->current->type == SINPUT_REDIRECTION)
 		{

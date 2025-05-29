@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 00:55:44 by wasmar            #+#    #+#             */
-/*   Updated: 2025/05/28 12:01:24 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/29 16:40:03 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,6 @@ int	check_front_out_redirection_and_pipe(t_token **current_output,
 			return (0);
 		}
 	}
-	else if (head->type == PIPE && ((!(*current_output)
-				|| ((*current_output)->type != AOUTPUT_REDIRECTION
-					&& (*current_output)->type != SOUTPUT_REDIRECTION)))
-		&& (*flag == 0))
-	{
-		(*current_output) = head;
-		return (0);
-	}
 	return (1);
 }
 
@@ -100,4 +92,18 @@ void	check_back_sinput_redirection(t_token *head, t_shell *shell)
 			exit(1);
 		}
 	}
+}
+
+int	check_front_out_redirection_and_pipe2(t_token **current_output,
+		t_token *head, int *flag)
+{
+	if (head->type == PIPE && ((!(*current_output)
+				|| ((*current_output)->type != AOUTPUT_REDIRECTION
+					&& (*current_output)->type != SOUTPUT_REDIRECTION)))
+		&& (*flag == 0))
+	{
+		(*current_output) = head;
+		return (0);
+	}
+	return (1);
 }

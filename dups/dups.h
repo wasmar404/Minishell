@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 11:14:54 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/28 12:06:54 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/29 16:40:37 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,10 @@ void						check_back(t_token *head, t_dups *dups,
 								t_shell *exitcode);
 void						dups2(t_token *current_input, int input_fd);
 void						dups1(t_dups *dups, int *pipefd);
+int							check_front_out_redirection_and_pipe2(
+								t_token **current_output,
+								t_token *head, int *flag);
+int							check_front_helper42(t_dups *dups,
+								t_shell *exitcode);
 
 #endif

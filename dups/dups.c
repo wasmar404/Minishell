@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 00:55:44 by wasmar            #+#    #+#             */
-/*   Updated: 2025/05/20 10:16:39 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/05/29 16:40:00 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,20 @@ void	dups1(t_dups *dups, int *pipefd)
 		dup2(pipefd[1], 1);
 		ft_close(pipefd[1]);
 	}
+}
+
+int	check_front_helper42(t_dups *dups, t_shell *exitcode)
+{
+	if (check_front_out_redirection_and_pipe(&(dups->current_output),
+			dups->current, &(dups->flag1)) == 0)
+	{
+		ft_free_all(exitcode->mallo);
+		exit(1);
+	}
+	if (check_front_out_redirection_and_pipe2(&(dups->current_output),
+			dups->current, &(dups->flag1)) == 0)
+	{
+		return (0);
+	}
+	return (1);
 }
