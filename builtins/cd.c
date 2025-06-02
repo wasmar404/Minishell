@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/05 12:28:27 by wasmar            #+#    #+#             */
-/*   Updated: 2025/06/02 09:30:46 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/06/02 09:37:04 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,17 +57,7 @@ void	cd(t_token *head, t_env **my_envp, t_shell *shell)
 		shell->exit_code = 0;
 	}
 }
-void	cd_directory_h(t_env *env_node, char **new_pwd, t_token *head,
-		t_shell *shell)
-{
-	(void)new_pwd;
-	if (env_node->enva[ft_strlen(env_node->enva) - 1] == '/')
-		(*new_pwd) = ft_strjoin(env_node->enva, head->next->token,
-				shell->mallo);
-	else
-		(*new_pwd) = ft_strjoin_three(env_node->enva, "/", head->next->token,
-				shell);
-}
+
 void	cd_directory(t_token *head, t_env **my_envp, t_shell *shell)
 {
 	char	*new_pwd;

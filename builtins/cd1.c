@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd1.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:29:57 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/27 10:41:40 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/06/02 09:37:16 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,4 +107,16 @@ void	cd_minus(t_token *head, t_env **my_envp, t_shell *shell)
 			return ;
 		shell->exit_code = 0;
 	}
+}
+
+void	cd_directory_h(t_env *env_node, char **new_pwd, t_token *head,
+		t_shell *shell)
+{
+	(void)new_pwd;
+	if (env_node->enva[ft_strlen(env_node->enva) - 1] == '/')
+		(*new_pwd) = ft_strjoin(env_node->enva, head->next->token,
+				shell->mallo);
+	else
+		(*new_pwd) = ft_strjoin_three(env_node->enva, "/", head->next->token,
+				shell);
 }
