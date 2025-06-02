@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 21:04:03 by wasmar            #+#    #+#             */
-/*   Updated: 2025/05/20 08:38:43 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/06/02 08:31:05 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ char	*ft_strdupp(char *str, int i, t_shell *shell)
 	char	*array;
 
 	z = 0;
+	if(!str || i < 0)
+		return(NULL);
 	array = ft_malloc(shell->mallo, (i + 1) * sizeof(char));
 	if (!array)
 	{
