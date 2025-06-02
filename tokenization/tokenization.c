@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 14:16:26 by wasmar            #+#    #+#             */
-/*   Updated: 2025/06/02 10:12:09 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/06/02 10:29:44 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ int	ft_strcmp(char *str1, char *str2)
 	int	i;
 
 	i = 0;
-	if(!str1 || !str2)
-		return(-1);
+	if (!str1 || !str2)
+		return (-1);
 	while (str1[i] != '\0' && str2[i] != '\0' && str1[i] == str2[i])
 	{
 		i++;

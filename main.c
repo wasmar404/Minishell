@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/28 08:38:56 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/06/02 10:31:15 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,21 @@ int	main_helper_helper(char *input, t_shell *shell, char ***splitted_input,
 	return (0);
 }
 
+void	control_c(t_shell *shell)
+{
+	if (g_signal == 130)
+	{
+		shell->exit_code = 130;
+		g_signal = 0;
+	}
+}
+
 void	main_helper(char *input, t_shell *shell, t_malloc *mallo)
 {
 	char	**splitted_input;
 	t_token	*head;
 
+	control_c(shell);
 	if (main_helper_helper(input, shell, &splitted_input, mallo) == 1)
 		return ;
 	head = parse_input_to_tokens(splitted_input, shell);

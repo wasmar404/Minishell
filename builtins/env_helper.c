@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 08:55:50 by wasmar            #+#    #+#             */
-/*   Updated: 2025/06/02 10:13:18 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/06/02 10:30:07 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ int	check_equal(char *str)
 	int	len;
 
 	j = 0;
-	if(!str)
+	if (!str)
 	{
-		return(-1);
+		return (-1);
 	}
 	len = ft_strlen(str);
 	while (str[j] != '\0')
