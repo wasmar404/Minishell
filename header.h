@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/06/02 13:33:01 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/06/02 15:47:32 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,8 +186,8 @@ typedef struct t_remove_quotes
 	char				*copy;
 }						t_rq;
 
-extern int	g_signal;
-
+int						*get_g_signal(void);
+void					set_g_signal(int value);
 void					delete_temp_files(t_shell *shell);
 char					*ft_strcpy(char *dest, const char *src);
 void					exit_command_helper1(t_token *head, t_shell *exitcode);

@@ -6,11 +6,13 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:53:50 by schaaban          #+#    #+#             */
-/*   Updated: 2025/06/02 10:31:04 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/06/02 15:47:05 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "random.h"
+
+static	int g_signal = 0;
 
 void	ctrl_c(int sig)
 {
@@ -38,4 +40,14 @@ void	restore_signals(void)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
+}
+
+int	*get_g_signal(void)
+{
+    return (&g_signal);
+}
+
+void set_g_signal(int value)
+{
+    g_signal = value;
 }
