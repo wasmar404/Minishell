@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 21:54:01 by wasmar            #+#    #+#             */
-/*   Updated: 2025/05/20 08:58:22 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/06/02 10:10:05 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,11 +96,14 @@ char	**env_to_array(t_env *head, t_shell *shell)
 		return (NULL);
 	while (head != NULL)
 	{
+		if(head->all)
+		{
 		str_len = ft_strlen(head->all);
 		my_envp[i] = ft_malloc(shell->mallo, (str_len + 1) * sizeof(char));
 		ft_strcpy(my_envp[i], head->all);
-		head = head->next;
 		i++;
+		}
+		head = head->next;
 	}
 	my_envp[i] = NULL;
 	return (my_envp);

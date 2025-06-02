@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:07:34 by wasmar            #+#    #+#             */
-/*   Updated: 2025/05/28 08:33:04 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/06/02 10:10:29 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ int	is_alphanumeric(char c)
 char	*ft_strcpy(char *dest, const char *src)
 {
 	char	*ptr;
-
+	if(!dest || !src)
+		return(NULL);
 	ptr = dest;
 	while (*src)
 	{
