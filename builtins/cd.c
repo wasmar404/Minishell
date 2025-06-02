@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/05 12:28:27 by wasmar            #+#    #+#             */
-/*   Updated: 2025/05/20 16:33:56 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/06/02 09:30:46 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,17 @@ void	cd(t_token *head, t_env **my_envp, t_shell *shell)
 		shell->exit_code = 0;
 	}
 }
-
+void	cd_directory_h(t_env *env_node, char **new_pwd, t_token *head,
+		t_shell *shell)
+{
+	(void)new_pwd;
+	if (env_node->enva[ft_strlen(env_node->enva) - 1] == '/')
+		(*new_pwd) = ft_strjoin(env_node->enva, head->next->token,
+				shell->mallo);
+	else
+		(*new_pwd) = ft_strjoin_three(env_node->enva, "/", head->next->token,
+				shell);
+}
 void	cd_directory(t_token *head, t_env **my_envp, t_shell *shell)
 {
 	char	*new_pwd;
@@ -66,20 +76,20 @@ void	cd_directory(t_token *head, t_env **my_envp, t_shell *shell)
 
 	if (head->next && head->next->type == DIRECTORY)
 	{
-		env_node = search_env((*my_envp), "PWD");
-		if (env_node == NULL)
-		{
-			if (getcwd(cwd, sizeof(cwd)) != NULL)
-				add_node_cd(my_envp, "PWD", cwd, shell);
-			env_node = search_env((*my_envp), "PWD");
-		}
-		new_pwd = ft_strjoin(env_node->enva, "/", shell->mallo);
-		if (env_node->enva[ft_strlen(env_node->enva) - 1] == '/')
-			new_pwd = ft_strjoin(env_node->enva, head->next->token,
-					shell->mallo);
+		if (head->next->token[0] == '/')
+			new_pwd = ft_strdup(head->next->token, shell->mallo);
 		else
-			new_pwd = ft_strjoin_three(env_node->enva, "/", head->next->token,
-					shell);
+		{
+			env_node = search_env((*my_envp), "PWD");
+			if (env_node == NULL)
+			{
+				if (getcwd(cwd, sizeof(cwd)) != NULL)
+					add_node_cd(my_envp, "PWD", cwd, shell);
+				env_node = search_env((*my_envp), "PWD");
+			}
+			new_pwd = ft_strjoin(env_node->enva, "/", shell->mallo);
+			cd_directory_h(env_node, &new_pwd, head, shell);
+		}
 		if (change_dir(new_pwd, shell) == -1
 			|| update_pwd_and_oldpwd((*my_envp), new_pwd, shell) == -1)
 			return ;

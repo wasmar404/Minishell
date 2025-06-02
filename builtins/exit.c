@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 12:57:39 by schaaban          #+#    #+#             */
-/*   Updated: 2025/06/02 08:44:24 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/06/02 09:34:03 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	exit_command_helper2(t_token *head, t_shell *shell)
 		num = ft_atoll(head->next->token);
 		printf("exit\n");
 		shell->exit_code = num;
-		printf("%lld", num);
+		// printf("%lld", num);
 		ft_free_all(shell->mallo);
 		exit(shell->exit_code);
 	}
