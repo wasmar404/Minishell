@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:23:48 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/28 08:49:42 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/06/02 08:37:30 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,5 +113,6 @@ void						exit_command(t_token *head, t_shell *exitcode);
 
 // pwd
 int							main_pwd(void);
+int							check_minus(char *str);
 
 #endif

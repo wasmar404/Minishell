@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 12:57:39 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/28 16:44:58 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/06/02 08:44:24 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,13 @@ void	exit_command_helper1(t_token *head, t_shell *exitcode)
 		printf("exit\n");
 		ft_free_all(exitcode->mallo);
 		exit(exitcode->exit_code);
+	}
+	if (head->next && check_minus(head->next->token) == 1)
+	{
+		printf("exit\n");
+		ft_putendl_fd("bash: numeric argument required", 2);
+		ft_free_all(exitcode->mallo);
+		exit(2);
 	}
 	if (is_digit_string(head->next->token) == 0)
 	{
