@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   header.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/06/02 15:47:32 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/06/02 16:18:11 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 # define RESET "\033[0m"
 # define BOLD_CYAN "\033[1;36m"
 
-typedef struct t_exe
+typedef struct s_exe
 {
 	int					saved_stdin;
 	int					saved_stdout;
@@ -47,7 +47,7 @@ typedef struct t_exe
 	int					fork_flag;
 	int					pipe_flag;
 }						t_exe;
-typedef enum t_token_type
+typedef enum e_token_type
 {
 	COMMAND,
 	PIPE,
@@ -62,7 +62,7 @@ typedef enum t_token_type
 	DIRECTORY,
 	HEREDOC_INFILE
 }						t_token_type;
-typedef enum t_dollar_type
+typedef enum e_dollar_type
 {
 	QUOTES,
 	CHARACTERS,
@@ -80,24 +80,24 @@ typedef struct s_garbage_collector
 	t_mem_node			*head;
 }						t_malloc;
 
-typedef struct t_token_split
+typedef struct s_token_split
 {
 	int					token;
 	int					i;
 	char				**tokens;
 	int					count;
 }						t_token_split;
-typedef struct t_token
+typedef struct s_token
 {
 	char				*token;
 	int					type;
 	bool				built_in_or_not;
 	int					node_count;
-	struct t_token		*next;
-	struct t_token		*prev;
+	struct s_token		*next;
+	struct s_token		*prev;
 }						t_token;
 
-typedef struct t_env
+typedef struct s_env
 {
 	char				*enva;
 	char				*type;
@@ -105,12 +105,12 @@ typedef struct t_env
 	bool				equal;
 	bool				printed;
 
-	struct t_env		*next;
-	struct t_env		*prev;
+	struct s_env		*next;
+	struct s_env		*prev;
 
 }						t_env;
 
-typedef struct t_shell
+typedef struct s_shell
 {
 	long long			exit_code;
 	pid_t				pid;
@@ -121,14 +121,14 @@ typedef struct t_shell
 	char				**env_array;
 
 }						t_shell;
-typedef struct t_quotes
+typedef struct s_quotes
 {
 	int					inside_quote;
 	int					d_start;
 	int					s_start;
 }						t_quotes;
 
-typedef struct t_variables
+typedef struct s_variables
 {
 	int					i;
 	int					j;
@@ -138,14 +138,14 @@ typedef struct t_variables
 	char				**array;
 }						t_variables;
 
-typedef struct t_ints
+typedef struct s_ints
 {
 	int					i;
 	int					j;
 	int					x;
 }						t_ints;
 
-typedef struct t_dups
+typedef struct s_dups
 {
 	t_token				*current;
 	t_token				*current1;
@@ -153,7 +153,7 @@ typedef struct t_dups
 	t_token				*current_output;
 	int					flag1;
 }						t_dups;
-typedef struct t_env_struct
+typedef struct s_env_struct
 {
 	char				*type;
 	bool				equal;
@@ -163,7 +163,7 @@ typedef struct t_env_struct
 	t_env				*new_node;
 	t_env				*print;
 }						t_env_struct;
-typedef struct t_export
+typedef struct s_export
 {
 	int					i;
 	char				*type;
@@ -176,7 +176,7 @@ typedef struct t_export
 	char				*temp;
 	t_env_struct		*env;
 }						t_export;
-typedef struct t_remove_quotes
+typedef struct s_remove_quotes
 {
 	int					i;
 	int					end;

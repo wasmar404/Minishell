@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dups.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 00:55:44 by wasmar            #+#    #+#             */
-/*   Updated: 2025/06/02 15:11:30 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/06/02 16:28:21 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@ void	init_dups_struct(t_dups *dups, t_token *head)
 	dups->current_output = NULL;
 	dups->flag1 = 0;
 }
-//test is a flag, i shuld pass a flag to
-//know what var to use forrk flag or pipe flag
+// test is a flag, i shuld pass a flag to
+// know what var to use forrk flag or pipe flag
 
-void	super_complicated_handle_dups(t_token *head, t_exe *exe,
-		t_shell *shell, int test)
+void	super_complicated_handle_dups(t_token *head, t_exe *exe, t_shell *shell,
+		int test)
 {
 	t_dups	*dups;
 
@@ -72,12 +72,12 @@ int	check_front_helper42(t_dups *dups, t_shell *exitcode)
 	if (check_front_out_redirection_and_pipe(&(dups->current_output),
 			dups->current, &(dups->flag1)) == 0)
 	{
-		if(exitcode->pid == 0)
+		if (exitcode->pid == 0)
 		{
 			ft_free_all(exitcode->mallo);
 			exit(1);
 		}
-		return(0);
+		return (0);
 	}
 	if (check_front_out_redirection_and_pipe2(&(dups->current_output),
 			dups->current, &(dups->flag1)) == 0)

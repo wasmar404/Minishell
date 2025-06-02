@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 21:04:03 by wasmar            #+#    #+#             */
-/*   Updated: 2025/06/02 13:32:24 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/06/02 16:24:23 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void	find_type(t_token *head, t_env **my_envp, t_shell *shell)
 		if (valid_identifier_helper_test(head) > 0)
 		{
 			head = head->next;
-			continue;
+			continue ;
 		}
 		export->i = check_equall(head);
 		export->type = ft_strdupp(head->token, export->i, shell);

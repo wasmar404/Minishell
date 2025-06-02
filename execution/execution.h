@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 15:06:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/23 13:13:16 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/06/02 16:21:10 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 
 # include "../header.h"
 
-typedef struct t_token		t_token;
-typedef struct t_shell		t_shell;
-typedef struct t_quotes		t_quotes;
-typedef struct t_variables	t_variables;
-typedef struct t_env		t_env;
-typedef struct t_dups		t_dups;
-typedef struct t_exe		t_exe;
+typedef struct s_token		t_token;
+typedef struct s_shell		t_shell;
+typedef struct s_quotes		t_quotes;
+typedef struct s_variables	t_variables;
+typedef struct s_env		t_env;
+typedef struct s_dups		t_dups;
+typedef struct s_exe		t_exe;
 
 void						check_and_create_pipe(t_token *current_next,
 								int *pipe_fd, int *flag, t_shell *shell);

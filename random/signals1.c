@@ -1,41 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals.c                                          :+:      :+:    :+:   */
+/*   signals1.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/31 15:53:50 by schaaban          #+#    #+#             */
-/*   Updated: 2025/06/02 16:26:49 by schaaban         ###   ########.fr       */
+/*   Created: 2025/06/02 16:26:16 by schaaban          #+#    #+#             */
+/*   Updated: 2025/06/02 16:27:45 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "random.h"
 
-static int	g_signal = 0;
-
-void	ctrl_c(int sig)
+void	ignore_signals(void)
 {
-	(void)sig;
-	printf("\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-	g_signal = 130;
-}
-
-void	main_signal(void)
-{
-	signal(SIGINT, ctrl_c);
+	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 }
 
-int	*get_g_signal(void)
+void	restore_signals(void)
 {
-	return (&g_signal);
-}
-
-void	set_g_signal(int value)
-{
-	g_signal = value;
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 }

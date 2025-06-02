@@ -6,7 +6,7 @@
 /*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:23:48 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/23 13:14:07 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/06/02 16:21:30 by schaaban         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 
 # include "../header.h"
 
-typedef struct t_token		t_token;
-typedef struct t_shell		t_shell;
-typedef struct t_quotes		t_quotes;
-typedef struct t_variables	t_variables;
-typedef struct t_env		t_env;
-typedef struct t_export		t_export;
-typedef struct t_ints		t_ints;
-typedef struct t_env_struct	t_env_struct;
+typedef struct s_token		t_token;
+typedef struct s_shell		t_shell;
+typedef struct s_quotes		t_quotes;
+typedef struct s_variables	t_variables;
+typedef struct s_env		t_env;
+typedef struct s_export		t_export;
+typedef struct s_ints		t_ints;
+typedef struct s_env_struct	t_env_struct;
 
 // heredoc_expand_helper1.c
 void						expand_and_replace_heredoc_helper1(char **mainstr,

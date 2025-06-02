@@ -35,6 +35,7 @@ SRC = builtins/echo.c \
       main/main_helper_6.c\
       builtins/pwd.c \
       random/signals.c \
+      random/signals1.c \
       token_split/token_split.c \
       token_split/token_split_helper1.c \
       token_split/token_split_helper2.c \
