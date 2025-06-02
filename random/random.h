@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:23:48 by schaaban          #+#    #+#             */
-/*   Updated: 2025/05/28 08:33:19 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/06/02 13:30:33 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,5 @@ int								ft_strncmp(const char *s1, const char *s2,
 void							search_and_find_a_type_my_envp(t_env **envp,
 									char *to_find);
 void							return_env_to_beginning(t_env **my_envp);
+int								valid_identifier_helper_test(t_token *head);
 #endif

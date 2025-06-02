@@ -6,7 +6,7 @@
 /*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:23:48 by schaaban          #+#    #+#             */
-/*   Updated: 2025/06/02 09:38:51 by wasmar           ###   ########.fr       */
+/*   Updated: 2025/06/02 13:34:01 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,5 +117,6 @@ int							check_minus(char *str);
 void						cd_directory_h(t_env *env_node, char **new_pwd,
 								t_token *head,
 								t_shell *shell);
+int							valid_identifier_helper_test(t_token *head);
 
 #endif
