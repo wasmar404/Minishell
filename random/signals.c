@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:53:50 by schaaban          #+#    #+#             */
-/*   Updated: 2025/06/02 16:26:49 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/06/03 08:54:13 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "random.h"
 
-static int	g_signal = 0;
+int		g_signal = 0;
 
 void	ctrl_c(int sig)
 {
@@ -28,14 +28,4 @@ void	main_signal(void)
 {
 	signal(SIGINT, ctrl_c);
 	signal(SIGQUIT, SIG_IGN);
-}
-
-int	*get_g_signal(void)
-{
-	return (&g_signal);
-}
-
-void	set_g_signal(int value)
-{
-	g_signal = value;
 }

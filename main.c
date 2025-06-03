@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:49:56 by schaaban          #+#    #+#             */
-/*   Updated: 2025/06/02 16:24:00 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/06/03 08:55:43 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,10 @@ int	main_helper_helper(char *input, t_shell *shell, char ***splitted_input,
 
 void	control_c(t_shell *shell)
 {
-	if (*(get_g_signal()) == 130)
+	if (g_signal == 130)
 	{
 		shell->exit_code = 130;
-		set_g_signal(0);
+		g_signal = 0;
 	}
 }
 

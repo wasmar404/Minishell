@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   header.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schaaban <schaaban@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wasmar <wasmar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 10:01:29 by schaaban          #+#    #+#             */
-/*   Updated: 2025/06/02 16:18:11 by schaaban         ###   ########.fr       */
+/*   Updated: 2025/06/03 08:54:51 by wasmar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,9 +185,7 @@ typedef struct s_remove_quotes
 	int					len;
 	char				*copy;
 }						t_rq;
-
-int						*get_g_signal(void);
-void					set_g_signal(int value);
+extern int	g_signal;
 void					delete_temp_files(t_shell *shell);
 char					*ft_strcpy(char *dest, const char *src);
 void					exit_command_helper1(t_token *head, t_shell *exitcode);
